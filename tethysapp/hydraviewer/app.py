@@ -34,6 +34,11 @@ class Hydraviewer(TethysAppBase):
                 url='hydraviewer/precip',
                 controller='hydraviewer.controllers.precip'
             ),
+            UrlMap(
+                name='historical',
+                url='hydraviewer/historical',
+                controller='hydraviewer.controllers.historical'
+            ),
         )
 
         return url_maps

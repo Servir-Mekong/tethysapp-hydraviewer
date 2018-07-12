@@ -2,6 +2,11 @@ from django.shortcuts import render, reverse
 from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import MapView, Button, SelectInput, MVLayer, MVView
 
+import ee
+from hydra import geeutils
+
+ee.Initialize()
+
 # @login_required()
 def home(request):
     """
@@ -88,19 +93,9 @@ def precip(request):
                          'allowClear': False}
     )
 
-    # Create a Map View Layer
-    precip_layer = MVLayer(
-        source='SERVIR Global',
-        options={'url': 'https://gis1.servirglobal.net/arcgis/rest/services/Global/IMERG_Accumulations/MapServer/layers',
-               'params': {'LAYERS': '0'},
-               # 'serverType': 'TileArcGISRest',
-               },
-        legend_title='IMERG'
-    )
-
     view_options = MVView(
         projection='EPSG:4326',
-        center=[101.75, 16.50],
+        center=[-95,38],#[101.75, 16.50],
         zoom=5,
         maxZoom=18,
         minZoom=2
@@ -111,7 +106,6 @@ def precip(request):
         width='100%',
         controls=['FullScreen',
                   {'MousePosition': {'projection': 'EPSG:4326'}}],
-        layers=[precip_layer],
         basemap='OpenSteetMap',
         view=view_options
     )
@@ -122,3 +116,38 @@ def precip(request):
     }
 
     return render(request, 'hydraviewer/precip.html', context)
+
+def historical(request):
+    """
+    Controller for the app home page.
+    """
+    mekongBuffer = ee.FeatureCollection('ft:1LEGeqwlBCAlN61ie5ol24NdUDqB1MgpFR_sJNWQJ');
+    mekongRegion = mekongBuffer.geometry();
+
+    water_layer = geeutils.historicalMap(mekongRegion,'2010-01-01','2015-12-31',month=8)
+
+    print water_layer
+
+    view_options = MVView(
+        projection='EPSG:4326',
+        center=[101.75, 16.50],
+        zoom=5,
+        maxZoom=18,
+        minZoom=2
+    )
+
+    water_map = MapView(
+        height='100%',
+        width='100%',
+        controls=['FullScreen',
+                  {'MousePosition': {'projection': 'EPSG:4326'}}],
+        basemap='OpenSteetMap',
+        view=view_options
+    )
+
+    context = {
+        'water_layer': water_layer,
+        'water_map': water_map,
+    }
+
+    return render(request, 'hydraviewer/historical.html', context)
