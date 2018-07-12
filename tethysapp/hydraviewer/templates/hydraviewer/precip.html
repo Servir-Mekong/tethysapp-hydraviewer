@@ -1,0 +1,14 @@
+{% extends "hydraviewer/base.html" %}
+{% load tethys_gizmos staticfiles %}
+
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block app_content %}
+  <h1>Accumulated IMERG Precipitation</h1>
+  {% gizmo product_selection %}
+  {% gizmo precip_map %}
+{% endblock %}

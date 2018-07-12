@@ -11,7 +11,7 @@ class Hydraviewer(TethysAppBase):
     icon = 'hydraviewer/images/icon.gif'
     package = 'hydraviewer'
     root_url = 'hydraviewer'
-    color = '#f39c12'
+    color = '#34495e'
     description = 'Place a brief description of your app here.'
     tags = '&quot;Remote-Sensing&quot;,&quot;Floods&quot;'
     enable_feedback = False
@@ -28,6 +28,11 @@ class Hydraviewer(TethysAppBase):
                 name='home',
                 url='hydraviewer',
                 controller='hydraviewer.controllers.home'
+            ),
+            UrlMap(
+                name='precip',
+                url='hydraviewer/precip',
+                controller='hydraviewer.controllers.precip'
             ),
         )
 
