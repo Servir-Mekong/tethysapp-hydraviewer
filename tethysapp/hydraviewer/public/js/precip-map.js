@@ -1,6 +1,7 @@
 $(function() {
   // Get the Open Layers map object from the Tethys MapView
   var map = TETHYS_MAP_VIEW.getMap();
+  var $layers_element = $('#layers');
 
   var base_map = new ol.layer.Tile({
             crossOrigin: 'anonymous',
@@ -14,21 +15,16 @@ $(function() {
   map.getLayers().item(0).setVisible(false);
   map.addLayer(base_map);
 
-  var url = 'https://gis1.servirglobal.net/arcgis/rest/services/'+
-            'Global/IMERG_Accumulations/MapServer/WMSServer';
-  var layer = '6';
+  precip_layer = $layers_element.attr('data-precip-url');
 
-  var precip_layer = new ol.layer.Tile ({
-            source: new ol.source.TileWMS({
-                id:'IMERG',
-                // attributions: [attribution],
-                url: url,
-                params:{'LAYER':layer,'TILED':true}
+  var water_layer = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: precip_layer
             })
         });
 
   // // Add the overlay to the map
-  map.addLayer(precip_layer)
+  map.addLayer(water_layer)
 
   return
 });

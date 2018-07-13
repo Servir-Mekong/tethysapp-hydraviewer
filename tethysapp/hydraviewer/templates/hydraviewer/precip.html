@@ -14,7 +14,23 @@
 {% endblock %}
 
 {% block app_content %}
-  <h1>Accumulated IMERG Precipitation</h1>
-  {% gizmo product_selection %}
+  <h3>Accumulated IMERG Precipitation</h3>
   {% gizmo precip_map %}
+  <div id="layers" name="layers" data-precip-url="{{precip_layer}}" style="display:none;">
+{% endblock %}
+
+{% block app_navigation_items %}
+{% url 'hydraviewer:home' as home_url %}
+{% url 'hydraviewer:precip' as precip_url %}
+{% url 'hydraviewer:historical' as historical_url %}
+<li class="title">Navigation</li>
+<li {% if request.path == '/apps/grace/' %} class="active" {% endif %}><a href="{{ home_url }}">Home</a></li>
+<li class="{% if request.path == precip_url %}active{% endif %}"><a href="{{ precip_url }}">Accumulated Precipitation</a></li>
+
+  <br>
+  {% gizmo product_selection %}
+  <br>
+
+<li class="{% if request.path == historical_url %}active{% endif %}"><a href="{{ historical_url }}">Historical</a></li>
+
 {% endblock %}

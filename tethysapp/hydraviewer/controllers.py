@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.decorators import login_required
-from tethys_sdk.gizmos import MapView, Button, SelectInput, MVLayer, MVView
+from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, RangeSlider
 
 import ee
 from hydra import geeutils
@@ -93,9 +93,11 @@ def precip(request):
                          'allowClear': False}
     )
 
+    precip_layer = geeutils.get_precip(accumulation=1)
+
     view_options = MVView(
         projection='EPSG:4326',
-        center=[-95,38],#[101.75, 16.50],
+        center=[101.75, 16.50],
         zoom=5,
         maxZoom=18,
         minZoom=2
@@ -111,6 +113,7 @@ def precip(request):
     )
 
     context = {
+        'precip_layer': precip_layer,
         'precip_map': precip_map,
         'product_selection': product_selection,
     }
@@ -124,9 +127,46 @@ def historical(request):
     mekongBuffer = ee.FeatureCollection('ft:1LEGeqwlBCAlN61ie5ol24NdUDqB1MgpFR_sJNWQJ');
     mekongRegion = mekongBuffer.geometry();
 
+    algorithm_selection = SelectInput(
+        display_text='Select Surface Water Algorithm:',
+        name='algorithm_selection',
+        multiple=False,
+        options=[('Surface Water Tool', 'SWT'), ('JRC Tool', 'JRC')],
+        initial=['Surface Water Tool'],
+    )
+
+    # Date Picker Options
+    date_picker1 = DatePicker(name='date_picker1',
+                              display_text='Start Date',
+                              autoclose=True,
+                              format='yyyy-mm-dd',
+                              start_date='1/1/1990',
+                              start_view='decade',
+                              today_button=True,
+                              initial='2000-01-01')
+
+    # Date Picker Options
+    date_picker2 = DatePicker(name='date_picker2',
+                              display_text='End Date',
+                              autoclose=True,
+                              format='yyyy-mm-dd',
+                              start_date='1/1/1990',
+                              start_view='decade',
+                              today_button=True,
+                              initial='2015-12-31')
+
+    month_slider = RangeSlider(display_text='Month',
+                      name='month_slider',
+                      min=1,
+                      max=12,
+                      initial=7,
+                      step=1)
+
+
+
     water_layer = geeutils.historicalMap(mekongRegion,'2010-01-01','2015-12-31',month=8)
 
-    print water_layer
+    print date_picker1,date_picker2
 
     view_options = MVView(
         projection='EPSG:4326',
@@ -146,6 +186,10 @@ def historical(request):
     )
 
     context = {
+        'date_picker1': date_picker1,
+        'date_picker2': date_picker2,
+        'month_slider': month_slider,
+        'algorithm_selection': algorithm_selection,
         'water_layer': water_layer,
         'water_map': water_map,
     }
