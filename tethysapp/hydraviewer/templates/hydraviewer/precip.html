@@ -30,7 +30,10 @@
   <br>
   <p> Select Accumlation Product: </p>
   {% gizmo product_selection %}
-  <br>
+  <div id=update_button method="post">
+    {% gizmo update_button %}
+  </div>
+  <hr>
 
 <li class="{% if request.path == historical_url %}active{% endif %}"><a href="{{ historical_url }}">Historical Water</a></li>
 

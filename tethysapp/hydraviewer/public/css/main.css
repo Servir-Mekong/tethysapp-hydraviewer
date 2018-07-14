@@ -1,3 +1,67 @@
 p {
-  font-size: 12px;  
+  font-size: 12px;
+}
+
+.img-container {
+  position: absolute;
+  left:5%;
+  align: center;
+  padding: 5%;
+}
+
+.img-container #precip {
+  position: absolute;
+  float:left;
+}
+.img-container #historic {
+  position: absolute;
+  left: 5%
+}
+
+
+.btn-success {
+  width: 100%;
+}
+
+.slider-horizontal {
+  width:100%;
+  align: center;
+}
+
+#-app-content {
+    align: center ;
+    padding: 50px;
+}
+
+.zoom {
+    /* background-color: green; */
+    transition: transform .3s; /* Animation */
+    width: 353px;
+    height: 181.5px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.hoverinfo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 28px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.hoverinfo p {
+  display: none;
+  color: #000000;
+}
+
+.hoverinfo:hover p {
+  background-color: rgba(255, 255, 255, 0.7);
+  display: block;
+  z-index: 30;
 }

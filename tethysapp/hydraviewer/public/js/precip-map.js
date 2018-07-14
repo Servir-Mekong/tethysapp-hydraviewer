@@ -2,6 +2,7 @@ $(function() {
   // Get the Open Layers map object from the Tethys MapView
   var map = TETHYS_MAP_VIEW.getMap();
   var $layers_element = $('#layers');
+  var $update_element = $('#update-button');
 
   var base_map = new ol.layer.Tile({
             crossOrigin: 'anonymous',
@@ -26,5 +27,13 @@ $(function() {
   // // Add the overlay to the map
   map.addLayer(water_layer)
 
+  $update_element.click(function() {
+    var xhr = ajax_update_database('precip',{'product':"test"})
+    xhr.done(function(data) {
+      if("success" in data) {
+        console.log(data)
+      }
+    })
+  })
   return
 });

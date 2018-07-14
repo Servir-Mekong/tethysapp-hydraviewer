@@ -83,6 +83,12 @@ def precip(request):
     Controller for the app home page.
     """
 
+    if request.method == 'POST':
+        print request.POST.get('product')
+
+    precip_layer = geeutils.get_precip(accumulation=1)
+
+
     product_selection = SelectInput(
         # display_text='Select precipitation product:',
         name='product_selection',
@@ -93,7 +99,6 @@ def precip(request):
                          'allowClear': False}
     )
 
-    precip_layer = geeutils.get_precip(accumulation=1)
 
     view_options = MVView(
         projection='EPSG:4326',
@@ -112,7 +117,18 @@ def precip(request):
         view=view_options
     )
 
+    update_button = Button(
+        display_text='Update Map',
+        name='update_button',
+        icon='glyphicon glyphicon-refresh',
+        style='success',
+        attributes={
+            'title':'Update Map'
+        }
+    )
+
     context = {
+        'update_button': update_button,
         'precip_layer': precip_layer,
         'precip_map': precip_map,
         'product_selection': product_selection,
@@ -187,7 +203,18 @@ def historical(request):
         view=view_options
     )
 
+    update_button = Button(
+        display_text='Update Map',
+        name='update-button',
+        icon='glyphicon glyphicon-refresh',
+        style='success',
+        attributes={
+            'title':'Update Map'
+        }
+    )
+
     context = {
+        'update_button': update_button,
         'date_picker1': date_picker1,
         'date_picker2': date_picker2,
         'month_slider': month_slider,
