@@ -127,6 +127,8 @@ def historical(request):
     mekongBuffer = ee.FeatureCollection('ft:1LEGeqwlBCAlN61ie5ol24NdUDqB1MgpFR_sJNWQJ');
     mekongRegion = mekongBuffer.geometry();
 
+    region = ee.Geometry.Rectangle([-180,-90,180,90])
+
     algorithm_selection = SelectInput(
         # display_text='Select Surface Water Algorithm:',
         name='algorithm_selection',
@@ -164,7 +166,7 @@ def historical(request):
 
 
 
-    water_layer = geeutils.historicalMap(mekongRegion,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+    water_layer = geeutils.historicalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
     print date_picker1,date_picker2
 

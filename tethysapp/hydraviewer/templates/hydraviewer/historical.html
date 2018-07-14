@@ -5,6 +5,7 @@
 {% block styles %}
     {{ block.super }}
     <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
+    <link href="{% static 'hydraviewer/css/historical.css' %}" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/css/bootstrap-slider.min.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -28,7 +29,7 @@
 <li class="title">Navigation</li>
 <li {% if request.path == '/apps/grace/' %} class="active" {% endif %}><a href="{{ home_url }}">Home</a></li>
 <li class="{% if request.path == precip_url %}active{% endif %}"><a href="{{ precip_url }}">Accumulated Precipitation</a></li>
-<li class="{% if request.path == historical_url %}active{% endif %}"><a href="{{ historical_url }}">Historical</a></li>
+<li class="{% if request.path == historical_url %}active{% endif %}"><a href="{{ historical_url }}">Historical Water</a></li>
 
 <br>
 <p> Select Start Date: </p>
@@ -36,7 +37,7 @@
 <p> Select End Date: </p>
 {% gizmo date_picker2 %}
 <p> Select Month: </p>
-<input style="left:25%;" id="slider1" data-slider-id='slider1' type="text" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="9"/>
+<input id="slider1" data-slider-id='slider1' type="text" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="9"/>
 <!-- {% gizmo month_slider %} -->
 <p> Select Algorithm: </p>
 {% gizmo algorithm_selection %}
