@@ -5,20 +5,41 @@
 {% block styles %}
     {{ block.super }}
     <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/css/bootstrap-slider.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
   <script src="https://openlayers.org/en/v4.3.4/build/ol.js" type="text/javascript"></script>
   <script src="{% static 'hydraviewer/js/historical-map.js' %}" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block app_content %}
-  <h1>Historical Water Occurrence</h1>
-  {% gizmo date_picker1 %}
-  {% gizmo date_picker2 %}
-  {% gizmo month_slider %}
-  {% gizmo algorithm_selection %}
+  <h3>Historical Water Occurrence</h3>
   {% gizmo water_map %}
   <div id="layers" name="layers" data-water-url="{{water_layer}}" style="display:none;">
+{% endblock %}
+
+{% block app_navigation_items %}
+{% url 'hydraviewer:home' as home_url %}
+{% url 'hydraviewer:precip' as precip_url %}
+{% url 'hydraviewer:historical' as historical_url %}
+<li class="title">Navigation</li>
+<li {% if request.path == '/apps/grace/' %} class="active" {% endif %}><a href="{{ home_url }}">Home</a></li>
+<li class="{% if request.path == precip_url %}active{% endif %}"><a href="{{ precip_url }}">Accumulated Precipitation</a></li>
+<li class="{% if request.path == historical_url %}active{% endif %}"><a href="{{ historical_url }}">Historical</a></li>
+
+<br>
+<p> Select Start Date: </p>
+{% gizmo date_picker1 %}
+<p> Select End Date: </p>
+{% gizmo date_picker2 %}
+<p> Select Month: </p>
+<input style="left:25%;" id="slider1" data-slider-id='slider1' type="text" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="9"/>
+<!-- {% gizmo month_slider %} -->
+<p> Select Algorithm: </p>
+{% gizmo algorithm_selection %}
+<br>
+
 {% endblock %}

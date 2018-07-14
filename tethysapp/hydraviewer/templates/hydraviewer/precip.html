@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block app_content %}
-  <h3>Accumulated IMERG Precipitation</h3>
+  <h3>Accumulated Precipitation</h3>
   {% gizmo precip_map %}
   <div id="layers" name="layers" data-precip-url="{{precip_layer}}" style="display:none;">
 {% endblock %}
@@ -28,6 +28,7 @@
 <li class="{% if request.path == precip_url %}active{% endif %}"><a href="{{ precip_url }}">Accumulated Precipitation</a></li>
 
   <br>
+  <p> Select Accumlation Product: </p>
   {% gizmo product_selection %}
   <br>
 

@@ -1,4 +1,12 @@
 $(function() {
+
+  // With JQuery
+  $('#slider1').slider({
+  	formatter: function(value) {
+  		return 'Current value: ' + value;
+  	}
+  });
+
   // Get the Open Layers map object from the Tethys MapView
   var map = TETHYS_MAP_VIEW.getMap();
   var $layers_element = $('#layers');

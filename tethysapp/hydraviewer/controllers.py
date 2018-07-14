@@ -84,7 +84,7 @@ def precip(request):
     """
 
     product_selection = SelectInput(
-        display_text='Select precipitation product:',
+        # display_text='Select precipitation product:',
         name='product_selection',
         multiple=False,
         options=[('1 Day Accumulation', '1'), ('3 Day Accumulation', '2'), ('7 Day Accumulation', '3')],
@@ -128,16 +128,16 @@ def historical(request):
     mekongRegion = mekongBuffer.geometry();
 
     algorithm_selection = SelectInput(
-        display_text='Select Surface Water Algorithm:',
+        # display_text='Select Surface Water Algorithm:',
         name='algorithm_selection',
         multiple=False,
         options=[('Surface Water Tool', 'SWT'), ('JRC Tool', 'JRC')],
-        initial=['Surface Water Tool'],
+        initial=['JRC Tool'],
     )
 
     # Date Picker Options
     date_picker1 = DatePicker(name='date_picker1',
-                              display_text='Start Date',
+                              # display_text='Start Date',
                               autoclose=True,
                               format='yyyy-mm-dd',
                               start_date='1/1/1990',
@@ -147,7 +147,7 @@ def historical(request):
 
     # Date Picker Options
     date_picker2 = DatePicker(name='date_picker2',
-                              display_text='End Date',
+                              # display_text='End Date',
                               autoclose=True,
                               format='yyyy-mm-dd',
                               start_date='1/1/1990',
@@ -164,7 +164,7 @@ def historical(request):
 
 
 
-    water_layer = geeutils.historicalMap(mekongRegion,'2010-01-01','2015-12-31',month=8)
+    water_layer = geeutils.historicalMap(mekongRegion,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
     print date_picker1,date_picker2
 
