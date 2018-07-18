@@ -1,8 +1,13 @@
+var map
+var precip_layer;
+var precip_source;
+
 $(function() {
   // Get the Open Layers map object from the Tethys MapView
-  var map = TETHYS_MAP_VIEW.getMap();
+  map = TETHYS_MAP_VIEW.getMap();
+
   var $layers_element = $('#layers');
-  var $update_element = $('#update-button');
+  var $update_element = $('#update_button');
 
   var base_map = new ol.layer.Tile({
             crossOrigin: 'anonymous',
@@ -13,27 +18,47 @@ $(function() {
             })
         });
 
-  map.getLayers().item(0).setVisible(false);
+  map.removeLayer(0)
   map.addLayer(base_map);
 
-  precip_layer = $layers_element.attr('data-precip-url');
+  //precip_layer = $layers_element.attr('data-precip-url');
 
-  var water_layer = new ol.layer.Tile({
+  precip_source = new ol.source.XYZ();
+  precip_layer = new ol.layer.Tile(
+    {
+      source:precip_source
+    }
+  );
+
+  map.addLayer(precip_layer)
+
+
+  $('#product_selection').change(function(){
+    var prod = $('#product_selection').val();
+    var url = prod.split('|')[1]
+    precip_source = new ol.source.XYZ({url:url});
+    precip_layer.setSource(precip_source)
+  }).change();
+
+  // var precip_layer = new ol.layer.Tile({
+  //           source: new ol.source.XYZ({
+  //               url: precip_layer
+  //           })
+  //       });
+  //
+  // // // Add the overlay to the map
+  // map.addLayer(precip_layer)
+});
+
+function addPrecip(url){
+
+  map.removeLayer(1)
+
+  var precip_layer = new ol.layer.Tile({
             source: new ol.source.XYZ({
-                url: precip_layer
+                url: url
             })
         });
-
-  // // Add the overlay to the map
-  map.addLayer(water_layer)
-
-  $update_element.click(function() {
-    var xhr = ajax_update_database('precip',{'product':"test"})
-    xhr.done(function(data) {
-      if("success" in data) {
-        console.log(data)
-      }
-    })
-  })
+  map.addLayer(precip_layer)
   return
-});
+}
