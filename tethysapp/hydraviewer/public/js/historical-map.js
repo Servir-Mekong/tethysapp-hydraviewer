@@ -1,3 +1,7 @@
+var map;
+var water_layer;
+var water_source;
+
 $(function() {
 
   // With JQuery
@@ -23,16 +27,38 @@ $(function() {
   map.getLayers().item(0).setVisible(false);
   map.addLayer(base_map);
 
-  water_layer = $layers_element.attr('data-water-url');
+  water_url = $layers_element.attr('data-water-url');
 
-  var water_layer = new ol.layer.Tile({
-            source: new ol.source.XYZ({
-                url: water_layer
-            })
-        });
+  water_source = new ol.source.XYZ({url:water_url});
+  water_layer = new ol.layer.Tile(
+    {
+      source:water_source
+    }
+  );
 
-  // // Add the overlay to the map
   map.addLayer(water_layer)
+
+  $('[name="update-button"]').on('click',function() {
+
+    var start = $('#date_picker1').val()
+    var end = $('#date_picker2').val()
+    var mon = $('#slider1').val()
+    var algo = $('#algorithm_selection').val()
+
+    console.log(start,end,mon,algo)
+    var xhr = ajax_update_database('update_historical',{'sDate':start,'eDate':end,'month':mon,'algo':algo});
+    xhr.done(function(data) {
+        if("success" in data) {
+          console.log(data)
+          water_source = new ol.source.XYZ({url:data.url});
+          water_layer.setSource(water_source)
+
+        }else{
+            alert('Error processing the request.'+data.error);
+        }
+    });
+  });
+
 
   return
 });

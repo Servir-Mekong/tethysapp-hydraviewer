@@ -1,4 +1,4 @@
-var map
+var map;
 var precip_layer;
 var precip_source;
 
@@ -40,14 +40,6 @@ $(function() {
     precip_layer.setSource(precip_source)
   }).change();
 
-  // var precip_layer = new ol.layer.Tile({
-  //           source: new ol.source.XYZ({
-  //               url: precip_layer
-  //           })
-  //       });
-  //
-  // // // Add the overlay to the map
-  // map.addLayer(precip_layer)
 });
 
 function addPrecip(url){
