@@ -14,17 +14,27 @@
   {% url 'hydraviewer:historical' as historical_url %}
   <h1 style="text-align: center;">Welcome to the HYDrologic Remote sensing Analysis (HYDRA) Viewer!</h1>
   <br>
-  <div id="content" style="left:10%;width:100%;height:150%">
-    <a id="precip" class="img-container" href="{{ precip_url }}">
-      <img class="zoom" src="/static/hydraviewer/images/precip_view.png">
-      <div class="hoverinfo">
-        <p> Go to precipitation map </p>
+  <div class='img-container' id="precip">
+    <div class="image">
+      <img class="zoom"  src="/static/hydraviewer/images/precip_view.png">
+    </div>
+    <a href="{{ precip_url }}">
+      <div class="middle">
+        <div class="text"> Go to precipitation map!</div>
       </div>
     </a>
-    <a id="historic" class="img-container" href="{{ historical_url }}">
+  </div>
+  <div class='img-container' id="historic">
+    <div class="image">
       <img class="zoom" src="/static/hydraviewer/images/historic_view.png">
+    </div>
+    <a href="{{ historical_url }}">
+      <div class="middle">
+        <div class="text"> Go to historic water map!</div>
+      </div>
     </a>
   </div>
+
 
 {% endblock %}
 

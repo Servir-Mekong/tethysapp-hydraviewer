@@ -3,23 +3,6 @@ p {
   display: inline-block;
 }
 
-.img-container {
-  position: absolute;
-  left:5%;
-  align: center;
-  padding: 5%;
-}
-
-.img-container #precip {
-  position: absolute;
-  float:left;
-}
-.img-container #historic {
-  position: absolute;
-  left: 5%
-}
-
-
 .btn-success {
   width: 100%;
 }
@@ -36,7 +19,7 @@ p {
 
 .zoom {
     /* background-color: green; */
-    transition: transform .3s; /* Animation */
+    transition: transform .5s; /* Animation */
     width: 353px;
     height: 181.5px;
     margin: 0 auto;
@@ -47,24 +30,59 @@ p {
     transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
 
-.hoverinfo {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  font-size: 28px;
-  color: #ffffff;
-  cursor: pointer;
+.img-container {
+    overflow: auto;
+    display: inline-block;
+    position: relative;
+    width:39%;
+    margin-left: 10%
 }
 
-.hoverinfo p {
-  display: none;
-  color: #000000;
-}
-
-.hoverinfo:hover p {
-  background-color: rgba(255, 255, 255, 0.7);
+.image {
+  opacity: 1;
   display: block;
-  z-index: 30;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 10%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.img-container:hover .image {
+  display: inline-block;
+  opacity: 0.3;
+  width:inherit;
+}
+
+.img-container:hover .middle {
+  opacity: 1;
+}
+
+.img-container #precip {
+  position: absolute;
+}
+
+.img-container #historic {
+  position: absolute;
+}
+
+.text {
+  background-color: #00107a;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
 }
 
 .loader {
