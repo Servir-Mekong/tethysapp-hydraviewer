@@ -18,8 +18,11 @@
 
 {% block app_content %}
   <h3>Historical Water Occurrence</h3>
-  {% gizmo water_map %}
-  <div id="layers" name="layers" data-water-url="{{water_layer}}" style="display:none;">
+  <div style='position:relative; height:100%; width:100%;'>
+    <div class="loader" id="spinner"></div>
+    {% gizmo water_map %}
+    <div id="layers" name="layers" data-water-url="{{water_layer}}" style="display:none;">
+  </div>
 {% endblock %}
 
 {% block app_navigation_items %}
@@ -27,7 +30,7 @@
 {% url 'hydraviewer:precip' as precip_url %}
 {% url 'hydraviewer:historical' as historical_url %}
 <li class="title">Navigation</li>
-<li {% if request.path == '/apps/grace/' %} class="active" {% endif %}><a href="{{ home_url }}">Home</a></li>
+<li {% if request.path == '/apps/hydraviewer/' %} class="active" {% endif %}><a href="{{ home_url }}">Home</a></li>
 <li class="{% if request.path == precip_url %}active{% endif %}"><a href="{{ precip_url }}">Accumulated Precipitation</a></li>
 <li class="{% if request.path == historical_url %}active{% endif %}"><a href="{{ historical_url }}">Historical Water</a></li>
 
@@ -36,6 +39,8 @@
 {% gizmo date_picker1 %}
 <p> Select End Date: </p>
 {% gizmo date_picker2 %}
+<p> Process Climatology? </p>
+<div id=climo-div> <input id="climo-enabled" type="checkbox"checked> <p id='climo-selector'> &emsp;Yes </p> </div>
 <p> Select Month: </p>
 <input id="slider1" data-slider-id='slider1' type="text" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="9"/>
 <!-- {% gizmo month_slider %} -->

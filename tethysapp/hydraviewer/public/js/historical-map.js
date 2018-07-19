@@ -1,15 +1,22 @@
 var map;
 var water_layer;
 var water_source;
+var climo;
 
 $(function() {
 
-  // With JQuery
-  $('#slider1').slider({
+  climo = 1
+  slideMons = {1:'Jan.',2:'Feb.',3:'Mar.',4:'Apr.',5:'May',6:'Jun.'
+         ,7:'Jul.',8:'Aug.',9:'Sep.',10:'Oct.',11:'Nov.',12:'Dec.'}
+  slideFormat = {
   	formatter: function(value) {
-  		return 'Current value: ' + value;
+  		return slideMons[value];
   	}
-  });
+  }
+
+
+  // With JQuery
+  var slider = $('#slider1').slider(slideFormat);
 
   // Get the Open Layers map object from the Tethys MapView
   var map = TETHYS_MAP_VIEW.getMap();
@@ -38,23 +45,41 @@ $(function() {
 
   map.addLayer(water_layer)
 
+  $("#climo-enabled").click(function() {
+  	if(this.checked) {
+  		// With JQuery
+  		slider.slider("enable");
+      document.getElementById("climo-selector").innerHTML = "&emsp;Yes";
+      climo = 1
+  	}
+  	else {
+  		// With JQuery
+  		slider.slider("disable");
+      document.getElementById("climo-selector").innerHTML = "&emsp;No";
+      climo = 0
+	  }
+  });
+
   $('[name="update-button"]').on('click',function() {
+
+    $('#spinner').show();
 
     var start = $('#date_picker1').val()
     var end = $('#date_picker2').val()
-    var mon = $('#slider1').val()
+    var mon = $('input[id="slider1"]').slider('getValue')
     var algo = $('#algorithm_selection').val()
 
-    console.log(start,end,mon,algo)
-    var xhr = ajax_update_database('update_historical',{'sDate':start,'eDate':end,'month':mon,'algo':algo});
+    console.log(start,end,mon,algo,climo)
+    var xhr = ajax_update_database('update_historical',{'sDate':start,'eDate':end,'month':mon,'algo':algo,'climo':climo});
     xhr.done(function(data) {
         if("success" in data) {
           console.log(data)
           water_source = new ol.source.XYZ({url:data.url});
           water_layer.setSource(water_source)
-
+          $('#spinner').hide();
         }else{
-            alert('Error processing the request.'+data.error);
+            alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+            $('#spinner').hide();
         }
     });
   });
