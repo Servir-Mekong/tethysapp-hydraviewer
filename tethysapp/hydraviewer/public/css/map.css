@@ -1,7 +1,10 @@
 #inner-app-content {
     padding: 0;
+    overflow: hidden;
 }
 
 #app-content, #inner-app-content, #map_view_outer_container {
-    height: 100%;
+    /* top: inherit; */
+    height: 93%;
+    position: absolute;
 }
