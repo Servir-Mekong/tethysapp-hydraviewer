@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, RangeSlider
 
 import ee
-from hydra import geeutils
+import hydrafloods as hf
 
 ee.Initialize()
 
@@ -83,9 +83,9 @@ def precip(request):
     Controller for the app home page.
     """
 
-    precip_layer1 = geeutils.get_precip(accumulation=1)
-    precip_layer3 = geeutils.get_precip(accumulation=3)
-    precip_layer7 = geeutils.get_precip(accumulation=7)
+    precip_layer1 = hf.getPrecipMap(accumulation=1)
+    precip_layer3 = hf.getPrecipMap(accumulation=3)
+    precip_layer7 = hf.getPrecipMap(accumulation=7)
 
 
     product_selection = SelectInput(
@@ -172,7 +172,7 @@ def historical(request):
 
 
 
-    water_layer = geeutils.historicalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+    water_layer = hf.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
     view_options = MVView(
         projection='EPSG:4326',
