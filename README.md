@@ -14,7 +14,7 @@ $ . activate tethys
 (tethys) $
 ```
 
-... and install the dependencies for the HYDRAFloods Viewer (`rastersmith` and `hydrafloods`) and their dependencies to run the application:
+... and install the dependencies for the HYDRAFloods Viewer (`rastersmith` and `hydrafloods`) and their dependencies (`gdal`,`cartopy`,`pillow`,`xarray`, and) to run the application:
 
 ```
 (tethys) $ conda install -c conda-forge gdal
@@ -24,6 +24,16 @@ $ . activate tethys
 
 (tethys) $ pip install rastersmith
 (tethys) $ pip install hydrafloods
+```
+
+Furthermore, the Earth Engine Python API needs to be installed and authenticated to access historical water maps:
+
+```
+(tethys) $ pip install google-api-python-client
+(tethys) $ pip install earthengine-api
+(tethys) $ pip install --upgrade oauth2client
+
+(tethys) $ earthengine authenticate
 ```
 
 Next, clone the HYDRAFloods Viewwer repository from GitHub:
