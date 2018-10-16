@@ -14,7 +14,7 @@ dependencies = []
 
 setup(
     name=release_package,
-    version='0.0.1',
+    version='0.0.2',
     tags='&quot;Remote-Sensing&quot;,&quot;Floods&quot;',
     description='',
     long_description='',
