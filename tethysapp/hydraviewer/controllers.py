@@ -5,7 +5,11 @@ from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, 
 import ee
 import hydrafloods as hf
 
+import rastersmith as rs
+
 ee.Initialize()
+
+admin_layer = hf.getAdminMap()
 
 # @login_required()
 def home(request):
@@ -78,7 +82,7 @@ def home(request):
 
     return render(request, 'hydraviewer/home.html', context)
 
-def precip(request):
+def mapviewer(request):
     """
     Controller for the app home page.
     """
@@ -86,6 +90,14 @@ def precip(request):
     precip_layer1 = hf.getPrecipMap(accumulation=1)
     precip_layer3 = hf.getPrecipMap(accumulation=3)
     precip_layer7 = hf.getPrecipMap(accumulation=7)
+
+    gr = rs.Grid(region=(92,5.5,109.5,28.5),resolution=100)
+    region = ee.Geometry.Rectangle([gr.west,gr.south,gr.east,gr.north])
+
+    historical_layer = hf.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+
+
+    sentinel1_layer = hf.Sentinel1(gr).getFloodMap('2018-09-01','2018-09-30')
 
 
     product_selection = SelectInput(
@@ -101,30 +113,15 @@ def precip(request):
     )
 
 
-    view_options = MVView(
-        projection='EPSG:4326',
-        center=[101.75, 16.50],
-        zoom=5,
-        maxZoom=18,
-        minZoom=2
-    )
-
-    precip_map = MapView(
-        height='100%',
-        width='100%',
-        controls=['FullScreen',
-                  {'MousePosition': {'projection': 'EPSG:4326'}}],
-        basemap='OpenSteetMap',
-        view=view_options
-    )
-
     context = {
         'precip_layer': precip_layer1,
-        'precip_map': precip_map,
+        'historical_layer': historical_layer,
+        'sentinel1_layer': sentinel1_layer,
+        'admin_layer': admin_layer,
         'product_selection': product_selection,
     }
 
-    return render(request, 'hydraviewer/precip.html', context)
+    return render(request, 'hydraviewer/map.html', context)
 
 def historical(request):
     """
@@ -172,7 +169,7 @@ def historical(request):
 
 
 
-    water_layer = hf.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+
 
     view_options = MVView(
         projection='EPSG:4326',

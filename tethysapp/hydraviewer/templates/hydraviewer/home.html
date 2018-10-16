@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block app_content %}
-  {% url 'hydraviewer:precip' as precip_url %}
+  {% url 'hydraviewer:mapviewer' as precip_url %}
   {% url 'hydraviewer:historical' as historical_url %}
   <h1 style="text-align: center;">Welcome to the HYDrologic Remote sensing Analysis (HYDRA) Viewer!</h1>
   <br>
@@ -71,9 +71,5 @@
 {% endblock %}
 
 {% block app_actions %}
-  <!-- {% gizmo save_button %}
-  {% gizmo edit_button %}
-  {% gizmo remove_button %}
-  {% gizmo previous_button %}
-  {% gizmo next_button %} -->
+  <!-- insert app actions here -->
 {% endblock %}

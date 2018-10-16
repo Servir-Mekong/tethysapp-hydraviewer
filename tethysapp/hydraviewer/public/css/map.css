@@ -3,8 +3,7 @@
     overflow: hidden;
 }
 
-#app-content, #inner-app-content, #map_view_outer_container {
-    /* top: inherit; */
-    height: 93%;
-    position: absolute;
+#app-content, #inner-app-content, #map {
+    height: 100%;
+    width: 100%;
 }

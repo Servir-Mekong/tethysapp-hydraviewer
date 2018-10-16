@@ -1,0 +1,64 @@
+{% extends "hydraviewer/base.html" %}
+{% load tethys_gizmos staticfiles %}
+
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/css/bootstrap-slider.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script src="https://openlayers.org/en/v4.3.4/build/ol.js" type="text/javascript"></script>
+  <script src="{% static 'hydraviewer/js/map.js' %}" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block app_content %}
+
+  <div id='map'></div>
+
+  <div id="layers" name="layers" data-precip-url="{{precip_layer}}"
+                                 data-historical-url="{{historical_layer}}"
+                                 data-sentinel1-url="{{sentinel1_layer}}"
+                                 data-admin-url="{{admin_layer}}"
+      style="display:none;">
+  </div>
+{% endblock %}
+
+{% block app_navigation_items %}
+{% url 'hydraviewer:home' as home_url %}
+{% url 'hydraviewer:mapviewer' as map_url %}
+<li class="title">Navigation</li>
+<li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
+<li class="{% if request.path == map_url %}active{% endif %}"><a href="{{ map_url }}">Map Viewer</a></li>
+
+  <div id='precip-controls'>
+    <br>
+    <label class="container">
+      <input id="precip-check" type="checkbox" checked="checked">
+      <span class="checkmark"></span>
+    </label>
+
+    <p><b>&emsp;&emsp;&emsp;PRECIPITATION&emsp;&emsp;&emsp;</b></p>
+    <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width: 35%;right:10px;align:right;display:inline-block"/>
+    <p> Select Accumulation Product: </p>
+    {% gizmo product_selection %}
+  </div>
+
+  <div id='historical-controls'>
+    <br>
+    <label class="container">
+      <input id="historical-check" type="checkbox" checked="checked">
+      <span class="checkmark"></span>
+    </label>
+
+    <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER&emsp;&emsp;&emsp;</b></p>
+    <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width: 25%;align:right;display:inline-block"/>
+  </div>
+
+{% endblock %}
+
+{% block app_actions %}
+{% endblock %}

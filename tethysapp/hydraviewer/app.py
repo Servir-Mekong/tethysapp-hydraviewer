@@ -6,7 +6,7 @@ class Hydraviewer(TethysAppBase):
     Tethys app class for HYDRA Viewer.
     """
 
-    name = 'HYDRA Viewer'
+    name = 'HYDRAFloods Viewer'
     index = 'hydraviewer:home'
     icon = 'hydraviewer/images/appicon.png'
     package = 'hydraviewer'
@@ -30,14 +30,9 @@ class Hydraviewer(TethysAppBase):
                 controller='hydraviewer.controllers.home'
             ),
             UrlMap(
-                name='precip',
-                url='hydraviewer/precip',
-                controller='hydraviewer.controllers.precip'
-            ),
-            UrlMap(
-                name='historical',
-                url='hydraviewer/historical',
-                controller='hydraviewer.controllers.historical'
+                name='mapviewer',
+                url='hydraviewer/mapviewer',
+                controller='hydraviewer.controllers.mapviewer'
             ),
             UrlMap(
                 name='update_historical',
