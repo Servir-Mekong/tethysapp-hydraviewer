@@ -14,7 +14,7 @@ $ . activate tethys
 (tethys) $
 ```
 
-... and install the dependencies for the HYDRAFloods Viewer (`rastersmith` and `hydrafloods`) and their dependencies (`gdal`,`cartopy`,`pillow`,`xarray`, and) to run the application:
+... and install the dependencies for the HYDRAFloods Viewer (`rastersmith` and `hydrafloods`) and their dependencies (`gdal`,`cartopy`,`pillow`, and`xarray`) to run the application:
 
 ```
 (tethys) $ conda install -c conda-forge gdal
@@ -50,3 +50,8 @@ Change directories into the cloned repo and install the application for developm
 ```
 
 Now, the HYDRAFloods Viewer is installed and your users can access the most recent flood maps from satellite imagery.
+
+##### Customization
+To customize the viewer's initial state and where the historical/flood water maps are displayed, the admin must update the bounding within the `config.py` file.
+
+For example, to show results only over Myanmar, the admin must specify the bounding box around the country and the HYDRAFlood Viewer by changing the `WEST`, `SOUTH`, `EAST`, and `NORTH` variables.
