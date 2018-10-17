@@ -6,7 +6,9 @@ import datetime
 
 ee.Initialize()
 
-region = ee.Geometry.Rectangle([-180,-90,180,90])
+import config
+
+region = ee.Geometry.Rectangle(config.BOUNDING_BOX)
 
 def update_historical(request):
     return_obj = {}

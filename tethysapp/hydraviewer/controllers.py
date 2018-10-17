@@ -3,81 +3,34 @@ from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, RangeSlider
 
 import ee
+import datetime
 import hydrafloods as hf
-
 import rastersmith as rs
+
+
+from . import config
+
+today = datetime.datetime.now()
+todayStr = today.strftime('%Y-%m-%d')
+
+past = today - datetime.timedelta(15)
+pastStr = past.strftime("%Y-%m-%d")
 
 ee.Initialize()
 
-admin_layer = hf.getAdminMap()
+gr = rs.Grid(region=config.BOUNDING_BOX,resolution=1000)
+region = ee.Geometry.Rectangle([gr.west,gr.south,gr.east,gr.north])
+admin_layer = hf.getAdminMap(region)
+
 
 # @login_required()
 def home(request):
     """
     Controller for the app home page.
     """
-    save_button = Button(
-        display_text='',
-        name='save-button',
-        icon='glyphicon glyphicon-floppy-disk',
-        style='success',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Save'
-        }
-    )
-
-    edit_button = Button(
-        display_text='',
-        name='edit-button',
-        icon='glyphicon glyphicon-edit',
-        style='warning',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Edit'
-        }
-    )
-
-    remove_button = Button(
-        display_text='',
-        name='remove-button',
-        icon='glyphicon glyphicon-remove',
-        style='danger',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Remove'
-        }
-    )
-
-    previous_button = Button(
-        display_text='Previous',
-        name='previous-button',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Previous'
-        }
-    )
-
-    next_button = Button(
-        display_text='Next',
-        name='next-button',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Next'
-        }
-    )
 
     context = {
-        'save_button': save_button,
-        'edit_button': edit_button,
-        'remove_button': remove_button,
-        'previous_button': previous_button,
-        'next_button': next_button
+
     }
 
     return render(request, 'hydraviewer/home.html', context)
@@ -91,13 +44,10 @@ def mapviewer(request):
     precip_layer3 = hf.getPrecipMap(accumulation=3)
     precip_layer7 = hf.getPrecipMap(accumulation=7)
 
-    gr = rs.Grid(region=(92,5.5,109.5,28.5),resolution=100)
-    region = ee.Geometry.Rectangle([gr.west,gr.south,gr.east,gr.north])
-
     historical_layer = hf.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
 
-    sentinel1_layer = hf.Sentinel1(gr).getFloodMap('2018-09-01','2018-09-30')
+    sentinel1_layer = hf.Sentinel1(gr).getFloodMap(pastStr,todayStr)
 
 
     product_selection = SelectInput(
@@ -166,9 +116,6 @@ def historical(request):
                       max=12,
                       initial=7,
                       step=1)
-
-
-
 
 
     view_options = MVView(
