@@ -237,3 +237,26 @@ p {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+.layer-header {
+  background: #686868;
+  margin: 2%;
+}
+
+.layer-header:hover {
+  background: #a5a5a5;
+}
+
+.layer-header p {
+  color: #fff;
+  font-size: 14px;
+  margin: 2%;
+  /* align: right; */
+  float: right;
+}
+
+.layer-header img {
+  margin: 2px;
+  width: 10%;
+  color: #fff;
+}

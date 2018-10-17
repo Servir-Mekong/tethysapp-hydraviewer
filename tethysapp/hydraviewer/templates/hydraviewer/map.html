@@ -34,28 +34,71 @@
 <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
 <li class="{% if request.path == map_url %}active{% endif %}"><a href="{{ map_url }}">Map Viewer</a></li>
 
-  <div id='precip-controls'>
-    <br>
-    <label class="container">
-      <input id="precip-check" type="checkbox" checked="checked">
-      <span class="checkmark"></span>
-    </label>
+  <div id='browse-controls'>
+    <a data-toggle="collapse" href="#browse-collapse">
+      <div class='layer-header'>
+        <img src="{% static 'hydraviewer/images/browse-icon.png' %}"><p>BROWSE IMAGERY</p>
+      </div>
+    </a>
+    <div id="browse-collapse" class="panel-collapse collapse">
+      <label class="container">
+        <input id="browse-check" type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;VIIRS NRT TRUE-COLOR&emsp;&emsp;&emsp;</b></p>
+      <input id="browse-opacity" data-slider-id='browse-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;align:right;display:inline-block"/>
+    </div>
+  </div>
 
-    <p><b>&emsp;&emsp;&emsp;PRECIPITATION&emsp;&emsp;&emsp;</b></p>
-    <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width: 35%;right:10px;align:right;display:inline-block"/>
-    <p> Select Accumulation Product: </p>
-    {% gizmo product_selection %}
+  <div id='precip-controls'>
+    <a data-toggle="collapse" href="#precip-collapse">
+      <div class='layer-header'>
+        <img src="{% static 'hydraviewer/images/precip-icon.png' %}"><p>PRECIPITATION PRODUCTS</p>
+      </div>
+    </a>
+    <div id="precip-collapse" class="panel-collapse collapse">
+      <label class="container">
+        <input id="precip-check" type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+
+      <p><b>&emsp;&emsp;&emsp;IMERG&emsp;&emsp;&emsp;</b></p>
+      <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;right:10px;align:right;display:inline-block"/>
+      <p> Select Accumulation Product: </p>
+      {% gizmo product_selection %}
+    </div>
   </div>
 
   <div id='historical-controls'>
-    <br>
-    <label class="container">
-      <input id="historical-check" type="checkbox" checked="checked">
-      <span class="checkmark"></span>
-    </label>
+    <a data-toggle="collapse" href="#historical-collapse">
+      <div class='layer-header'>
+        <img src="{% static 'hydraviewer/images/surfacewater-icon.png' %}"><p>HISTORICAL WATER</p>
+      </div>
+    </a>
+    <div id="historical-collapse" class="panel-collapse collapse">
+      <label class="container">
+        <input id="historical-check" type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER MAPS&emsp;&emsp;&emsp;</b></p>
+      <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;align:right;display:inline-block"/>
+    </div>
+  </div>
 
-    <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER&emsp;&emsp;&emsp;</b></p>
-    <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width: 25%;align:right;display:inline-block"/>
+  <div id='flood-controls'>
+    <a data-toggle="collapse" href="#flood-collapse">
+      <div class='layer-header'>
+        <img src="{% static 'hydraviewer/images/floodwater-icon.png' %}"><p>FLOOD MAPS</p>
+      </div>
+    </a>
+    <div id="flood-collapse" class="panel-collapse collapse">
+      <label class="container">
+        <input id="sentinel1-check" type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;SENTINEL1 FLOOD MAP&emsp;&emsp;&emsp;</b></p>
+      <input id="sentinel1-opacity" data-slider-id='sentinel1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;align:right;display:inline-block"/>
+    </div>
   </div>
 
 {% endblock %}
