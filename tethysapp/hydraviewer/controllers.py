@@ -62,6 +62,21 @@ def mapviewer(request):
                          'allowClear': False}
     )
 
+    browse_selection = SelectInput(
+        # display_text='Select precipitation product:',
+        name='browse_selection',
+        multiple=False,
+        options=[('VIIRS NRT TRUE COLOR', '1|VIIRS_SNPP_CorrectedReflectance_TrueColor'),
+                 ('VIIRS NRT NATURAL COLOR', '2|VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1'),
+                 ('MODIS AQUA TRUE COLOR', '3|MODIS_Aqua_CorrectedReflectance_TrueColor'),
+                 ('MODIS AQUA NATURAL COLOR', '4|MODIS_Aqua_CorrectedReflectance_Bands721'),
+                 ('MODIS TERRA TRUE COLOR', '5|MODIS_Terra_CorrectedReflectance_TrueColor'),
+                 ('MODIS TERRA NATURAL COLOR', '5|MODIS_Terra_CorrectedReflectance_Bands721')],
+        initial=['VIIRS NRT NATURAL COLOR'],
+        select2_options={'placeholder': 'Select browse imagery:',
+                         'allowClear': False}
+    )
+
 
     context = {
         'precip_layer': precip_layer1,
@@ -69,6 +84,7 @@ def mapviewer(request):
         'sentinel1_layer': sentinel1_layer,
         'admin_layer': admin_layer,
         'product_selection': product_selection,
+        'browse_selection': browse_selection,
     }
 
     return render(request, 'hydraviewer/map.html', context)

@@ -33,7 +33,7 @@ $(function() {
   $layers_element = $('#layers');
   var $update_element = $('#update_button');
 
-  var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"//"VIIRS_SNPP_CorrectedReflectance_TrueColor"
+  var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"
 
   browse_layer = addGibsLayer(browse_layer,viirs_product,today)
 
@@ -48,13 +48,21 @@ $(function() {
   $('#product_selection').change(function(){
     var prod = $('#product_selection').val();
     var url = prod.split('|')[1]
-    // precip_source = new ol.source.XYZ({url:url});
     precip_layer.setUrl(url)
-  }).change();
+  });
+
+  $('#browse_selection').change(function(){
+    var prod = $('#browse_selection').val();
+    var id = prod.split('|')[1]
+    var template =
+      '//gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/' +
+      id + '/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpg'
+    browse_layer.setUrl(template)
+  });
 
   $('#browse-opacity').change(function(){
     var opac = parseFloat($('input[id="browse-opacity"]').slider('getValue'))
-    viirs_layer.setOpacity(opac)
+    browse_layer.setOpacity(opac)
   });
 
   $('#precip-opacity').change(function(){
@@ -76,11 +84,11 @@ $(function() {
     if(this.checked){
       browseSlider.slider('enable')
       var opac = parseFloat($('input[id="browse-opacity"]').slider('getValue'))
-      viirs_layer.setOpacity(opac)
+      browse_layer.setOpacity(opac)
     }
     else{
       browseSlider.slider('disable')
-      viirs_layer.setOpacity(0)
+      browse_layer.setOpacity(0)
     }
   });
 
