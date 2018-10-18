@@ -1,16 +1,10 @@
 var map,
-    viirs_layer,
-    viirs_source,
+    browse_layer,
     precip_layer,
-    precip_source,
     historical_layer,
-    historical_source,
     sentinel1_layer,
-    sentinel1_source,
     admin_layer,
-    admin_source,
-    $layers_element,
-    precip_on;
+    $layers_element;
 
 var today = new Date().toISOString().slice(0, 10)
 
@@ -21,44 +15,41 @@ $(function() {
   var historicalSlider = $('#historical-opacity').slider();
   var sentinel1Slider = $('#sentinel1-opacity').slider();
 
+  map = L.map('map',{
+    center: [16.50,101.75],
+    zoom: 6,
+    minZoom:2,
+    maxZoom: 16,
+    maxBounds: [
+     [-120, -220],
+     [120, 220]
+   ],
+ });
 
-  // Get the Open Layers map object from the Tethys MapView
-  map = new ol.Map({
-      target: 'map',
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
-      ],
-      view: new ol.View({
-        projection: 'EPSG:4326',
-        center: [101.75, 16.50],//ol.proj.fromLonLat([101.75, 16.50]),
-        zoom: 6,
-        minZoom:2,
-        maxZoom:16,
-      })
-    });
+  var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+        attribution: '©OpenStreetMap, ©CartoDB'
+      }).addTo(map);
 
   $layers_element = $('#layers');
   var $update_element = $('#update_button');
 
-  var viirs_product = "VIIRS_SNPP_CorrectedReflectance_TrueColor"
+  var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"//"VIIRS_SNPP_CorrectedReflectance_TrueColor"
 
-  viirs_layer = addGibsLayer(viirs_layer,viirs_source,viirs_product,today)
+  browse_layer = addGibsLayer(browse_layer,viirs_product,today)
 
 
-  sentinel1_layer = addMapLayer(sentinel1_layer,sentinel1_source,$layers_element.attr('data-sentinel1-url'))
-  historical_layer = addMapLayer(historical_layer,historical_source,$layers_element.attr('data-historical-url'))
-  precip_layer = addMapLayer(precip_layer,precip_source,$layers_element.attr('data-precip-url'))
+  sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
+  historical_layer = addMapLayer(historical_layer,$layers_element.attr('data-historical-url'))
+  precip_layer = addMapLayer(precip_layer,$layers_element.attr('data-precip-url'))
 
-  admin_layer = addMapLayer(admin_layer,admin_source,$layers_element.attr('data-admin-url'))
+  admin_layer = addMapLayer(admin_layer,$layers_element.attr('data-admin-url'))
 
 
   $('#product_selection').change(function(){
     var prod = $('#product_selection').val();
     var url = prod.split('|')[1]
-    precip_source = new ol.source.XYZ({url:url});
-    precip_layer.setSource(precip_source)
+    // precip_source = new ol.source.XYZ({url:url});
+    precip_layer.setUrl(url)
   }).change();
 
   $('#browse-opacity').change(function(){
@@ -129,49 +120,41 @@ $(function() {
     }
   });
 
+// end of init function
 });
 
 // function to add and update tile layer to map
-function addMapLayer(layer,source,url){
-  source = new ol.source.XYZ(
-    {url:url}
-  );
-  layer = new ol.layer.Tile(
-    {source:source}
-  );
-  map.addLayer(layer)
+function addMapLayer(layer,url){
+  layer = L.tileLayer(url).addTo(map);
   return layer
 }
 
-function addGibsLayer(layer,source,product,date){
-  var source = new ol.source.WMTS({
-    url: 'https://gibs-{a-c}.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME='+date,
+function addGibsLayer(layer,product,date){
+  var template =
+    '//gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/' +
+    '{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpg';
+
+  layer = L.tileLayer(template, {
     layer: product,
-    format: 'image/jpeg',
-    matrixSet: 'EPSG4326_250m',
-    tileGrid: new ol.tilegrid.WMTS({
-      origin: [-180, 90],
-      resolutions: [
-        0.5625,
-        0.28125,
-        0.140625,
-        0.0703125,
-        0.03515625,
-        0.017578125,
-        0.0087890625,
-        0.00439453125,
-        0.002197265625
-      ],
-      matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      tileSize: 512
-    })
+    tileMatrixSet: 'GoogleMapsCompatible_Level9',
+    maxZoom: 9,
+    time: date,
+    tileSize: 256,
+    subdomains: 'abc',
+    noWrap: true,
+    continuousWorld: true,
+    // Prevent Leaflet from retrieving non-existent tiles on the
+    // borders.
+    bounds: [
+      [-85.0511287776, -179.999999975],
+      [85.0511287776, 179.999999975]
+    ],
+    attribution:
+      '<a href="https://wiki.earthdata.nasa.gov/display/GIBS">' +
+      'NASA EOSDIS GIBS</a>;'
   });
 
-  var layer = new ol.layer.Tile({
-    source: source,
-    extent: [-180, -90, 180, 90]
-  });
+  map.addLayer(layer);
 
-  map.addLayer(layer)
   return layer
 }
