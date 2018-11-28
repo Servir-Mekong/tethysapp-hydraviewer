@@ -6,9 +6,15 @@ var map,
     admin_layer,
     $layers_element;
 
-var today = new Date().toISOString().slice(0, 10)
-
 $(function() {
+
+  var today = new Date()
+  console.log(today)
+
+  if (today.getUTCHours() < 12) {
+    today.setDate(today.getDate() - 1);
+  }
+  var dateStr = today.toISOString().slice(0, 10)
 
   var browseSlider = $('#browse-opacity').slider();
   var precipSlider = $('#precip-opacity').slider();
@@ -35,7 +41,7 @@ $(function() {
 
   var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"
 
-  browse_layer = addGibsLayer(browse_layer,viirs_product,today)
+  browse_layer = addGibsLayer(browse_layer,viirs_product,dateStr)
 
 
   sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
@@ -133,7 +139,9 @@ $(function() {
 
 // function to add and update tile layer to map
 function addMapLayer(layer,url){
-  layer = L.tileLayer(url).addTo(map);
+  layer = L.tileLayer(url,{attribution:
+    '<a href="https://earthengine.google.com" target="_">' +
+    'Google Earth Engine</a>;'}).addTo(map);
   return layer
 }
 
@@ -158,7 +166,7 @@ function addGibsLayer(layer,product,date){
       [85.0511287776, 179.999999975]
     ],
     attribution:
-      '<a href="https://wiki.earthdata.nasa.gov/display/GIBS">' +
+      '<a href="https://wiki.earthdata.nasa.gov/display/GIBS" target="_">' +
       'NASA EOSDIS GIBS</a>;'
   });
 
@@ -166,3 +174,22 @@ function addGibsLayer(layer,product,date){
 
   return layer
 }
+
+/*
+* Workaround for 1px lines appearing in some browsers due to fractional transforms
+* and resulting anti-aliasing.
+* https://github.com/Leaflet/Leaflet/issues/3575
+*/
+// (function () {
+//   var originalInitTile = L.GridLayer.prototype._initTile;
+//   L.GridLayer.include({
+//     _initTile: function (tile) {
+//       originalInitTile.call(this, tile);
+//
+//       var tileSize = this.getTileSize();
+//
+//       tile.style.width = tileSize.x + 1 + 'px';
+//       tile.style.height = tileSize.y + 1 + 'px';
+//     }
+//   });
+// })();
