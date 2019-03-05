@@ -1,5 +1,5 @@
 import ee
-import hydrafloods as hf
+from . import geeutils
 import json
 from django.http import JsonResponse
 import datetime
@@ -22,7 +22,7 @@ def update_historical(request):
             algo = info.get('algo')
             climo = bool(int(info.get('climo')))
 
-            water_layer = hf.getHistoricalMap(region,start,end,month=month,algorithm=algo,climatology=climo)
+            water_layer = geeutils.getHistoricalMap(region,start,end,month=month,algorithm=algo,climatology=climo)
 
             return_obj["url"] = water_layer
             return_obj["success"] = "success"

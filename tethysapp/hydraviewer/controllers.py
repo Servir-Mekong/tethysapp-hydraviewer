@@ -3,24 +3,25 @@ from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, RangeSlider
 
 import ee
+from ee.ee_exception import EEException
 import datetime
-import hydrafloods as hf
-import rastersmith as rs
-
 
 from . import config
+from . import geeutils
 
-today = datetime.datetime.now()
-todayStr = today.strftime('%Y-%m-%d')
+wc = ee.ImageCollection(config.WATERCOLLECTION)
+region = ee.Geometry.Rectangle(config.BOUNDING_BOX)
+admin_layer = geeutils.getAdminMap(region)
 
-past = today - datetime.timedelta(15)
-pastStr = past.strftime("%Y-%m-%d")
-
-ee.Initialize()
-
-gr = rs.Grid(region=config.BOUNDING_BOX,resolution=1000)
-region = ee.Geometry.Rectangle([gr.west,gr.south,gr.east,gr.north])
-admin_layer = hf.getAdminMap(region)
+try:
+    ee.Initialize()
+except EEException as e:
+    from oauth2client.service_account import ServiceAccountCredentials
+    credentials = ee.ServiceAccountCredentials(
+    service_account_email='',
+    filename='',
+    )
+    ee.Initialize(credentials)
 
 
 # @login_required()
@@ -40,14 +41,14 @@ def mapviewer(request):
     Controller for the app home page.
     """
 
-    precip_layer1 = hf.getPrecipMap(accumulation=1)
-    precip_layer3 = hf.getPrecipMap(accumulation=3)
-    precip_layer7 = hf.getPrecipMap(accumulation=7)
+    precip_layer1 = geeutils.getPrecipMap(accumulation=1)
+    precip_layer3 = geeutils.getPrecipMap(accumulation=3)
+    precip_layer7 = geeutils.getPrecipMap(accumulation=7)
 
-    historical_layer = hf.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+    historical_layer = geeutils.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
-
-    sentinel1_layer = hf.Sentinel1(gr).getFloodMap(pastStr,todayStr)
+    image = ee.Image(wc.first())
+    water_layer = geeutils.getTileLayerUrl(image)
 
 
     product_selection = SelectInput(
