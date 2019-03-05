@@ -48,7 +48,7 @@ def mapviewer(request):
     historical_layer = geeutils.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
     image = ee.Image(wc.first())
-    water_layer = geeutils.getTileLayerUrl(image)
+    sentinel1_layer = geeutils.getTileLayerUrl(image.updateMask(image).visualize(palette='#9999ff'))
 
 
     product_selection = SelectInput(
