@@ -1,12 +1,11 @@
 import ee
 from . import geeutils
+from . import config
 import json
 from django.http import JsonResponse
 import datetime
 
 ee.Initialize()
-
-import config
 
 region = ee.Geometry.Rectangle(config.BOUNDING_BOX)
 
