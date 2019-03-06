@@ -36,6 +36,7 @@
 {% block app_navigation_items %}
 {% url 'hydraviewer:home' as home_url %}
 {% url 'hydraviewer:mapviewer' as map_url %}
+{% url 'hydraviewer:downloadmap' as download_url %}
 <li class="title">Navigation</li>
 <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
 <li class="{% if request.path == map_url %}active{% endif %}"><a href="{{ map_url }}">Map Viewer</a></li>
@@ -52,7 +53,10 @@
         <span class="checkmark"></span>
       </label>
       <p><b>&emsp;&emsp;&emsp;NRT BROWSE IMAGERY&emsp;&emsp;&emsp;</b></p>
-      <input id="browse-opacity" data-slider-id='browse-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;align:right;display:inline-block"/>
+<div class="slider-width">
+<p> Opacity </p>
+      <input id="browse-opacity" data-slider-id='browse-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+</div>
       <p> Select Browse Imagery: </p>
       {% gizmo browse_selection %}
     </div>
@@ -71,7 +75,10 @@
       </label>
 
       <p><b>&emsp;&emsp;&emsp;IMERG&emsp;&emsp;&emsp;</b></p>
-      <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;right:10px;align:right;display:inline-block"/>
+<div class="slider-width">
+<p> Opacity </p>
+      <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;right:10px;align:right;display:inline-block"/>
+</div>
       <p> Select Accumulation Product: </p>
       {% gizmo product_selection %}
     </div>
@@ -89,7 +96,10 @@
         <span class="checkmark"></span>
       </label>
       <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER MAPS&emsp;&emsp;&emsp;</b></p>
-      <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;align:right;display:inline-block"/>
+	<div class="slider-width">
+	<p> Opacity </p>
+	      <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+	</div>
     </div>
   </div>
 
@@ -105,8 +115,67 @@
         <span class="checkmark"></span>
       </label>
       <p><b>&emsp;&emsp;&emsp;SENTINEL1 FLOOD MAP&emsp;&emsp;&emsp;</b></p>
-      <input id="sentinel1-opacity" data-slider-id='sentinel1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:35%;align:right;display:inline-block"/>
+<div class="slider-width">
+<p> Opacity </p>
+      <input id="sentinel1-opacity" data-slider-id='sentinel1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+</div>
+
     </div>
+  </div>
+
+<div id='test-controls'>
+    <a data-toggle="collapse" href="#test-collapse">
+      <div class='layer-header'>
+        <img src="{% static 'hydraviewer/images/floodwater-icon.png' %}"><p>DAILY FLOOD MAPS</p>
+      </div>
+    </a>
+    <div id="test-collapse" class="panel-collapse collapse">
+      <label class="container">
+        <input id="sentinel1-check" type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;FLOOD MAP</b></p>
+<div class="slider-width">
+<p> Opacity </p>
+      <input id="flood1-opacity" data-slider-id='flood1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+</div>
+<label class="container">
+        <input id="sentinel1-check" type="checkbox" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;DOWNSCALING MAPS&emsp;&emsp;&emsp;</b></p>
+<div class="slider-width">
+<p> Opacity </p>
+      <input id="flood2-opacity" data-slider-id='flood2-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+</div>
+
+    </div>
+  </div>
+<div id='download_archive-controls'>
+    <a data-toggle="collapse" href="#download2-collapse">
+      <div class='layer-header'>
+        <img src="{% static 'hydraviewer/images/download.png' %}"><p>DOWNLOAD MAP</p>
+      </div>
+    </a>
+    <div id="download2-collapse" class="panel-collapse collapse">
+	Select Date: <input type="date" name="selected_date">
+      <label class="container">
+        <input id="archive_flood-check" type="checkbox" >
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;FLOOD INUNDATION MAP</b></p>
+
+	<label class="container">
+        <input id="archive_dsflood-check" type="checkbox" >
+        <span class="checkmark"></span>
+      </label>
+      <p><b>&emsp;&emsp;&emsp;DOWNSCALING MAPS&emsp;&emsp;&emsp;</b></p>
+<div class="center_obj" >
+	<button type="submit" class="btn_custom">DOWNLOAD</button>
+</div>
+
+    </div>
+	
   </div>
 
 {% endblock %}

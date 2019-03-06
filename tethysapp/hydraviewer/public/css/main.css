@@ -6,15 +6,33 @@ p {
 .btn-success {
   width: 100%;
 }
-
+.slider-width {
+  padding-left:10px;
+  width: 100%;
+}
 .slider-horizontal {
   width:100%;
-  align: center;
 }
 
 #-app-content {
     align: center ;
     padding: 50px;
+}
+
+
+.btn_custom{
+   background-color:rgb(52, 73, 94);
+
+   text-align: center;
+   color: white;
+   padding-left: 10px;
+   padding-bottom: 5px ;
+   padding-top: 5px;
+   padding-right: 10px;
+   border-radius: 8px;
+}
+.center_obj{
+  text-align: center;
 }
 
 .zoom {

@@ -63,7 +63,6 @@ $(function() {
   $('[name="update-button"]').on('click',function() {
 
     $('#spinner').show();
-
     var start = $('#date_picker1').val()
     var end = $('#date_picker2').val()
     var mon = $('input[id="slider1"]').slider('getValue')

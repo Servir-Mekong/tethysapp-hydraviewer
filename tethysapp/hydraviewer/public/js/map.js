@@ -20,6 +20,9 @@ $(function() {
   var precipSlider = $('#precip-opacity').slider();
   var historicalSlider = $('#historical-opacity').slider();
   var sentinel1Slider = $('#sentinel1-opacity').slider();
+  var floodSlider = $('#flood-opacity').slider();
+  var floodSlider1 = $('#flood1-opacity').slider();
+  var floodSlider2 = $('#flood2-opacity').slider();
 
   map = L.map('map',{
     center: [16.50,101.75],
@@ -47,7 +50,6 @@ $(function() {
   sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
   historical_layer = addMapLayer(historical_layer,$layers_element.attr('data-historical-url'))
   precip_layer = addMapLayer(precip_layer,$layers_element.attr('data-precip-url'))
-
   admin_layer = addMapLayer(admin_layer,$layers_element.attr('data-admin-url'))
 
 
