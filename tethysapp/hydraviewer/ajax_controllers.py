@@ -30,3 +30,6 @@ def update_historical(request):
             return_obj["error"] = "Error Processing Request. Error: "+ str(e)
 
     return JsonResponse(return_obj)
+
+
+

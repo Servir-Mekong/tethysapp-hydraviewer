@@ -1,5 +1,6 @@
 import ee
 import datetime
+from . import config
 
 try:
     ee.Initialize()
@@ -48,6 +49,21 @@ def getPrecipMap(accumulation=1):
                                                )
                                )
     return precipMap
+
+
+def getfloodMap(snsr="atms"):
+    dt = datetime.datetime.utcnow() - datetime.timedelta(1)
+    today = dt.strftime('%Y-%m-%d')
+    #fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate('2019-02-04','2019-02-05').filter(ee.Filter.eq('sensor',snsr))
+    fc = ee.ImageCollection(config.WATERCOLLECTION).filter(ee.Filter.eq('sensor',snsr))
+    image = ee.Image(fc.first())
+
+    if snsr == 'atms':
+        image = image.select('water')
+        #image = image.updateMask(image)
+
+    floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
+    return floodMap
 
 def getAdminMap(geom):
     def spatialSelect(feature):

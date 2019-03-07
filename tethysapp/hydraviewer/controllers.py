@@ -44,11 +44,15 @@ def mapviewer(request):
     precip_layer1 = geeutils.getPrecipMap(accumulation=1)
     precip_layer3 = geeutils.getPrecipMap(accumulation=3)
     precip_layer7 = geeutils.getPrecipMap(accumulation=7)
+    flood_viir = 'None' #geeutils.getfloodMap(snsr='atms')
+    flood_sentinel = geeutils.getfloodMap(snsr='sentinel1')
+    flood_atms = geeutils.getfloodMap(snsr='atms')
+    print(flood_sentinel)
 
     historical_layer = geeutils.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
-    image = ee.Image(wc.first())
-    sentinel1_layer = geeutils.getTileLayerUrl(image.updateMask(image).visualize(palette='#9999ff'))
+    image = ee.Image(wc.filter(ee.Filter.eq('sensor','sentinel1')).first())
+    #sentinel1_layer = geeutils.getTileLayerUrl(image.updateMask(image).visualize(palette='#9999ff'))
 
 
     product_selection = SelectInput(
@@ -62,6 +66,7 @@ def mapviewer(request):
         select2_options={'placeholder': 'Select a product',
                          'allowClear': False}
     )
+
 
     browse_selection = SelectInput(
         # display_text='Select precipitation product:',
@@ -78,14 +83,25 @@ def mapviewer(request):
                          'allowClear': False}
     )
 
+    sensor_selection = SelectInput(
+        # display_text='Select precipitation product:',
+        name='sensor_selection',
+        multiple=False,
+        options=[('VIIRS', '1|'+flood_viir),
+                 ('Sentinel 1', '2|'+flood_sentinel),
+                 ('ATMS', '3|'+flood_atms)],
+        initial=['ATMS'],
+        select2_options={'placeholder': 'Select sensor:',
+                         'allowClear': False}
+    )
 
     context = {
         'precip_layer': precip_layer1,
         'historical_layer': historical_layer,
-        'sentinel1_layer': sentinel1_layer,
         'admin_layer': admin_layer,
         'product_selection': product_selection,
         'browse_selection': browse_selection,
+        'sensor_selection':sensor_selection,
     }
 
     return render(request, 'hydraviewer/map.html', context)

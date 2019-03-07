@@ -4,6 +4,7 @@ var map,
     historical_layer,
     sentinel1_layer,
     admin_layer,
+    flood_layer,
     $layers_element;
 
 $(function() {
@@ -47,7 +48,8 @@ $(function() {
   browse_layer = addGibsLayer(browse_layer,viirs_product,dateStr)
 
 
-  sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
+  //sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
+  flood_layer = addMapLayer(flood_layer,$layers_element.attr('data-flood-url'))
   historical_layer = addMapLayer(historical_layer,$layers_element.attr('data-historical-url'))
   precip_layer = addMapLayer(precip_layer,$layers_element.attr('data-precip-url'))
   admin_layer = addMapLayer(admin_layer,$layers_element.attr('data-admin-url'))
@@ -57,6 +59,12 @@ $(function() {
     var prod = $('#product_selection').val();
     var url = prod.split('|')[1]
     precip_layer.setUrl(url)
+  });
+
+  $('#sensor_selection').change(function(){
+    var snsr = $('#sensor_selection').val();
+    var url = snsr.split('|')[1]
+    flood_layer.setUrl(url)
   });
 
   $('#browse_selection').change(function(){
@@ -83,9 +91,9 @@ $(function() {
     historical_layer.setOpacity(opac)
   });
 
-  $('#sentinel1-opacity').change(function(){
-    var opac = parseFloat($('input[id="sentinel1-opacity"]').slider('getValue'))
-    sentinel1_layer.setOpacity(opac)
+  $('#flood1-opacity').change(function(){
+    var opac = parseFloat($('input[id="flood1-opacity"]').slider('getValue'))
+    flood_layer.setOpacity(opac)
   });
 
   $("#browse-check").on("click",function(){
@@ -124,18 +132,29 @@ $(function() {
     }
   });
 
-  $("#sentinel1-check").on("click",function(){
+$("#flood-check").on("click",function(){
     if(this.checked){
-      sentinel1Slider.slider('enable')
-      var opac = parseFloat($('input[id="sentinel1-opacity"]').slider('getValue'))
-      sentinel1_layer.setOpacity(opac)
+      floodSlider1.slider('enable')
+      var opac = parseFloat($('input[id="flood1-opacity"]').slider('getValue'))
+      flood_layer.setOpacity(opac)
     }
     else{
-      sentinel1Slider.slider('disable')
-      sentinel1_layer.setOpacity(0)
+      floodSlider1.slider('disable')
+      flood_layer.setOpacity(0)
     }
   });
 
+$("#downscaling-check").on("click",function(){
+    if(this.checked){
+      floodSlider2.slider('enable')
+      var opac = parseFloat($('input[id="flood2-opacity"]').slider('getValue'))
+      browse_layer.setOpacity(opac)
+    }
+    else{
+      floodSlider2.slider('disable')
+      browse_layer.setOpacity(0)
+    }
+  });
 // end of init function
 });
 

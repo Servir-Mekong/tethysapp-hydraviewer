@@ -18,7 +18,9 @@ p {
     align: center ;
     padding: 50px;
 }
-
+.full-width{
+   width:100%;
+}
 
 .btn_custom{
    background-color:rgb(52, 73, 94);
