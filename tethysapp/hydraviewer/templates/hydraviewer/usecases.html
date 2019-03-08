@@ -1,0 +1,66 @@
+{% extends "hydraviewer/base.html" %}
+{% load tethys_gizmos staticfiles %}
+
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
+    <link href="{% static 'hydraviewer/css/usecase.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <!-- <script src="{% static 'hydraviewer/js/map.js' %}" type="text/javascript"></script> -->
+{% endblock %}
+
+{% block app_content %}
+
+  <!-- <div id="case-container">
+    <div id="case-content">
+      <h2>Myanmar Rahkine State Flooding July-August 2015</h2>
+        <p>During the 2015 monsoon season Cyclone Komen made landfall in Bangladesh in July, bringing additional heavy rains into Myanmar. These rains lead to a significant increase in monsoonal flood water, leading to severe flooding and landslides. Of the areas affected, Rakhine State was among the hardest hit regions during this flood event.</p>
+        <ul>
+          <li>
+            <p><a href="https://earth.google.com/web/?kml=https://earth-kml.appspot.com/?link%3Dhttps://storage.googleapis.com/servirmekong/hydrafloods/usecase/Myanmar_floods_20150130_usecase/$%255Blevel%255D/$%255Bx%255D/$%255By%255D.png%26icon%3Dhttps://storage.googleapis.com/earth-kml.appspot.com/no_icon.png%26name%3DMyanmar_floods_20150130_usecase%26north%3D22.429610044642267%26south%3D17.93102975247341%26east%3D96.9689421055886%26west%3D92.20763897456281%26minLevel%3D0%26maxLevel%3D14" target="_blank">Preflood event 2015-01-30</a></p>
+          </li>
+        </ul>
+      </div>
+      <div id="case-img">
+        <img src="http://floodlist.com/wp-content/uploads/2016/07/floods-2-myanmar-july-2016.jpg" alt="Rakhine Flooding">
+      </div>
+  </div> -->
+
+  <div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-6">
+              <div class="card" id="rakhine-state">
+                  <div class="card-image">
+                          <img class="zoom img-responsive grow"  src="http://floodlist.com/wp-content/uploads/2016/07/floods-2-myanmar-july-2016.jpg">
+                          <h4 style="text-align:center;"><span class="card-title">Myanmar Rahkine State Flooding July-August 2015</span></h4>
+                  </div>
+
+                  <div class="card-content">
+                             <p class="collapse-text-toggle">
+                                During the 2015 monsoon season Cyclone Komen made landfall in Bangladesh in July, bringing additional heavy rains into Myanmar. These rains lead to a significant increase in monsoonal flood water, leading to severe flooding and landslides. Of the areas affected, Rakhine State was among the hardest hit regions during this flood event.
+                            </p>
+                  </div>
+              </div>
+              <div class="card" id="rakhine-state-list">
+                  <div class="card-content">
+                             <p class="collapse-text-toggle">
+                               <ul>
+                                 <li>
+                                   <p><a href="https://earth.google.com/web/?kml=https://earth-kml.appspot.com/?link%3Dhttps://storage.googleapis.com/servirmekong/hydrafloods/usecase/Myanmar_floods_20150130_usecase/$%255Blevel%255D/$%255Bx%255D/$%255By%255D.png%26icon%3Dhttps://storage.googleapis.com/earth-kml.appspot.com/no_icon.png%26name%3DMyanmar_floods_20150130_usecase%26north%3D22.429610044642267%26south%3D17.93102975247341%26east%3D96.9689421055886%26west%3D92.20763897456281%26minLevel%3D0%26maxLevel%3D14" target="_blank">Preflood event 2015-01-30</a></p>
+                                 </li>
+                               </ul>
+                            </p>
+                  </div>
+              </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block app_actions %}
+{% endblock %}

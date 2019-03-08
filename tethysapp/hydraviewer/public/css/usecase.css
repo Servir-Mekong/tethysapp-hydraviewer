@@ -1,0 +1,23 @@
+#rakhine-state-list {
+  display: none;
+  transform: rotateY(270deg);
+}
+
+.col-md-6 {
+  transition-delay: 1s;
+  transition: transform 1.5s;
+  transform-style: preserve-3d;
+}
+
+.col-md-6:hover {
+  transform: rotateY(90deg);
+}
+
+.col-md-6:hover #rakhine-state-list{
+  transition: 0.75s;
+  display : block;
+}
+.col-md-6:hover #rakhine-state{
+  transition: 0.75s;
+  display : none;
+ }

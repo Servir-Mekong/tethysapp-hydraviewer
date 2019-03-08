@@ -39,6 +39,11 @@ class Hydraviewer(TethysAppBase):
                 url='hydraviewer/historical/update_historical',
                 controller='hydraviewer.ajax_controllers.update_historical'
             ),
+            UrlMap(
+                name='usecases',
+                url='hydraviewer/usecases',
+                controller='hydraviewer.controllers.usecases'
+            ),
         )
 
         return url_maps
