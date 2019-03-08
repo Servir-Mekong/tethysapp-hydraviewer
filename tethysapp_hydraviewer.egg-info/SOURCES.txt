@@ -10,6 +10,14 @@ tethysapp/hydraviewer/controllers.py
 tethysapp/hydraviewer/geeutils.py
 tethysapp/hydraviewer/handoff.py
 tethysapp/hydraviewer/model.py
+tethysapp/hydraviewer/hydrafloods/__init__.py
+tethysapp/hydraviewer/hydrafloods/downscale.py
+tethysapp/hydraviewer/hydrafloods/fetch.py
+tethysapp/hydraviewer/hydrafloods/geeutils.py
+tethysapp/hydraviewer/hydrafloods/hfcli.py
+tethysapp/hydraviewer/hydrafloods/pansharpen.py
+tethysapp/hydraviewer/hydrafloods/processing.py
+tethysapp/hydraviewer/hydrafloods/utils.py
 tethysapp/hydraviewer/tests/__init__.py
 tethysapp/hydraviewer/tests/tests.py
 tethysapp_hydraviewer.egg-info/PKG-INFO

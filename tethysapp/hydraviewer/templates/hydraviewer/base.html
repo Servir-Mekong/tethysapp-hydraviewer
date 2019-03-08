@@ -36,7 +36,9 @@
 
 {% block content_dependent_styles %}
   {{ block.super }}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link href="{% static 'hydraviewer/css/main.css' %}" rel="stylesheet"/>
+  <link href="{% static 'hydraviewer/css/home.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
