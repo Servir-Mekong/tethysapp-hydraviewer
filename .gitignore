@@ -23,3 +23,4 @@ node_modules/
 # Internals
 #=======================
 */__pycache__/
+tethysapp_hydraviewer.egg-info/
