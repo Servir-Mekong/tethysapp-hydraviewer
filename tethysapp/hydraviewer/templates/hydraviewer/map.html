@@ -36,6 +36,7 @@
 {% block app_navigation_items %}
 {% url 'hydraviewer:home' as home_url %}
 {% url 'hydraviewer:mapviewer' as map_url %}
+{% url 'hydraviewer:usecases' as use_url %}
 <li class="title">Navigation</li>
 <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
 <li class="{% if request.path == map_url %}active{% endif %}"><a href="{{ map_url }}">Map Viewer</a></li>
@@ -109,14 +110,14 @@
       </div>
     </a>
     <div id="flood-collapse" class="panel-collapse collapse">
-Select Sensor: 
+Select Sensor:
       {% gizmo sensor_selection %}
 
 Select Date: <br>
 <div class="full-width">
 <input type="date" id="selected_date" name="selected_date" style="width:100%;">
 </div>
-      
+
       <label class="container">
         <input id="flood-check" type="checkbox">
         <span class="checkmark"></span>
@@ -166,8 +167,10 @@ Select Date: <br>
 </div>
 
     </div>
-	
+
   </div>
+
+<li class="{% if request.path == use_url %}active{% endif %}"><a href="{{ use_url }}">Use Cases</a></li>
 
 {% endblock %}
 
