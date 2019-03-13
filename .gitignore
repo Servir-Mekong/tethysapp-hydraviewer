@@ -1,0 +1,26 @@
+# python compile files
+# ===========
+*.pyc
+
+# Eclipse project files
+# ======================
+.project
+.pydevproject
+*.pyproj
+
+# Visual Studio project files
+# ======================
+.settings/
+.vs/
+*.sln
+.vscode/
+
+# Node and related environment
+# ======================
+.npmignore
+node_modules/
+
+# Internals
+#=======================
+*/__pycache__/
+tethysapp_hydraviewer.egg-info/

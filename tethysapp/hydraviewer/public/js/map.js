@@ -5,6 +5,7 @@ var map,
     sentinel1_layer,
     admin_layer,
     flood_layer,
+    drawing_polygon,
     $layers_element;
 
 $(function() {
@@ -79,9 +80,10 @@ map.on('draw:created', function(e) {
   if (type === 'marker') {
     layer.bindPopup('A popup!');
   }
-  userPolygon = layer.getLatLngs();
-alert(userPolygon);
-
+  userPolygon = layer.toGeoJSON();
+  drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
+ 
+ 
   editableLayers.addLayer(layer);
 });
 
@@ -124,17 +126,21 @@ alert(userPolygon);
   });
 
   $("#btn_download").on("click",function(){
+ if(drawing_polygon === undefined){
+  alert("Please draw a polygon");
+  }else{
      var selected_date = $('#selected_date').val();
      var sensor_val = $('#sensor_selection').val();
-     var xhr = ajax_update_database('download_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
+     var xhr = ajax_update_database('download_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val,'poly_coordinates': drawing_polygon},"json");
     xhr.done(function(data) {
         if("success" in data) {
-          //flood_layer.setUrl(data.url)
-          alert('Download URL: \n'+ data.url)
+          //alert('Download URL: \n'+ data.url)
+          window.open(data.url, '_blank');
         }else{
           alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
         }
     });
+}
   });
 
   $('#browse_selection').change(function(){
@@ -215,7 +221,7 @@ $("#flood-check").on("click",function(){
   });
 
 $("#download_flood-check").on("click",function(){
-    if(this.checked){
+    if(this.checked ){
       $("#btn_download").removeAttr('disabled');
     }
     else{

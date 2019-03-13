@@ -15,9 +15,11 @@
 {% block app_navigation_items %}
   {% url 'hydraviewer:home' as home_url %}
   {% url 'hydraviewer:mapviewer' as map_url %}
+  {% url 'hydraviewer:usecases' as use_url %}
   <li class="title">Navigation</li>
   <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
   <li class="{% if request.path == map_url %}active{% endif %}"><a href="{{ map_url }}">Map Viewer</a></li>
+  <li class="{% if request.path == use_url %}active{% endif %}"><a href="{{ use_url }}">Use Cases</a></li>
 {% endblock %}
 
 {% block header_buttons %}
@@ -34,7 +36,9 @@
 
 {% block content_dependent_styles %}
   {{ block.super }}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link href="{% static 'hydraviewer/css/main.css' %}" rel="stylesheet"/>
+  <link href="{% static 'hydraviewer/css/home.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}

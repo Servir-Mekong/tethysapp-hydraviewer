@@ -49,6 +49,11 @@ class Hydraviewer(TethysAppBase):
                 url='hydraviewer/mapviewer/download_surfacewatermap',
                 controller='hydraviewer.ajax_controllers.download_surfacewatermap'
             ),
+            UrlMap(
+                name='usecases',
+                url='hydraviewer/usecases',
+                controller='hydraviewer.controllers.usecases'
+            ),
         )
 
         return url_maps

@@ -58,8 +58,8 @@ def download_surfacewatermap(request):
             info = request.POST;
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
-            
-            download_url  = geeutils.GetDownloadURL(sensor,start_date)
+            poly = info.get('poly_coordinates')
+            download_url  = geeutils.GetDownloadURL(sensor,start_date,poly)
 
             return_obj["url"] = download_url 
             return_obj["success"] = "success"

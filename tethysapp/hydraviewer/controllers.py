@@ -36,6 +36,17 @@ def home(request):
 
     return render(request, 'hydraviewer/home.html', context)
 
+def usecases(request):
+    """
+    Controller for the app home page.
+    """
+
+    context = {
+
+    }
+
+    return render(request, 'hydraviewer/usecases.html', context)
+
 def mapviewer(request):
     """
     Controller for the app home page.
@@ -87,10 +98,10 @@ def mapviewer(request):
         # display_text='Select precipitation product:',
         name='sensor_selection',
         multiple=False,
-        options=[
+        options=[ ('select sensor', 'none'),
                  ('Sentinel 1', 'sentinel1'),
                  ('ATMS', 'atms')],
-        initial=['ATMS'],
+        initial=['select sensor'],
         select2_options={'placeholder': 'Select sensor:',
                          'allowClear': False}
     )

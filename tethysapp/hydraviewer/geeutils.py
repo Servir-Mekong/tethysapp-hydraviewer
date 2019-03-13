@@ -54,8 +54,6 @@ def getPrecipMap(accumulation=1):
 def getfloodMap(snsr,sdate):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
-    print(sdate)
-    print(snsr)
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
     image = ee.Image(fc.first()).select('water')
 
@@ -66,11 +64,9 @@ def getfloodMap(snsr,sdate):
     floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
     return floodMap
 
-def GetDownloadURL(snsr,sdate):
+def GetDownloadURL(snsr,sdate,poly):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
-    print(sdate)
-    print(snsr)
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
     image = ee.Image(fc.first()).select('water')
 
@@ -81,7 +77,8 @@ def GetDownloadURL(snsr,sdate):
     #floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
     dnldURL = image.getDownloadURL({
 		'scale': 150,
-		'crs': 'EPSG:4326'})
+		'crs': 'EPSG:4326',
+                'region' : poly})
     print(dnldURL)
     return dnldURL
 
