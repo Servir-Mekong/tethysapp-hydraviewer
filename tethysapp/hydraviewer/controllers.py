@@ -44,10 +44,10 @@ def mapviewer(request):
     precip_layer1 = geeutils.getPrecipMap(accumulation=1)
     precip_layer3 = geeutils.getPrecipMap(accumulation=3)
     precip_layer7 = geeutils.getPrecipMap(accumulation=7)
-    flood_viir = 'None' #geeutils.getfloodMap(snsr='atms')
-    flood_sentinel = geeutils.getfloodMap(snsr='sentinel1')
-    flood_atms = geeutils.getfloodMap(snsr='atms')
-    print(flood_sentinel)
+    #flood_viir = 'None' #geeutils.getfloodMap(snsr='atms')
+    #flood_sentinel = geeutils.getfloodMap("sentinel1","2010-01-01")
+    #flood_atms = geeutils.getfloodMap("atms", "2010-01-01")
+    #print(flood_sentinel)
 
     historical_layer = geeutils.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
@@ -87,9 +87,9 @@ def mapviewer(request):
         # display_text='Select precipitation product:',
         name='sensor_selection',
         multiple=False,
-        options=[('VIIRS', '1|'+flood_viir),
-                 ('Sentinel 1', '2|'+flood_sentinel),
-                 ('ATMS', '3|'+flood_atms)],
+        options=[
+                 ('Sentinel 1', 'sentinel1'),
+                 ('ATMS', 'atms')],
         initial=['ATMS'],
         select2_options={'placeholder': 'Select sensor:',
                          'allowClear': False}

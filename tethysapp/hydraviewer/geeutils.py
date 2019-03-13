@@ -51,19 +51,39 @@ def getPrecipMap(accumulation=1):
     return precipMap
 
 
-def getfloodMap(snsr="atms"):
+def getfloodMap(snsr,sdate):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
-    #fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate('2019-02-04','2019-02-05').filter(ee.Filter.eq('sensor',snsr))
-    fc = ee.ImageCollection(config.WATERCOLLECTION).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first())
+    print(sdate)
+    print(snsr)
+    fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
+    image = ee.Image(fc.first()).select('water')
 
-    if snsr == 'atms':
-        image = image.select('water')
+    #if snsr == 'atms':
+        #image = image.select('water')
         #image = image.updateMask(image)
 
     floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
     return floodMap
+
+def GetDownloadURL(snsr,sdate):
+    dt = datetime.datetime.utcnow() - datetime.timedelta(1)
+    today = dt.strftime('%Y-%m-%d')
+    print(sdate)
+    print(snsr)
+    fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
+    image = ee.Image(fc.first()).select('water')
+
+    #if snsr == 'atms':
+        #image = image.select('water')
+        #image = image.updateMask(image)
+
+    #floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
+    dnldURL = image.getDownloadURL({
+		'scale': 150,
+		'crs': 'EPSG:4326'})
+    print(dnldURL)
+    return dnldURL
 
 def getAdminMap(geom):
     def spatialSelect(feature):

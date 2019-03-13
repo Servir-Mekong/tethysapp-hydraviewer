@@ -23,7 +23,6 @@ $(function() {
   var sentinel1Slider = $('#sentinel1-opacity').slider();
   var floodSlider = $('#flood-opacity').slider();
   var floodSlider1 = $('#flood1-opacity').slider();
-  var floodSlider2 = $('#flood2-opacity').slider();
 
   map = L.map('map',{
     center: [16.50,101.75],
@@ -36,13 +35,62 @@ $(function() {
    ],
  });
 
+// Initialise the FeatureGroup to store editable layers
+var editableLayers = new L.FeatureGroup();
+map.addLayer(editableLayers);
+
+var drawPluginOptions = {
+  draw: {
+    polygon: {
+      allowIntersection: false, // Restricts shapes to simple polygons
+      drawError: {
+        color: '#e1e100', // Color the shape will turn when intersects
+        message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
+      },
+      shapeOptions: {
+        color: '#97009c'
+      }
+    },
+    // disable toolbar item by setting it to false
+    polyline: false,
+    circle: false, // Turns off this drawing tool
+    circlemarker: false,
+    rectangle: true,
+    marker: false,
+    },
+  edit: {
+    featureGroup: editableLayers, //REQUIRED!!
+    remove: false
+  }
+};
+
+// Initialise the draw control and pass it the FeatureGroup of editable layers
+var drawControl = new L.Control.Draw(drawPluginOptions);
+map.addControl(drawControl);
+
+var editableLayers = new L.FeatureGroup();
+map.addLayer(editableLayers);
+
+map.on('draw:created', function(e) {
+  editableLayers.clearLayers();
+  var type = e.layerType,
+    layer = e.layer;
+   
+  if (type === 'marker') {
+    layer.bindPopup('A popup!');
+  }
+  userPolygon = layer.getLatLngs();
+alert(userPolygon);
+
+  editableLayers.addLayer(layer);
+});
+
   var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
         attribution: '©OpenStreetMap, ©CartoDB'
       }).addTo(map);
 
   $layers_element = $('#layers');
   var $update_element = $('#update_button');
-
   var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"
 
   browse_layer = addGibsLayer(browse_layer,viirs_product,dateStr)
@@ -62,9 +110,31 @@ $(function() {
   });
 
   $('#sensor_selection').change(function(){
-    var snsr = $('#sensor_selection').val();
-    var url = snsr.split('|')[1]
-    flood_layer.setUrl(url)
+    var selected_date = $('#selected_date').val();
+    var sensor_val = $('#sensor_selection').val();
+
+    var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          flood_layer.setUrl(data.url)
+        }else{
+          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+        }
+    });
+  });
+
+  $("#btn_download").on("click",function(){
+     var selected_date = $('#selected_date').val();
+     var sensor_val = $('#sensor_selection').val();
+     var xhr = ajax_update_database('download_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          //flood_layer.setUrl(data.url)
+          alert('Download URL: \n'+ data.url)
+        }else{
+          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+        }
+    });
   });
 
   $('#browse_selection').change(function(){
@@ -144,15 +214,12 @@ $("#flood-check").on("click",function(){
     }
   });
 
-$("#downscaling-check").on("click",function(){
+$("#download_flood-check").on("click",function(){
     if(this.checked){
-      floodSlider2.slider('enable')
-      var opac = parseFloat($('input[id="flood2-opacity"]').slider('getValue'))
-      browse_layer.setOpacity(opac)
+      $("#btn_download").removeAttr('disabled');
     }
     else{
-      floodSlider2.slider('disable')
-      browse_layer.setOpacity(0)
+      $("#btn_download").attr('disabled','disabled');
     }
   });
 // end of init function

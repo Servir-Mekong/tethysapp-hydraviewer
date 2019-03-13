@@ -19,6 +19,9 @@
   <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
     integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
     crossorigin=""></script>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.css" />
+  <script src="https://cdn.rawgit.com/mejackreed/Leaflet-IIIF/v2.0.1/leaflet-iiif.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.js"></script>
 {% endblock %}
 
 {% block app_content %}
@@ -109,33 +112,23 @@
       </div>
     </a>
     <div id="flood-collapse" class="panel-collapse collapse">
-Select Sensor: 
-      {% gizmo sensor_selection %}
-
-Select Date: <br>
+Select Date (m-d-y): <br>
 <div class="full-width">
 <input type="date" id="selected_date" name="selected_date" style="width:100%;">
 </div>
+
+Select Sensor: 
+      {% gizmo sensor_selection %}
+
       
       <label class="container">
-        <input id="flood-check" type="checkbox">
+        <input id="flood-check" type="checkbox" checked="checked">
         <span class="checkmark"></span>
       </label>
-      <p><b>&emsp;&emsp;&emsp; ESTIMATED FLOOD MAP</b></p>
+      <p><b>&emsp;&emsp;&emsp; SURFACE WATER MAP</b></p>
 <div class="slider-width">
 <p> Opacity </p>
       <input id="flood1-opacity" data-slider-id='flood1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
-</div>
-
-
-<label class="container">
-        <input id="downscaling-check" type="checkbox" checked="checked">
-        <span class="checkmark"></span>
-      </label>
-      <p><b>&emsp;&emsp;&emsp;DOWNSCALING MAPS&emsp;&emsp;&emsp;</b></p>
-<div class="slider-width">
-<p> Opacity </p>
-      <input id="flood2-opacity" data-slider-id='flood2-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
 </div>
 
     </div>
@@ -149,20 +142,14 @@ Select Date: <br>
       </div>
     </a>
     <div id="download2-collapse" class="panel-collapse collapse">
-	Select Date: <input type="date" name="selected_date">
       <label class="container">
-        <input id="archive_flood-check" type="checkbox" >
+        <input id="download_flood-check" type="checkbox" >
         <span class="checkmark"></span>
       </label>
-      <p><b>&emsp;&emsp;&emsp;FLOOD INUNDATION MAP</b></p>
+      <p><b>&emsp;&emsp;&emsp;SURFACE WATER MAP</b></p>
 
-	<label class="container">
-        <input id="archive_dsflood-check" type="checkbox" >
-        <span class="checkmark"></span>
-      </label>
-      <p><b>&emsp;&emsp;&emsp;DOWNSCALING MAPS&emsp;&emsp;&emsp;</b></p>
 <div class="center_obj" >
-	<button type="submit" class="btn_custom">DOWNLOAD</button>
+	<button type="submit" id="btn_download" name="btn_download" class="btn_custom">DOWNLOAD</button>
 </div>
 
     </div>
