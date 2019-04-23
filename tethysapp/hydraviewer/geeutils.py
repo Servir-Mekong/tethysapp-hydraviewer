@@ -34,7 +34,7 @@ def getPrecipMap(accumulation=1):
     if accumulation not in [1,3,7]:
         raise NotImplementedError('Selected accumulation value is not yet impleted, options are: 1, 3, 7')
 
-    dt = datetime.datetime.utcnow() - datetime.timedelta(1)
+    dt = datetime.datetime.utcnow() - datetime.timedelta(2)
     today = dt.strftime('%Y-%m-%d')
 
     ic = ee.ImageCollection('JAXA/GPM_L3/GSMaP/v6/operational').select(['hourlyPrecipRateGC'])
