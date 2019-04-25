@@ -12,7 +12,8 @@
 {% block app_content %}
   {% url 'hydraviewer:mapviewer' as precip_url %}
   {% url 'hydraviewer:historical' as historical_url %}
-  <h1 style="text-align: center;">Welcome to the HYDrologic Remote sensing Analysis (HYDRA) Viewer!</h1>
+  <h1 style="text-align: center;">Welcome to the <b>HYDRAFloods Viewer</h1>
+  <h3 style="text-align: center;"><b>HYD</b>rologic <b>R</b>emote Sensing <b>A</b>nalysis</h2>
   <br>
 
     <div class="container-fluid">
@@ -24,7 +25,7 @@
                         
                         <a href="{{ precip_url }}">
                             <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/precip_view.png">
-                            <h4><span class="card-title">Go to precipitation map!</span></h4>
+                            <h4><span class="card-title">Explore the HYDRAFloods Viewer</span></h4>
                         </a>
                     </div>
 
@@ -40,7 +41,7 @@
                 <h3><b><i class="fa fa-rss fa-3x"></i> RSS Feeds</b></h3>
                 <li style="list-style: none;">
                     <a href="#" target="_blank">
-                        <strong class="media-heading"><h3>Major flooding in Myanmar!</h3></strong>
+                        <strong class="media-heading"><h3>Recent Flood Events in Myanmar</h3></strong>
                     </a>
                     <span><b>Time: 2018-01-01</b></span>
                     <h5>Description</h5>
@@ -50,7 +51,7 @@
 
                 <li style="list-style: none;">
                     <a href="#" target="_blank">
-                        <strong class="media-heading"><h3>Food Security!</h3></strong>
+                        <strong class="media-heading"><h3>Food Security</h3></strong>
                     </a>
                     <span><b>Time: 2018-02-01</b></span>
                     <h5>Description</h5>
