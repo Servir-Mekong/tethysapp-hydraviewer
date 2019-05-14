@@ -8,7 +8,7 @@ class Hydraviewer(TethysAppBase):
 
     name = 'HYDRAFloods Viewer'
     index = 'hydraviewer:home'
-    icon = 'hydraviewer/images/appicon.png'
+    icon = 'hydraviewer/images/hydrafloodsicon_lrgnotxt.png'
     package = 'hydraviewer'
     root_url = 'hydraviewer'
     color = '#34495e'
