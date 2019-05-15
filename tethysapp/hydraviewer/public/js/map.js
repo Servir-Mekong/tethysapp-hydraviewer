@@ -1,4 +1,5 @@
 var map,
+    selected_date,
     browse_layer,
     precip_layer,
     historical_layer,
@@ -10,13 +11,7 @@ var map,
 
 $(function() {
 
-  var today = new Date()
-  console.log(today)
-
-  if (today.getUTCHours() < 12) {
-    today.setDate(today.getDate() - 1);
-  }
-  var dateStr = today.toISOString().slice(0, 10)
+  selected_date = $('#date_selection').val();
 
   var browseSlider = $('#browse-opacity').slider();
   var precipSlider = $('#precip-opacity').slider();
@@ -26,7 +21,7 @@ $(function() {
   var floodSlider1 = $('#flood1-opacity').slider();
 
   map = L.map('map',{
-    center: [16.50,101.75],
+    center: [21.0,96.5],
     zoom: 6,
     minZoom:2,
     maxZoom: 16,
@@ -76,14 +71,14 @@ map.on('draw:created', function(e) {
   editableLayers.clearLayers();
   var type = e.layerType,
     layer = e.layer;
-   
+
   if (type === 'marker') {
     layer.bindPopup('A popup!');
   }
   userPolygon = layer.toGeoJSON();
   drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
- 
- 
+
+
   editableLayers.addLayer(layer);
 });
 
@@ -95,7 +90,7 @@ map.on('draw:created', function(e) {
   var $update_element = $('#update_button');
   var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"
 
-  browse_layer = addGibsLayer(browse_layer,viirs_product,dateStr)
+  browse_layer = addGibsLayer(browse_layer,viirs_product,selected_date)
 
 
   //sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
@@ -104,15 +99,42 @@ map.on('draw:created', function(e) {
   precip_layer = addMapLayer(precip_layer,$layers_element.attr('data-precip-url'))
   admin_layer = addMapLayer(admin_layer,$layers_element.attr('data-admin-url'))
 
+  $('#date_selection').change(function(){
+    selected_date = $('#date_selection').val();
+    var prec = $('#product_selection').val();
+    var accum = prec.split('|')[0]
+    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          precip_layer.setUrl(data.url)
+        }else{
+          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+        }
+    });
+
+    var prod = $('#browse_selection').val();
+    var id = prod.split('|')[1]
+    var template =
+      '//gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/' +
+      id + '/default/' + selected_date + '/{tileMatrixSet}/{z}/{y}/{x}.jpg'
+    browse_layer.setUrl(template)
+  })
+
 
   $('#product_selection').change(function(){
     var prod = $('#product_selection').val();
-    var url = prod.split('|')[1]
-    precip_layer.setUrl(url)
+    var accum = prod.split('|')[0]
+    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          precip_layer.setUrl(data.url)
+        }else{
+          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+        }
+    });
   });
 
   $('#sensor_selection').change(function(){
-    var selected_date = $('#selected_date').val();
     var sensor_val = $('#sensor_selection').val();
 
     var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");

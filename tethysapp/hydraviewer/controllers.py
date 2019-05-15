@@ -9,9 +9,13 @@ import datetime
 from . import config
 from . import geeutils
 
-wc = ee.ImageCollection(config.WATERCOLLECTION)
-region = ee.Geometry.Rectangle(config.BOUNDING_BOX)
-admin_layer = geeutils.getAdminMap(region)
+WC = ee.ImageCollection(config.WATERCOLLECTION)
+REGION = ee.Geometry.Rectangle(config.BOUNDING_BOX)
+ADMIN_LAYER = geeutils.getAdminMap(REGION)
+
+TODAY = datetime.datetime.now()
+THISDATE = TODAY-datetime.timedelta(2)
+ISODATE = THISDATE.strftime('%Y-%m-%d')
 
 try:
     ee.Initialize()
@@ -52,17 +56,21 @@ def mapviewer(request):
     Controller for the app home page.
     """
 
-    precip_layer1 = geeutils.getPrecipMap(accumulation=1)
-    precip_layer3 = geeutils.getPrecipMap(accumulation=3)
-    precip_layer7 = geeutils.getPrecipMap(accumulation=7)
-    #flood_viir = 'None' #geeutils.getfloodMap(snsr='atms')
-    #flood_sentinel = geeutils.getfloodMap("sentinel1","2010-01-01")
-    #flood_atms = geeutils.getfloodMap("atms", "2010-01-01")
-    #print(flood_sentinel)
+    precip_layer1 = geeutils.getPrecipMap(ISODATE,accumulation=1)
 
-    historical_layer = geeutils.getHistoricalMap(region,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+    date_selection = DatePicker(
+        name='date_selection',
+        # display_text='Start Date',
+        autoclose=True,
+        format='yyyy-mm-dd',
+        start_view='decade',
+        today_button=True,
+        initial=THISDATE.strftime('%Y-%m-%d')
+    )
 
-    image = ee.Image(wc.filter(ee.Filter.eq('sensor','sentinel1')).first())
+    historical_layer = geeutils.getHistoricalMap(REGION,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+
+    image = ee.Image(WC.filter(ee.Filter.eq('sensor','sentinel1')).first())
     #sentinel1_layer = geeutils.getTileLayerUrl(image.updateMask(image).visualize(palette='#9999ff'))
 
 
@@ -70,9 +78,9 @@ def mapviewer(request):
         # display_text='Select precipitation product:',
         name='product_selection',
         multiple=False,
-        options=[('1 Day Accumulation', '1|'+precip_layer1),
-                 ('3 Day Accumulation', '2|'+precip_layer3),
-                 ('7 Day Accumulation', '3|'+precip_layer7)],
+        options=[('1 Day Accumulation', '1|0'),
+                 ('3 Day Accumulation', '3|0'),
+                 ('7 Day Accumulation', '7|0')],
         initial=['1 Day Accumulation'],
         select2_options={'placeholder': 'Select a product',
                          'allowClear': False}
@@ -107,96 +115,13 @@ def mapviewer(request):
     )
 
     context = {
+        'date_selection': date_selection,
         'precip_layer': precip_layer1,
         'historical_layer': historical_layer,
-        'admin_layer': admin_layer,
+        'admin_layer': ADMIN_LAYER,
         'product_selection': product_selection,
         'browse_selection': browse_selection,
         'sensor_selection':sensor_selection,
     }
 
     return render(request, 'hydraviewer/map.html', context)
-
-def historical(request):
-    """
-    Controller for the app home page.
-    """
-    mekongBuffer = ee.FeatureCollection('ft:1LEGeqwlBCAlN61ie5ol24NdUDqB1MgpFR_sJNWQJ');
-    mekongRegion = mekongBuffer.geometry();
-
-    region = ee.Geometry.Rectangle([-180,-90,180,90])
-
-    algorithm_selection = SelectInput(
-        # display_text='Select Surface Water Algorithm:',
-        name='algorithm_selection',
-        multiple=False,
-        options=[('Surface Water Tool', 'SWT'), ('JRC Tool', 'JRC')],
-        initial=['JRC Tool'],
-    )
-
-    # Date Picker Options
-    date_picker1 = DatePicker(name='date_picker1',
-                              # display_text='Start Date',
-                              autoclose=True,
-                              format='yyyy-mm-dd',
-                              start_date='1/1/1990',
-                              start_view='decade',
-                              today_button=True,
-                              initial='2000-01-01')
-
-    # Date Picker Options
-    date_picker2 = DatePicker(name='date_picker2',
-                              # display_text='End Date',
-                              autoclose=True,
-                              format='yyyy-mm-dd',
-                              start_date='1/1/1990',
-                              start_view='decade',
-                              today_button=True,
-                              initial='2015-12-31')
-
-    month_slider = RangeSlider(display_text='Month',
-                      name='month_slider',
-                      min=1,
-                      max=12,
-                      initial=7,
-                      step=1)
-
-
-    view_options = MVView(
-        projection='EPSG:4326',
-        center=[101.75, 16.50],
-        zoom=5,
-        maxZoom=18,
-        minZoom=2
-    )
-
-    water_map = MapView(
-        height='100%',
-        width='100%',
-        controls=['FullScreen',
-                  {'MousePosition': {'projection': 'EPSG:4326'}}],
-        basemap='OpenSteetMap',
-        view=view_options
-    )
-
-    update_button = Button(
-        display_text='Update Map',
-        name='update-button',
-        icon='glyphicon glyphicon-refresh',
-        style='success',
-        attributes={
-            'title':'Update Map'
-        }
-    )
-
-    context = {
-        'update_button': update_button,
-        'date_picker1': date_picker1,
-        'date_picker2': date_picker2,
-        'month_slider': month_slider,
-        'algorithm_selection': algorithm_selection,
-        'water_layer': water_layer,
-        'water_map': water_map,
-    }
-
-    return render(request, 'hydraviewer/historical.html', context)

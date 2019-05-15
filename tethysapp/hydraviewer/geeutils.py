@@ -20,29 +20,26 @@ def getTileLayerUrl(ee_image_object):
     return tile_url_template.format(**map_id)
 
 
-def getPrecipMap(accumulation=1):
-    def _accumulate(ic,today,ndays=1):
+def getPrecipMap(date,accumulation=1):
+    def _accumulate(ic,date,ndays=1):
 
-        eeDate = ee.Date(today)
+        eeDate = ee.Date(date)
 
-        ic_filtered = ic.filterDate(eeDate.advance(-ndays,'day'),eeDate)
+        ic_filtered = ic.filterDate(eeDate.advance(-(ndays-1),'day'),eeDate.advance(1,'day'))
 
         accum_img = ee.Image(ic_filtered.sum())
 
         return accum_img.updateMask(accum_img.gt(1))
 
     if accumulation not in [1,3,7]:
-        raise NotImplementedError('Selected accumulation value is not yet impleted, options are: 1, 3, 7')
-
-    dt = datetime.datetime.utcnow() - datetime.timedelta(2)
-    today = dt.strftime('%Y-%m-%d')
+        raise NotImplementedError('Selected accumulation value is not yet implemented, options are: 1, 3, 7')
 
     ic = ee.ImageCollection('JAXA/GPM_L3/GSMaP/v6/operational').select(['hourlyPrecipRateGC'])
 
     ranges = {1:[1,100],3:[1,250],7:[1,500]}
     crange = ranges[accumulation]
 
-    accum = _accumulate(ic,today,accumulation)
+    accum = _accumulate(ic,date,accumulation)
 
     precipMap = getTileLayerUrl(accum.visualize(min=crange[0],max=crange[1],
                                                 palette='#000080,#0045ff,#00fbb2,#67d300,#d8ff22,#ffbe0c,#ff0039,#c95df5,#fef8fe'
@@ -56,6 +53,7 @@ def getfloodMap(snsr,sdate):
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
     image = ee.Image(fc.first()).select('water')
+    image = image.mask(image)
 
     #if snsr == 'atms':
         #image = image.select('water')

@@ -35,9 +35,9 @@ class Hydraviewer(TethysAppBase):
                 controller='hydraviewer.controllers.mapviewer'
             ),
             UrlMap(
-                name='update_historical',
-                url='hydraviewer/historical/update_historical',
-                controller='hydraviewer.ajax_controllers.update_historical'
+                name='get_precipmap',
+                url='hydraviewer/mapviewer/get_precipmap',
+                controller='hydraviewer.ajax_controllers.get_precipmap'
             ),
             UrlMap(
                 name='get_surfacewatermap',

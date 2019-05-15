@@ -31,6 +31,26 @@ def update_historical(request):
 
     return JsonResponse(return_obj)
 
+def get_precipmap(request):
+    return_obj = {}
+
+    if request.method == 'POST':
+        try:
+            info = request.POST;
+            start_date = info.get('sDate')
+            accum = int(info.get('accum'))
+
+            precip_layer = geeutils.getPrecipMap(start_date,accum)
+
+            return_obj["url"] = precip_layer
+            return_obj["success"] = "success"
+
+        except Exception as e:
+            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+
+    return JsonResponse(return_obj)
+
+
 def get_surfacewatermap(request):
     return_obj = {}
 
@@ -39,7 +59,7 @@ def get_surfacewatermap(request):
             info = request.POST;
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
-            
+
             water_layer = geeutils.getfloodMap(sensor,start_date)
 
             return_obj["url"] = water_layer
@@ -61,11 +81,10 @@ def download_surfacewatermap(request):
             poly = info.get('poly_coordinates')
             download_url  = geeutils.GetDownloadURL(sensor,start_date,poly)
 
-            return_obj["url"] = download_url 
+            return_obj["url"] = download_url
             return_obj["success"] = "success"
 
         except Exception as e:
             return_obj["error"] = "Error Processing Request. Error: "+ str(e)
 
     return JsonResponse(return_obj)
-
