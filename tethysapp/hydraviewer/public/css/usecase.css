@@ -12,7 +12,7 @@
 }*/
 
 .flip-card {
-  display:flex;
+  display:inline-block;
   justify-content: center;
   flex-direction: row;
   margin: 10px;
@@ -77,7 +77,3 @@
   width: 100%; /* Full width */
   padding: 20px; /* Some padding */
 }
-
-
-
-
