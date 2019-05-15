@@ -118,6 +118,20 @@ map.on('draw:created', function(e) {
       '//gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/' +
       id + '/default/' + selected_date + '/{tileMatrixSet}/{z}/{y}/{x}.jpg'
     browse_layer.setUrl(template)
+
+    var sensor_val = $('#sensor_selection').val();
+    console.log(sensor_val)
+
+    if (sensor_val != 'none'){
+      var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
+      xhr.done(function(data) {
+          if("success" in data) {
+            flood_layer.setUrl(data.url)
+          }else{
+            alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+          }
+      });
+    }
   })
 
 
@@ -170,7 +184,7 @@ map.on('draw:created', function(e) {
     var id = prod.split('|')[1]
     var template =
       '//gibs-{s}.earthdata.nasa.gov/wmts/epsg3857/best/' +
-      id + '/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpg'
+      id + '/default/' + selected_date + '/{tileMatrixSet}/{z}/{y}/{x}.jpg'
     browse_layer.setUrl(template)
   });
 
