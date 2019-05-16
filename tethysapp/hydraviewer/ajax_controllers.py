@@ -39,8 +39,9 @@ def get_precipmap(request):
             info = request.POST;
             start_date = info.get('sDate')
             accum = int(info.get('accum'))
+            cmap = info.get('cmap')
 
-            precip_layer = geeutils.getPrecipMap(start_date,accum)
+            precip_layer = geeutils.getPrecipMap(start_date,accum,cmap_name=cmap)
 
             return_obj["url"] = precip_layer
             return_obj["success"] = "success"

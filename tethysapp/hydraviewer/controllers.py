@@ -84,6 +84,18 @@ def mapviewer(request):
                          'allowClear': False}
     )
 
+    cmap_selection = SelectInput(
+        # display_text='Select precipitation product:',
+        name='cmap_selection',
+        multiple=False,
+        options=[('nipy_spectral', 'nipy_spectral'),
+                 ('gist_ncar', 'gist_ncar'),
+                 ('cubehelix', 'cubehelix')],
+        initial=['nipy_spectral'],
+        select2_options={'placeholder': 'Select a product',
+                         'allowClear': False}
+    )
+
 
     browse_selection = SelectInput(
         # display_text='Select precipitation product:',
@@ -119,6 +131,7 @@ def mapviewer(request):
         'historical_layer': historical_layer,
         'admin_layer': ADMIN_LAYER,
         'product_selection': product_selection,
+        'cmap_selection': cmap_selection,
         'browse_selection': browse_selection,
         'sensor_selection':sensor_selection,
     }

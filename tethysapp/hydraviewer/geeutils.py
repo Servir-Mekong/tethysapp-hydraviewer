@@ -1,6 +1,17 @@
+import os
 import ee
 import datetime
 from . import config
+
+import numpy as np
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+
+
+mpl.rcParams.update({'font.size': 14})
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 try:
     ee.Initialize()
@@ -20,7 +31,7 @@ def getTileLayerUrl(ee_image_object):
     return tile_url_template.format(**map_id)
 
 
-def getPrecipMap(date,accumulation=1):
+def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
     def _accumulate(ic,date,ndays=1):
 
         eeDate = ee.Date(date)
@@ -29,7 +40,7 @@ def getPrecipMap(date,accumulation=1):
 
         accum_img = ee.Image(ic_filtered.sum())
 
-        return accum_img.updateMask(accum_img.gt(1))
+        return accum_img.mask(accum_img.gt(1))
 
     if accumulation not in [1,3,7]:
         raise NotImplementedError('Selected accumulation value is not yet implemented, options are: 1, 3, 7')
@@ -41,10 +52,35 @@ def getPrecipMap(date,accumulation=1):
 
     accum = _accumulate(ic,date,accumulation)
 
+    cmap = mpl.cm.get_cmap(cmap_name, 100)
+
+    hexcodes = []
+    for i in range(cmap.N):
+       rgb = cmap(i)[:3] # will return rgba, we take only first 3 so we get rgb
+       hexcodes.append(mpl.colors.rgb2hex(rgb))
+
+    colormap = ','.join(hexcodes)
+
     precipMap = getTileLayerUrl(accum.visualize(min=crange[0],max=crange[1],
-                                                palette='#000080,#0045ff,#00fbb2,#67d300,#d8ff22,#ffbe0c,#ff0039,#c95df5,#fef8fe'
+                                                palette=hexcodes
                                                )
                                )
+
+    # cb_ticks = np.linspace(0,crange[1],4)
+
+    fig = plt.figure(figsize=(2,4))
+    ax = fig.add_subplot(1, 1, 1)#plt.subplots(figsize=(0.5, 3))
+    fig.subplots_adjust(right=0.25)
+    norm = mpl.colors.Normalize(vmin=0, vmax=crange[1])
+
+    cb = mpl.colorbar.ColorbarBase(ax, cmap=cmap,
+                                    norm=norm,
+                                    orientation='vertical',
+                                    extend='max')
+
+    cb.set_label('Precipitation [mm/day]')
+    fig.savefig(os.path.join(CURRENT_DIR,'public/images/precip_colorbar.png'),
+        dpi=150,bbox_inches='tight')
     return precipMap
 
 

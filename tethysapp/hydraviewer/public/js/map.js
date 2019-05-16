@@ -106,8 +106,9 @@ map.on('draw:created', function(e) {
   $('#date_selection').change(function(){
     selected_date = $('#date_selection').val();
     var prec = $('#product_selection').val();
+    var cmap = $('#cmap_selection').val()
     var accum = prec.split('|')[0]
-    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum},"layers");
+    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum,'cmap':cmap},"layers");
     xhr.done(function(data) {
         if("success" in data) {
           precip_layer.setUrl(data.url)
@@ -138,16 +139,32 @@ map.on('draw:created', function(e) {
           }
       });
     }
-  })
+  });
 
-
-  $('#product_selection').change(function(){
+  $('#cmap_selection').change(function(){
     var prod = $('#product_selection').val();
+    var cmap = $('#cmap_selection').val()
     var accum = prod.split('|')[0]
-    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum},"layers");
+    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum,'cmap':cmap},"layers");
     xhr.done(function(data) {
         if("success" in data) {
           precip_layer.setUrl(data.url)
+          $("#precip-cb").attr("src", cb_url+"?rnd="+Math.random())
+        }else{
+          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+        }
+    });
+  });
+
+  $('#product_selection').change(function(){
+    var prod = $('#product_selection').val();
+    var cmap = $('#cmap_selection').val()
+    var accum = prod.split('|')[0]
+    var xhr = ajax_update_database('get_precipmap',{'sDate':selected_date,'accum':accum,'cmap':cmap},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          precip_layer.setUrl(data.url)
+          $("#precip-cb").attr("src", cb_url+"?rnd="+Math.random())
         }else{
           alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
         }
