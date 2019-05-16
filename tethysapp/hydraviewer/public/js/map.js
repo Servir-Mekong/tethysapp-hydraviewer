@@ -1,3 +1,4 @@
+/* global variables to be tossed around like hot potatoes */
 var map,
     selected_date,
     browse_layer,
@@ -9,10 +10,12 @@ var map,
     drawing_polygon,
     $layers_element;
 
+// init function for the page
 $(function() {
 
   selected_date = $('#date_selection').val();
 
+  // set slider vars with the correct elements
   var browseSlider = $('#browse-opacity').slider();
   var precipSlider = $('#precip-opacity').slider();
   var historicalSlider = $('#historical-opacity').slider();
@@ -20,6 +23,7 @@ $(function() {
   var floodSlider = $('#flood-opacity').slider();
   var floodSlider1 = $('#flood1-opacity').slider();
 
+  // init map
   map = L.map('map',{
     center: [21.0,96.5],
     zoom: 6,
@@ -128,6 +132,7 @@ map.on('draw:created', function(e) {
           if("success" in data) {
             flood_layer.setUrl(data.url)
           }else{
+            flood_layer.setUrl('')
             alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
           }
       });
@@ -165,7 +170,7 @@ map.on('draw:created', function(e) {
  if(drawing_polygon === undefined){
   alert("Please draw a polygon");
   }else{
-     var selected_date = $('#selected_date').val();
+     // var selected_date = $('#selected_date').val();
      var sensor_val = $('#sensor_selection').val();
      var xhr = ajax_update_database('download_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val,'poly_coordinates': drawing_polygon},"json");
     xhr.done(function(data) {

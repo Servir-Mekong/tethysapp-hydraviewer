@@ -63,21 +63,17 @@ def getfloodMap(snsr,sdate):
     return floodMap
 
 def GetDownloadURL(snsr,sdate,poly):
-    dt = datetime.datetime.utcnow() - datetime.timedelta(1)
-    today = dt.strftime('%Y-%m-%d')
-    fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first()).select('water')
+    t1 = ee.Date(sdate)
+    t2 = t1.advance(1,'day')
+    fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(t1,t2).filter(ee.Filter.eq('sensor',snsr))
+    image = ee.Image(fc.first())
 
-    #if snsr == 'atms':
-        #image = image.select('water')
-        #image = image.updateMask(image)
-
-    #floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
     dnldURL = image.getDownloadURL({
-		'scale': 150,
+		'scale': 90,
 		'crs': 'EPSG:4326',
-                'region' : poly})
-    print(dnldURL)
+        'region' : poly
+    })
+
     return dnldURL
 
 def getAdminMap(geom):
