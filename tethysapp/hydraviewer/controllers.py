@@ -13,10 +13,6 @@ WC = ee.ImageCollection(config.WATERCOLLECTION)
 REGION = ee.Geometry.Rectangle(config.BOUNDING_BOX)
 ADMIN_LAYER = geeutils.getAdminMap(REGION)
 
-TODAY = datetime.datetime.now()
-THISDATE = TODAY-datetime.timedelta(2)
-ISODATE = THISDATE.strftime('%Y-%m-%d')
-
 try:
     ee.Initialize()
 except EEException as e:
@@ -56,7 +52,11 @@ def mapviewer(request):
     Controller for the app home page.
     """
 
-    precip_layer1 = geeutils.getPrecipMap(ISODATE,accumulation=1)
+    today = datetime.datetime.now()
+    thisdate = today-datetime.timedelta(2)
+    isodate = thisdate.strftime('%Y-%m-%d')
+
+    precip_layer1 = geeutils.getPrecipMap(isodate,accumulation=1)
 
     date_selection = DatePicker(
         name='date_selection',
@@ -65,14 +65,12 @@ def mapviewer(request):
         format='yyyy-mm-dd',
         start_view='decade',
         today_button=True,
-        initial=THISDATE.strftime('%Y-%m-%d')
+        initial=isodate
     )
 
     historical_layer = geeutils.getHistoricalMap(REGION,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
 
     image = ee.Image(WC.filter(ee.Filter.eq('sensor','sentinel1')).first())
-    #sentinel1_layer = geeutils.getTileLayerUrl(image.updateMask(image).visualize(palette='#9999ff'))
-
 
     product_selection = SelectInput(
         # display_text='Select precipitation product:',
