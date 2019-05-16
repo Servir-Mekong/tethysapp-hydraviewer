@@ -112,6 +112,7 @@ map.on('draw:created', function(e) {
         if("success" in data) {
           precip_layer.setUrl(data.url)
         }else{
+          precip_layer.setUrl('')
           alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
         }
     });
@@ -269,7 +270,38 @@ $("#download_flood-check").on("click",function(){
       $("#btn_download").attr('disabled','disabled');
     }
   });
+
+
+  $(".legend-info-button").click(function () {
+    $(".legend-tabs").toggle();
+    $("#legend-content").toggle();
+    if ($("#legend-content").is(":visible") == true) {
+      $("#legend-collapse").css("display","inline-block");
+      $("#legend-expand").css("display","none");
+    }
+    else {
+      $("#legend-collapse").css("display","none");
+      $("#legend-expand").css("display","inline-block");
+    }
+  });
+
 // end of init function
+});
+
+function openLegendTab(event, name) {
+  tabcontent = document.getElementsByClassName("legend-tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("legend-tab");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById('legend-tab-' + name).style.display = "block";
+  event.currentTarget.className += " active";
+}
+$(document).ready(function() {
+  document.getElementById("legend-tab-default").click();
 });
 
 // function to add and update tile layer to map
