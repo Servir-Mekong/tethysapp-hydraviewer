@@ -1,11 +1,20 @@
 import ee
+from ee.ee_exception import EEException
 from . import geeutils
 from . import config
 import json
 from django.http import JsonResponse
 import datetime
 
-ee.Initialize()
+try:
+    ee.Initialize()
+except EEException as e:
+    from oauth2client.service_account import ServiceAccountCredentials
+    credentials = ServiceAccountCredentials.from_p12_keyfile(
+    service_account_email=config.SERVICEACCOUNT,
+    filename=config.KEYFILE,
+    )
+    ee.Initialize(credentials)
 
 region = ee.Geometry.Rectangle(config.BOUNDING_BOX)
 
