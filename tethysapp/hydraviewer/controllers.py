@@ -106,7 +106,8 @@ def mapviewer(request):
         multiple=False,
         options=[ ('select sensor', 'none'),
                  ('Sentinel 1', 'sentinel1'),
-                 ('ATMS', 'atms')],
+                 ('ATMS', 'atms'),
+                 ('VIIRS Downscaled','viirs')],
         initial=['select sensor'],
         select2_options={'placeholder': 'Select sensor:',
                          'allowClear': False}
