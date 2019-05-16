@@ -3,33 +3,30 @@
     overflow-y: scroll;
 }
 
-.flip-card {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+.row {
+  position: relative;
+  width: 100%;
+  padding: 5px
 }
 
-/*.flip-card .row{
-  margin:0 auto;
-}*/
-
 .flip-card {
-  display:inline-block;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  display:inline-flex;
   justify-content: center;
   flex-direction: row;
-  margin: 10px;
+  margin: auto;
   box-sizing: border-box;
   border-radius: 2px;
   background-clip: padding-box;
   position: relative;
-  left: calc(50%-100px);
   background-color:#FFF;
   width: 300px;
   height: 300px;
-  border 1px solid #f1f1f1;
+  border: 1px solid #f1f1f1;
   perspective: 1000px;
   text-align: center;
-
+  margin-left:70px;
 }
-
 
 /* This container is needed to position the front and back side */
 .flip-card-inner {
