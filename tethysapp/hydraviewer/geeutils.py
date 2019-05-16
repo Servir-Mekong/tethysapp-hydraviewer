@@ -7,8 +7,8 @@ try:
 except EEException as e:
     from oauth2client.service_account import ServiceAccountCredentials
     credentials = ee.ServiceAccountCredentials(
-    service_account_email='',
-    filename='',
+    service_account_email=config.SERVICEACCOUNT,
+    filename=config.KEYFILE,
     )
     ee.Initialize(credentials)
 
