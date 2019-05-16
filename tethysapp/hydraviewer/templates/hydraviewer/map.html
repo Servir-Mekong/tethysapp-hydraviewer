@@ -134,30 +134,13 @@
         <p> Opacity </p>
         <input id="flood1-opacity" data-slider-id='flood1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
       </div>
-
-    </div>
-  </div>
-
-
-<div id='download_archive-controls'>
-    <a data-toggle="collapse" href="#download2-collapse">
-      <div class='layer-header'>
-        <img src="{% static 'hydraviewer/images/download.png' %}"><p>DOWNLOAD MAP</p>
+      
+      <div class="center_obj" >
+      	<button type="submit" id="btn_download" name="btn_download" class="btn_custom"><i class="glyphicon glyphicon-cloud-download"></i> &emsp; DOWNLOAD</button>
       </div>
-    </a>
-    <div id="download2-collapse" class="panel-collapse collapse">
-      <label class="container">
-        <input id="download_flood-check" type="checkbox" >
-        <span class="checkmark"></span>
-      </label>
-      <p><b>&emsp;&emsp;&emsp;SURFACE WATER MAP</b></p>
 
-<div class="center_obj" >
-	<button type="submit" id="btn_download" name="btn_download" class="btn_custom">DOWNLOAD</button>
-</div>
 
     </div>
-
   </div>
 
 <li class="{% if request.path == use_url %}active{% endif %}"><a href="{{ use_url }}">Use Cases</a></li>

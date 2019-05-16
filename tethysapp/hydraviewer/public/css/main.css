@@ -24,12 +24,12 @@ p {
 
 .btn_custom{
    background-color:rgb(52, 73, 94);
-
+   margin: 10px;
    text-align: center;
    color: white;
    padding-left: 10px;
-   padding-bottom: 5px ;
-   padding-top: 5px;
+   padding-bottom: 7px ;
+   padding-top: 7px;
    padding-right: 10px;
    border-radius: 8px;
 }
