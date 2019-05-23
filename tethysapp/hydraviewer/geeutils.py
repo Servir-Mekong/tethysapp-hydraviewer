@@ -82,6 +82,8 @@ def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
     cb.set_label('Precipitation [mm]')
     fig.savefig(os.path.join(CURRENT_DIR,'public/images/precip_colorbar.png'),
         dpi=150,bbox_inches='tight')
+
+    plt.close()
     return precipMap
 
 
