@@ -4,12 +4,12 @@
 
 {% block styles %}
     {{ block.super }}
-    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/css/bootstrap-slider.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
       integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
       crossorigin=""/>
     <link rel="stylesheet" href="https://cdn.rawgit.com/socib/Leaflet.TimeDimension/master/dist/leaflet.timedimension.control.min.css" />
+    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
 
 {% endblock %}
 
@@ -95,8 +95,9 @@
 
       <p><b>&emsp;&emsp;&emsp;IMERG&emsp;&emsp;&emsp;</b></p>
       <div class="slider-width">
-      <p> Opacity </p>
-            <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;right:10px;align:right;display:inline-block"/>
+        <p> Opacity:&emsp;&emsp; </p>
+        <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" class= "custom-slider"
+        style="width: 160px;left: 30px;"/>
       </div>
 
       <p> Select Accumulation Product: </p>
@@ -120,8 +121,9 @@
       </label>
       <p><b>&emsp;&emsp;&emsp; SURFACE WATER MAP</b></p>
       <div class="slider-width">
-        <p> Opacity </p>
-        <input id="flood1-opacity" data-slider-id='flood1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+        <p> Opacity:&emsp;&emsp; </p>
+        <input id="flood1-opacity" data-slider-id='flood1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true"
+        style="width: 160px;left: 30px;"/>
       </div>
 
       <p> Select Sensor: </p>
@@ -147,8 +149,9 @@
       </label>
       <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER MAPS&emsp;&emsp;&emsp;</b></p>
   <div class="slider-width">
-  <p> Opacity </p>
-        <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+  <p> Opacity:&emsp;&emsp; </p>
+        <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true"
+        style="width: 160px;left: 30px;"/>
   </div>
     <p>Select a method:</p>
         {% gizmo method_historical_selection %}
@@ -177,8 +180,9 @@
       </label>
       <p><b>&emsp;&emsp;&emsp;NRT BROWSE IMAGERY&emsp;&emsp;&emsp;</b></p>
 <div class="slider-width">
-<p> Opacity </p>
-      <input id="browse-opacity" data-slider-id='browse-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+<p> Opacity:&emsp;&emsp; </p>
+      <input id="browse-opacity" data-slider-id='browse-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true"
+      style="width: 160px;left: 30px;"/>
 </div>
       <p> Select Browse Imagery: </p>
       {% gizmo browse_selection %}
