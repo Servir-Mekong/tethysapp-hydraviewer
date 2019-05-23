@@ -114,10 +114,6 @@
       </div>
     </a>
     <div id="flood-collapse" class="panel-collapse collapse" style="margin-bottom:10px;">
-
-      <p><b> Select Sensor: </b></p>
-      {% gizmo sensor_selection %}
-
       <label class="container">
         <input id="flood-check" type="checkbox" checked="checked">
         <span class="checkmark"></span>
@@ -127,6 +123,11 @@
         <p> Opacity </p>
         <input id="flood1-opacity" data-slider-id='flood1-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
       </div>
+
+      <p> Select Sensor: </p>
+      {% gizmo sensor_selection %}
+
+
 
       <div class="center_obj" >
       	<button type="submit" id="btn_download" name="btn_download" class="btn_custom"><i class="glyphicon glyphicon-cloud-download"></i> &emsp; DOWNLOAD DATA</button>
@@ -140,25 +141,25 @@
       </div>
     </a>
     <div id="historical-collapse" class="panel-collapse collapse" style="margin-bottom:10px;">
-    <p><b>Select a method</b></p>
-        {% gizmo method_historical_selection %}
-    <p><b>Select Year</b></p>
-        <table style="width:100%">
-          <tr>
-            <td style="width:45%">{% gizmo start_year_selection_historical  %}</td>
-            <td style="width:10%; text-align: center;"><p><b>To</b></p></td>
-            <td style="width:45%">{% gizmo end_year_selection_historical %}</td>
-          </tr>
-        </table>
       <label class="container">
         <input id="historical-check" type="checkbox" checked="checked">
         <span class="checkmark"></span>
       </label>
       <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER MAPS&emsp;&emsp;&emsp;</b></p>
-	<div class="slider-width">
-	<p> Opacity </p>
-	      <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
-	</div>
+  <div class="slider-width">
+  <p> Opacity </p>
+        <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" style="width:90%;align:right;display:inline-block"/>
+  </div>
+    <p>Select a method:</p>
+        {% gizmo method_historical_selection %}
+    <p>Select reference period:</p>
+        <table style="width:100%">
+          <tr>
+            <td style="width:45%">{% gizmo start_year_selection_historical  %}</td>
+            <td style="width:10%; text-align: center;"><p><b>to</b></p></td>
+            <td style="width:45%">{% gizmo end_year_selection_historical %}</td>
+          </tr>
+        </table>
     </div>
   </div>
 
