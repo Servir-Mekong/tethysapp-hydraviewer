@@ -89,7 +89,7 @@ def getfloodMap(snsr,sdate):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first()).select('water')
+    image = ee.Image(fc.first())
     image = image.mask(image)
 
     #if snsr == 'atms':

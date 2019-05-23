@@ -90,7 +90,7 @@
     </a>
     <div id="precip-collapse" class="panel-collapse collapse">
       <label class="container">
-        <input id="precip-check" type="checkbox" checked="checked">
+        <input id="precip-check" type="checkbox">
         <span class="checkmark"></span>
       </label>
 
@@ -141,7 +141,7 @@
       </div>
     </a>
     <div id="historical-collapse" class="panel-collapse collapse" style="margin-bottom:10px;">
-    <p><b>Select a method</b></p>
+    <p><b>Select a method</b> </p>  <a data-toggle="modal" data-target="#description-modal"><i class="fas fa-info-circle" style="color: #2196F3;"></i></a>
         {% gizmo method_historical_selection %}
     <p><b>Select Year</b></p>
         <table style="width:100%">
@@ -193,6 +193,28 @@
     </div>
   </div>
 
+{% endblock %}
+
+{% block after_app_content %}
+<!-- Description Modal -->
+    <div class="modal fade" id="description-modal" tabindex="-1" role="dialog" aria-labelledby="description-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="help-modal-label">Description</h5>
+                </div>
+                <div class="modal-body">
+                    <h3 style="color: #2196F3;" >Select Method for Time Period</h3>
+                    <p><b>There are 2 modes of period selection</b></p>
+<p><b style="color: #2196F3;" >Continuous</b> : This will select the time period from May 1984 to August 2015 continuously. </p>
+<p><b style="color: #2196F3;" >Seasonal</b> : This method will select only the month of May to August from year 1984 to 2015. This will not select remaining months such as January, February, September and the rest.</p>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block app_actions %}

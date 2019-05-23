@@ -25,8 +25,8 @@ $(function() {
 
   // init map
   map = L.map('map',{
-    center: [21.0,96.5],
-    zoom: 6,
+    center: [16.8,95.7],
+    zoom: 8,
     minZoom:2,
     maxZoom: 16,
     maxBounds: [
@@ -102,6 +102,9 @@ map.on('draw:created', function(e) {
   historical_layer = addMapLayer(historical_layer,$layers_element.attr('data-historical-url'))
   precip_layer = addMapLayer(precip_layer,$layers_element.attr('data-precip-url'))
   admin_layer = addMapLayer(admin_layer,$layers_element.attr('data-admin-url'))
+  
+  precip_layer.setOpacity(0)
+  precipSlider.slider('disable')
 
   $('#date_selection').change(function(){
     selected_date = $('#date_selection').val();
@@ -135,7 +138,7 @@ map.on('draw:created', function(e) {
             flood_layer.setUrl(data.url)
           }else{
             flood_layer.setUrl('')
-            alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+            alert(data.error);
           }
       });
     }
@@ -173,17 +176,16 @@ map.on('draw:created', function(e) {
 
   $('#sensor_selection').change(function(){
     var sensor_val = $('#sensor_selection').val();
-
     var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
     xhr.done(function(data) {
         if("success" in data) {
           flood_layer.setUrl(data.url)
         }else{
-          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+          alert(data.error);
         }
     });
-  });
 
+  });
 
 $('#start_year_selection_historical,#end_year_selection_historical,#start_month_selection_historical,#end_month_selection_historical,#method_historical_selection').change(function(){
     var startYear = $('#start_year_selection_historical').val();
@@ -197,11 +199,12 @@ $('#start_year_selection_historical,#end_year_selection_historical,#start_month_
         if("success" in data) {
           historical_layer.setUrl(data.url)
         }else{
-          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+          alert(data.error);
         }
     });
   });
 
+$("#sensor_selection option[value='atms']").attr('disabled','disabled');
 
   $("#btn_download").on("click",function(){
  if(drawing_polygon === undefined){

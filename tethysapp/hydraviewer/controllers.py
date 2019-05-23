@@ -57,6 +57,7 @@ def mapviewer(request):
     isodate = thisdate.strftime('%Y-%m-%d')
 
     precip_layer1 = geeutils.getPrecipMap(isodate,accumulation=1)
+    flood_layer = geeutils.getfloodMap("viirs",'2019-03-03')
 
     date_selection = DatePicker(
         name='date_selection',
@@ -177,11 +178,11 @@ def mapviewer(request):
         # display_text='Select precipitation product:',
         name='sensor_selection',
         multiple=False,
-        options=[ ('select sensor', 'none'),
+        options=[ 
                  ('Sentinel 1', 'sentinel1'),
-                 ('ATMS', 'atms'),
-                 ('VIIRS Downscaled','viirs')],
-        initial=['select sensor'],
+                 ('VIIRS Downscaled','viirs'),
+		         ('ATMS (Comming soon)', 'atms')],
+        initial=['VIIRS Downscaled'],
         select2_options={'placeholder': 'Select sensor:',
                          'allowClear': False}
     )
@@ -190,6 +191,7 @@ def mapviewer(request):
         'date_selection': date_selection,
         'precip_layer': precip_layer1,
         'historical_layer': historical_layer,
+        'flood_layer':flood_layer,
         'admin_layer': ADMIN_LAYER,
         'product_selection': product_selection,
         'cmap_selection': cmap_selection,

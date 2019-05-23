@@ -79,7 +79,8 @@ def get_surfacewatermap(request):
             return_obj["success"] = "success"
 
         except Exception as e:
-            return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            #return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Data not available"
 
     return JsonResponse(return_obj)
 
