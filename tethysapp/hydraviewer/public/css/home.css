@@ -1,3 +1,11 @@
+.nav_item {
+    padding:10px;
+    color: white;
+    font-weight:700;
+    border-right: 1px solid gray;
+    margin-right:10px;
+}
+
 .card {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
@@ -93,8 +101,8 @@
 
 .rss-feed {
     overflow-y: scroll;
-    max-height: 30.5vh;
-    width: 48%;
+    height: 400px;
+    width: 46%;
     margin-left: 20px;
     margin-top: 10px;
 }

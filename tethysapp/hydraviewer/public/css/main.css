@@ -257,7 +257,8 @@ p {
 
 .layer-header {
   background: #686868;
-  margin: 2%;
+  margin-bottom: 3%;
+  margin-top: 3%;
 }
 
 .layer-header:hover {
@@ -266,10 +267,10 @@ p {
 
 .layer-header p {
   color: #fff;
-  font-size: 14px;
-  margin: 2%;
+  margin-left: 5px;
+  font-size: 12px;
   /* align: right; */
-  float: right;
+  /*float:right;*/
 }
 
 .layer-header img {

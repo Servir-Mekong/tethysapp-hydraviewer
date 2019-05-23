@@ -270,14 +270,20 @@ def getLandsatCollection(aoi,time_start, time_end, month_index=None, climatology
 
     return images
 
-def JRCAlgorithm(geom,startDate, endDate, month=None):
+def JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method):
 
     IMAGE_COLLECTION = ee.ImageCollection('JRC/GSW1_0/MonthlyHistory')
 
-    myjrc = IMAGE_COLLECTION.filterBounds(geom).filterDate(startDate, endDate)
+    if method == 'discrete':
+        myjrc = IMAGE_COLLECTION.filterBounds(geom).filter(ee.Filter.calendarRange(int(startYear), int(endYear), 'year')).\
+                    filter(ee.Filter.calendarRange(int(startMonth), int(endMonth), 'month'))
+    else:
+        myjrc = IMAGE_COLLECTION.filterBounds(geom).filterDate(startYear + '-' + startMonth, endYear + '-' + endMonth)
+    
+    #myjrc = IMAGE_COLLECTION.filterBounds(geom).filterDate(startDate, endDate)
 
-    if month != None:
-        myjrc = myjrc.filter(ee.Filter.calendarRange(int(month), int(month), 'month'))
+    #if month != None:
+    #    myjrc = myjrc.filter(ee.Filter.calendarRange(int(month), int(month), 'month'))
 
     # calculate total number of observations
     def calcObs(img):
@@ -307,7 +313,7 @@ def JRCAlgorithm(geom,startDate, endDate, month=None):
 
     return water
 
-def getHistoricalMap(geom,iniTime,endTime,
+def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='continuous',
                   climatology=True,
                   month=None,
                   defringe=True,
@@ -330,6 +336,8 @@ def getHistoricalMap(geom,iniTime,endTime,
             raise ValueError('Month needs to be defined to calculate climatology')
 
     if algorithm == 'SWT':
+        iniTime = '{}-01-01'.format(startYear)
+        endTime = '{}-12-31'.format(endYear)
         # get images
         images = getLandsatCollection(geom,iniTime, endTime, climatology, month, defringe, cloud_thresh)
 
@@ -344,7 +352,8 @@ def getHistoricalMap(geom,iniTime,endTime,
         waterMap = getTileLayerUrl(water.updateMask(water.eq(2)).visualize(min=0,max=2,palette='#ffffff,#9999ff,#00008b'))
 
     elif algorithm == 'JRC':
-        water = JRCAlgorithm(geom,iniTime,endTime).clip(countries)
+        water = JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method).clip(countries)
+        #water = JRCAlgorithm(geom,iniTime,endTime).clip(countries)
         waterMap = getTileLayerUrl(water.visualize(min=0,max=1,bands='water',palette='#ffffff,#00008b'))
 
     else:

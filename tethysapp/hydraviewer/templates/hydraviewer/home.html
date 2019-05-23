@@ -4,6 +4,12 @@
 {% load staticfiles %}
 
 {% block header_buttons %}
+  {% url 'hydraviewer:home' as home_url %}
+  {% url 'hydraviewer:mapviewer' as map_url %}
+  {% url 'hydraviewer:usecases' as use_url %}
+  <a class="nav_item" href="{{ home_url }}">Home</a>
+  <a class="nav_item" href="{{ map_url }}">Map Viewer</a>
+  <a class="nav_item" href="{{ use_url }}">Use Cases</a>
   <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
     <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
   </div>
@@ -98,6 +104,21 @@
                 </div>
           </div>
       </div>
+
+      <div class="row" style="margin-bottom: 15px;">
+          <div class="col-md-6">
+                <div class="card" id="scienceDoc">
+                    <div class="card-image">
+
+                        <a href="https://hydra-floods.readthedocs.io" target="_">
+                            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/doc.svg">
+                            <h4><span class="card-title">Science Documentation</span></h4>
+                        </a>
+                    </div>
+                </div>
+          </div>
+      </div>
+
     </div>
 
 
@@ -138,3 +159,4 @@
 {% block app_actions %}
   <!-- insert app actions here -->
 {% endblock %}
+

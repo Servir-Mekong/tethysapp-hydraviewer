@@ -184,6 +184,25 @@ map.on('draw:created', function(e) {
     });
   });
 
+
+$('#start_year_selection_historical,#end_year_selection_historical,#start_month_selection_historical,#end_month_selection_historical,#method_historical_selection').change(function(){
+    var startYear = $('#start_year_selection_historical').val();
+    var endYear = $('#end_year_selection_historical').val();
+    var startMonth = $('#start_month_selection_historical').val();
+    var endMonth = $('#end_month_selection_historical').val();
+    var method = $('#method_historical_selection').val();
+    console.log(method);
+    var xhr = ajax_update_database('update_historical',{'startYear':startYear,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          historical_layer.setUrl(data.url)
+        }else{
+          alert('Opps, there was a problem processing the request. Please see the following error: '+data.error);
+        }
+    });
+  });
+
+
   $("#btn_download").on("click",function(){
  if(drawing_polygon === undefined){
   alert("Please draw a polygon");

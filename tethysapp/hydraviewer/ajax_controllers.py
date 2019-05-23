@@ -24,13 +24,16 @@ def update_historical(request):
     if request.method == 'POST':
         try:
             info = request.POST;
-            start = info.get('sDate')
-            end = info.get('eDate')
-            month = info.get('month')
-            algo = info.get('algo')
-            climo = bool(int(info.get('climo')))
+            startYear = info.get('startYear')
+            endYear = info.get('endYear')
+            startMonth = info.get('startMonth')
+            endMonth = info.get('endMonth')
+            method_historical = info.get('method')
+            #month = info.get('month')
+            #algo = info.get('algo')
+            #climo = bool(int(info.get('climo')))
 
-            water_layer = geeutils.getHistoricalMap(region,start,end,month=month,algorithm=algo,climatology=climo)
+            water_layer = geeutils.getHistoricalMap(region, startYear, endYear, startMonth, endMonth, method=method_historical, climatology=False, algorithm='JRC')
 
             return_obj["url"] = water_layer
             return_obj["success"] = "success"

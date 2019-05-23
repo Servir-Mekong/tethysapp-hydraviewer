@@ -10,26 +10,53 @@
 {% endblock %}
 
 {# The name you provided in your app.py is accessible through the tethys_app.name context variable #}
-{% block app_title %}{{ tethys_app.name }}{% endblock %}
+{% block app_title %}{{ tethys_app.name }} <p style="color:white; font-size: 16px;"><i>(Beta version)</i></p>{% endblock %}
 
-{% block app_navigation_items %}
+
+{% block header_buttons %}
   {% url 'hydraviewer:home' as home_url %}
   {% url 'hydraviewer:mapviewer' as map_url %}
   {% url 'hydraviewer:usecases' as use_url %}
-  <li class="title">Navigation</li>
-  <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Home</a></li>
-  <li class="{% if request.path == map_url %}active{% endif %}"><a href="{{ map_url }}">Map Viewer</a></li>
-  <li class="{% if request.path == use_url %}active{% endif %}"><a href="{{ use_url }}">Use Cases</a></li>
+  <a class="nav_item" href="{{ home_url }}">Home</a>
+  <a class="nav_item" href="{{ map_url }}">Map Viewer</a>
+  <a class="nav_item" href="{{ use_url }}">Use Cases</a>
+  <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
+    <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
+  </div>
 {% endblock %}
 
-{% block header_buttons %}
-<div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
-    <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
+
+{% block after_app_content %}
+<!-- Help Modal -->
+    <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="help-modal-label">Help Modal</h5>
+                </div>
+                <div class="modal-body">
+                    <h1>Disclaimer:</h1>
+                    <p>This application is currently in Beta. It is not to be used for any operational purpose.The SERVIR Project, NASA, and USAID, make no express or implied warranty of this application and associated data as to the merchantability or fitness for a particular purpose. Neither the US Government nor its contractors shall be liable for special, consequential or incidental damages attributed to this application and associated data.</p>
+                    <p><a href="https://servirglobal.net/Privacy-Terms-of-Use" target="_blank">Privacy and Terms of Use</a></p>
+                </div>
+                <div class="modal-footer">
+                    <div align="center" id="logos">
+                        <div class="logo-image"><a href="http://www.usaid.gov/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/usaid.png"></a></div>
+                        <div class="logo-image"><a href="http://appliedsciences.nasa.gov/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/nasa.png"></a></div>
+                        <div class="logo-image"><a href="http://www.cilss.bf/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/cilss.png"></a></div>
+                        <div class="logo-image"><a href="http://www.rcmrd.org/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/rcmrd.png"></a></div>
+                        <div class="logo-image"><a href="http://www.icimod.org/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/icimod.png"></a></div>
+                        <div class="logo-image"><a href="http://www.adpc.net/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/adpc.png"></a></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
-{% block after_app_content %}
-{% endblock %}
 
 {% block app_actions %}
 {% endblock %}

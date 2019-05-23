@@ -68,7 +68,68 @@ def mapviewer(request):
         initial=isodate
     )
 
-    historical_layer = geeutils.getHistoricalMap(REGION,'2010-01-01','2015-12-31',month=8,algorithm='JRC')
+    method_historical_selection = SelectInput(
+        name='method_historical_selection',
+        multiple=False,
+        options=[('Continuous', 'continuous'),
+                 ('Seasonal', 'discrete')],
+        initial=['Continuous'],
+        select2_options={'placeholder': 'Select a mothod',
+                         'allowClear': False}
+    )
+
+    start_month_selection_historical = DatePicker(
+        name='start_month_selection_historical',
+        format= 'mm',
+        autoclose= True,
+        #startDate= new Date('1984'),
+        #endDate: new Date('2015'),
+        clear_button= True,
+        start_view= 'months',
+        min_view_mode= 'months',
+        initial='01'
+
+    )
+
+    end_month_selection_historical = DatePicker(
+        name='end_month_selection_historical',
+        format= 'mm',
+        autoclose= True,
+        #startDate= new Date('1984'),
+        #endDate: new Date('2015'),
+        clear_button= True,
+        start_view= 'months',
+        min_view_mode= 'months',
+        initial='02'
+
+    )
+
+
+    start_year_selection_historical = DatePicker(
+        name='start_year_selection_historical',
+        format= 'yyyy',
+        autoclose= True,
+        #start_date= '1/1/2015',
+        #end_date = '1/1/2016',
+        clear_button= True,
+        start_view= 'years',
+        min_view_mode= 'years',
+        initial='2010'
+    )
+
+    end_year_selection_historical = DatePicker(
+        name='end_year_selection_historical',
+        format= 'yyyy',
+        autoclose= True,
+        #start_date= new Date('2010'),
+        #endDate: new Date('2015'),
+        clear_button= True,
+        start_view= 'years',
+        min_view_mode= 'years',
+        initial='2015'
+    )
+
+    historical_layer = geeutils.getHistoricalMap(REGION, '2010','2015', '01', '01', climatology=False, algorithm='JRC')
 
     image = ee.Image(WC.filter(ee.Filter.eq('sensor','sentinel1')).first())
 
@@ -134,6 +195,12 @@ def mapviewer(request):
         'cmap_selection': cmap_selection,
         'browse_selection': browse_selection,
         'sensor_selection':sensor_selection,
+	    'start_month_selection_historical' : start_month_selection_historical,
+	    'start_year_selection_historical' : start_year_selection_historical,
+        'end_month_selection_historical' : end_month_selection_historical,
+	    'end_year_selection_historical' : end_year_selection_historical,
+        'method_historical_selection' : method_historical_selection
+
     }
 
     return render(request, 'hydraviewer/map.html', context)
