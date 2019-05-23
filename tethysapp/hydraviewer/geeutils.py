@@ -21,6 +21,8 @@ except EEException as e:
     credentials = ServiceAccountCredentials.from_p12_keyfile(
     service_account_email=config.SERVICEACCOUNT,
     filename=config.KEYFILE,
+    private_key_password='notasecret',
+    scopes=ee.oauth.SCOPE + ' https://www.googleapis.com/auth/drive '
     )
     ee.Initialize(credentials)
 
