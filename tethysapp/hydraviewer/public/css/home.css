@@ -113,10 +113,10 @@
 
 @media (max-width:991px){
       .rss-feed {
+        overflow-y: scroll;
         width:95%;
         height: 380px;
         margin-left: 20px;
         margin-right: 20px;
-        margin-top: 10px;
       }
     }
