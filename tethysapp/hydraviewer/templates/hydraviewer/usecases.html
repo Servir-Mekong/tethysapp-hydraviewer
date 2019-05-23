@@ -5,16 +5,20 @@
 
 {% block styles %}
     {{ block.super }}
-    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
     <link href="{% static 'hydraviewer/css/usecase.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
-  <!-- <script src="{% static 'hydraviewer/js/map.js' %}" type="text/javascript"></script> -->
+  <script>
+    $(function() {
+      if (document.getElementById("app-content-wrapper").className.includes("show-nav")){
+        document.getElementById("app-content-wrapper").className = "";
+      }
+    })
+  </script>
 {% endblock %}
 
-s
 {% block header_buttons %}
   {% url 'hydraviewer:home' as home_url %}
   {% url 'hydraviewer:mapviewer' as map_url %}

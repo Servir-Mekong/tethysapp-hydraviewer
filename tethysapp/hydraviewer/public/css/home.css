@@ -1,9 +1,10 @@
-.nav_item {
-    padding:10px;
-    color: white;
-    font-weight:700;
-    border-right: 1px solid gray;
-    margin-right:10px;
+#app-navigation{
+  display: none;
+}
+
+.toggle-nav{
+    opacity:0.0;
+    pointer-events: none;
 }
 
 .card {

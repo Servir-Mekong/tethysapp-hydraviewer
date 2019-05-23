@@ -278,3 +278,11 @@ p {
   width: 10%;
   color: #fff;
 }
+
+.nav_item {
+    padding:10px;
+    color: white;
+    font-weight:700;
+    border-right: 1px solid gray;
+    margin-right:10px;
+}

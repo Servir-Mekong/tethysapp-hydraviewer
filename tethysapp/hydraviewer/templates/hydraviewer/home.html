@@ -3,6 +3,22 @@
 
 {% load staticfiles %}
 
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'hydraviewer/css/home.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function() {
+      if (document.getElementById("app-content-wrapper").className == "show-nav"){
+        document.getElementById("app-content-wrapper").className = "";
+      }
+    })
+  </script>
+{% endblock %}
+
 {% block header_buttons %}
   {% url 'hydraviewer:home' as home_url %}
   {% url 'hydraviewer:mapviewer' as map_url %}
