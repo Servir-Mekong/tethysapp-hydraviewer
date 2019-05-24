@@ -50,7 +50,7 @@ def usecases(request):
     return render(request, 'hydraviewer/usecases.html', context)
 
 def mapviewer(request):
-        
+
     """
     Controller for the app home page.
     """
@@ -84,16 +84,11 @@ def mapviewer(request):
         initial=isodate
     )
     update_button = Button(
-        display_text='Update',
+        display_text='Update Historic Layer',
         name='update-button',
         icon='glyphicon glyphicon-refresh',
         style='primary',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Update',
-            'id': 'update-button'
-        }
+        classes="btn_custom"
     )
 
 
@@ -206,7 +201,7 @@ def mapviewer(request):
         # display_text='Select precipitation product:',
         name='sensor_selection',
         multiple=False,
-        options=[ 
+        options=[
                  ('Sentinel 1', 'sentinel1'),
                  ('VIIRS Downscaled','viirs'),
                  ('ATMS (Comming soon)', 'atms')],

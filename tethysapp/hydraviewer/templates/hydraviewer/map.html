@@ -9,13 +9,10 @@
       integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
       crossorigin=""/>
     <link rel="stylesheet" href="https://cdn.rawgit.com/socib/Leaflet.TimeDimension/master/dist/leaflet.timedimension.control.min.css" />
-    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
-
     <!--Plugin CSS file with desired skin-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css"/>
 
-    
-   
+    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
@@ -93,7 +90,7 @@
       </div>
     </a>
     <div id="dateSelect-collapse" class="panel-collapse collapse">
-  <p><b> Select Date (YYYY-MM-DD): </b></p>
+  <p> Select Date (YYYY-MM-DD): </p>
   {% gizmo date_selection %}
 
     </div>
@@ -112,7 +109,7 @@
         <span class="checkmark"></span>
       </label>
 
-      <p><b>&emsp;&emsp;&emsp;IMERG&emsp;&emsp;&emsp;</b></p>
+      <p><b>&emsp;&emsp;&emsp;PRECIPITATION MAP&emsp;&emsp;&emsp;</b></p>
       <div class="slider-width">
         <p> Opacity:&emsp;&emsp; </p>
         <input id="precip-opacity" data-slider-id='precip-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true" class= "custom-slider"
@@ -151,7 +148,7 @@
 
 
       <div class="center_obj" >
-      	<button type="submit" id="btn_download" name="btn_download" class="btn_custom"><i class="glyphicon glyphicon-cloud-download"></i> &emsp; DOWNLOAD DATA</button>
+      	<button type="submit" id="btn_download" name="btn_download" class="btn_custom"><i class="glyphicon glyphicon-cloud-download"></i> Download Data</button>
       </div>
     </div>
   </div>
@@ -166,7 +163,7 @@
         <input id="historical-check" type="checkbox" checked="checked">
         <span class="checkmark"></span>
       </label>
-      <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER MAPS&emsp;&emsp;&emsp;</b></p>
+      <p><b>&emsp;&emsp;&emsp;HISTORICAL WATER MAP&emsp;&emsp;&emsp;</b></p>
   <div class="slider-width">
   <p> Opacity:&emsp;&emsp; </p>
         <input id="historical-opacity" data-slider-id='historical-opacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1" data-slider-enabled="true"
@@ -191,7 +188,7 @@
       <div class="center_obj" >
       	{% gizmo update_button %}
       </div>
-    
+
 
     </div>
   </div>
@@ -236,7 +233,7 @@
 <p><b style="color: #2196F3;" >Continuous</b> : This will select the time period from May 1984 to August 2015 continuously. </p>
 <p><b style="color: #2196F3;" >Seasonal</b> : This method will select only the month of May to August from year 1984 to 2015. This will not select remaining months such as January, February, September and the rest.</p>
                 </div>
-              
+
             </div>
         </div>
     </div>
