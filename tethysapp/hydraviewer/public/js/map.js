@@ -15,6 +15,19 @@ $(function() {
 
   selected_date = $('#date_selection').val();
 
+  $('.js-range-slider').ionRangeSlider({
+        skin: "round",
+	type: "double",
+        grid: true,
+	from: 0,
+	to: 11,
+        values: [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ]
+    });
+
+
   // set slider vars with the correct elements
   var browseSlider = $('#browse-opacity').slider();
   var precipSlider = $('#precip-opacity').slider();
@@ -187,14 +200,15 @@ map.on('draw:created', function(e) {
 
   });
 
-$('#date_selection,#start_year_selection_historical,#end_year_selection_historical,#start_month_selection_historical,#end_month_selection_historical,#method_historical_selection').change(function(){
+$('#date_selection').change(function(){
     var startYear = $('#start_year_selection_historical').val();
     var endYear = $('#end_year_selection_historical').val();
     var startMonth = Number(selected_date.split('-')[1])
     var endMonth = (startMonth + 1) % 12
     // var startMonth = $('#start_month_selection_historical').val();
     // var endMonth = $('#end_month_selection_historical').val();
-    var method = $('#method_historical_selection').val();
+    //var method = $('#method_historical_selection').val();
+    var method = 'discrete';
     console.log(startMonth,endMonth);
     var xhr = ajax_update_database('update_historical',{'startYear':startYear,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
     xhr.done(function(data) {
@@ -207,6 +221,28 @@ $('#date_selection,#start_year_selection_historical,#end_year_selection_historic
   });
 
 //$("#sensor_selection option[value='atms']").attr('disabled','disabled');
+
+  $("#update-button").on("click",function(){
+    var startYear = $('#start_year_selection_historical').val();
+    var endYear = $('#end_year_selection_historical').val();
+    var slider = $("#month_range").data("ionRangeSlider");
+
+   // Get values
+    var startMonth = slider.result.from + 1;
+    var endMonth= slider.result.to + 1;
+    var method = 'discrete';
+
+var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          historical_layer.setUrl(data.url)
+        }else{
+          alert(data.error);
+        }
+    });
+
+  });
+
 
   $("#btn_download").on("click",function(){
  if(drawing_polygon === undefined){

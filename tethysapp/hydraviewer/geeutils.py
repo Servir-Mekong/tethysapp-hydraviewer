@@ -317,7 +317,7 @@ def JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method):
 
     return water
 
-def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='continuous',
+def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='discrete',
                   climatology=True,
                   month=None,
                   defringe=True,

@@ -70,6 +70,19 @@ def mapviewer(request):
         today_button=True,
         initial=isodate
     )
+    update_button = Button(
+        display_text='Update',
+        name='update-button',
+        icon='glyphicon glyphicon-refresh',
+        style='primary',
+        attributes={
+            'data-toggle':'tooltip',
+            'data-placement':'top',
+            'title':'Update',
+            'id': 'update-button'
+        }
+    )
+
 
     method_historical_selection = SelectInput(
         name='method_historical_selection',
@@ -203,7 +216,8 @@ def mapviewer(request):
 	    'start_year_selection_historical' : start_year_selection_historical,
         'end_month_selection_historical' : end_month_selection_historical,
 	    'end_year_selection_historical' : end_year_selection_historical,
-        'method_historical_selection' : method_historical_selection
+        'method_historical_selection' : method_historical_selection,
+        'update_button' : update_button
 
     }
 
