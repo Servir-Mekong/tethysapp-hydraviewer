@@ -329,7 +329,9 @@ p {
     border-right: 1px solid gray;
     margin-right:10px;
     max-height: 40px;
-    overflow-y: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .nav_item:hover {
