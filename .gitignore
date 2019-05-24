@@ -24,3 +24,7 @@ node_modules/
 #=======================
 */__pycache__/
 tethysapp_hydraviewer.egg-info/
+
+# Specific files
+#=======================
+tethysapp/hydraviewer/public/images/precip_colorbar.png
