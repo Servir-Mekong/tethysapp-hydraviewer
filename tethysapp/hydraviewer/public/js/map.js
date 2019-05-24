@@ -212,6 +212,8 @@ map.on('draw:created', function(e) {
     var endMonth= slider.result.to + 1;
     var method = 'discrete';
 
+    if (startMonth == endMonth) { endMonth += 1 }
+
     var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
         xhr.done(function(data) {
         if("success" in data) {
