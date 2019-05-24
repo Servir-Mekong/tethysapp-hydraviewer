@@ -115,7 +115,7 @@ map.on('draw:created', function(e) {
   historical_layer = addMapLayer(historical_layer,$layers_element.attr('data-historical-url'))
   precip_layer = addMapLayer(precip_layer,$layers_element.attr('data-precip-url'))
   admin_layer = addMapLayer(admin_layer,$layers_element.attr('data-admin-url'))
-  
+
   precip_layer.setOpacity(0)
   precipSlider.slider('disable')
 
@@ -200,26 +200,6 @@ map.on('draw:created', function(e) {
 
   });
 
-$('#date_selection').change(function(){
-    var startYear = $('#start_year_selection_historical').val();
-    var endYear = $('#end_year_selection_historical').val();
-    var startMonth = Number(selected_date.split('-')[1])
-    var endMonth = (startMonth + 1) % 12
-    // var startMonth = $('#start_month_selection_historical').val();
-    // var endMonth = $('#end_month_selection_historical').val();
-    //var method = $('#method_historical_selection').val();
-    var method = 'discrete';
-    console.log(startMonth,endMonth);
-    var xhr = ajax_update_database('update_historical',{'startYear':startYear,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
-    xhr.done(function(data) {
-        if("success" in data) {
-          historical_layer.setUrl(data.url)
-        }else{
-          alert(data.error);
-        }
-    });
-  });
-
 //$("#sensor_selection option[value='atms']").attr('disabled','disabled');
 
   $("#update-button").on("click",function(){
@@ -232,15 +212,14 @@ $('#date_selection').change(function(){
     var endMonth= slider.result.to + 1;
     var method = 'discrete';
 
-var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
-    xhr.done(function(data) {
+    var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
+        xhr.done(function(data) {
         if("success" in data) {
           historical_layer.setUrl(data.url)
         }else{
           alert(data.error);
         }
     });
-
   });
 
 
