@@ -71,18 +71,32 @@ def get_surfacewatermap(request):
 
     if request.method == 'POST':
         try:
-            info = request.POST;
+            info = request.POST
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
-
             water_layer = geeutils.getfloodMap(sensor,start_date)
 
             return_obj["url"] = water_layer
             return_obj["success"] = "success"
-
         except Exception as e:
             #return_obj["error"] = "Error Processing Request. Error: "+ str(e)
             return_obj["error"] = "Data not available"
+
+    elif request.method == 'GET':
+        print("Success")
+        try:
+            info = request.GET
+            start_date = info.get('sDate')
+            sensor = info.get('sensor_txt')
+            water_layer = geeutils.getfloodMap(sensor,start_date)
+
+            return_obj["url"] = water_layer
+            return_obj["success"] = "success"
+        except Exception as e:
+            #return_obj["error"] = "Error Processing Request. Error: "+ str(e)
+            return_obj["error"] = "Data not available"
+
+
 
     return JsonResponse(return_obj)
 

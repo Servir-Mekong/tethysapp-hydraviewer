@@ -50,6 +50,7 @@ def usecases(request):
     return render(request, 'hydraviewer/usecases.html', context)
 
 def mapviewer(request):
+        
     """
     Controller for the app home page.
     """
@@ -58,8 +59,20 @@ def mapviewer(request):
     thisdate = today-datetime.timedelta(2)
     isodate = thisdate.strftime('%Y-%m-%d')
 
+    if request.method == 'GET':
+        info = request.GET
+        start_date = info.get('sDate')
+        if not start_date:
+            start_date = '2019-04-17'
+
+        sensor = info.get('sensor_txt')
+        if not sensor:
+            sensor = 'viirs'
+    else:
+        print('no request')
+
     precip_layer1 = geeutils.getPrecipMap(isodate,accumulation=1)
-    flood_layer = geeutils.getfloodMap("viirs",'2019-04-17')
+    flood_layer = geeutils.getfloodMap(sensor, start_date)
 
     date_selection = DatePicker(
         name='date_selection',
