@@ -3,13 +3,29 @@
 
 {% load staticfiles %}
 
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'hydraviewer/css/home.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function() {
+      if (document.getElementById("app-content-wrapper").className == "show-nav"){
+        document.getElementById("app-content-wrapper").className = "";
+      }
+    })
+  </script>
+{% endblock %}
+
 {% block header_buttons %}
   {% url 'hydraviewer:home' as home_url %}
   {% url 'hydraviewer:mapviewer' as map_url %}
   {% url 'hydraviewer:usecases' as use_url %}
-  <a class="nav_item" href="{{ home_url }}">Home</a>
-  <a class="nav_item" href="{{ map_url }}">Map Viewer</a>
-  <a class="nav_item" href="{{ use_url }}">Use Cases</a>
+  <a class="nav_item grow" href="{{ home_url }}">Home&emsp;</a>
+  <a class="nav_item grow" href="{{ map_url }}">Map Viewer&emsp;</a>
+  <a class="nav_item grow" href="{{ use_url }}">Use Cases&emsp;</a>
   <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
     <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
   </div>
@@ -20,7 +36,7 @@
   {% url 'https://hydra-floods.readthedocs.io' as docs_url %}
   {% url 'hydraviewer:historical' as historical_url %}
   <h1 style="text-align: center;">Welcome to the <b>HYDRAFloods Viewer</h1>
-  <h3 style="text-align: center;"><b>HYD</b>rologic <b>R</b>emote Sensing <b>A</b>nalysis</h2>
+  <h3 style="text-align: center;"><b>HYD</b>rologic <b>R</b>emote Sensing <b>A</b>nalysis</h3>
   <br>
 
     <div class="container-fluid">
@@ -153,10 +169,8 @@
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block app_actions %}
   <!-- insert app actions here -->
 {% endblock %}
-

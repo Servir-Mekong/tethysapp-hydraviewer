@@ -5,23 +5,27 @@
 
 {% block styles %}
     {{ block.super }}
-    <link href="{% static 'hydraviewer/css/map.css' %}" rel="stylesheet"/>
     <link href="{% static 'hydraviewer/css/usecase.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
-  <!-- <script src="{% static 'hydraviewer/js/map.js' %}" type="text/javascript"></script> -->
+  <script>
+    $(function() {
+      if (document.getElementById("app-content-wrapper").className.includes("show-nav")){
+        document.getElementById("app-content-wrapper").className = "";
+      }
+    })
+  </script>
 {% endblock %}
 
-s
 {% block header_buttons %}
   {% url 'hydraviewer:home' as home_url %}
   {% url 'hydraviewer:mapviewer' as map_url %}
   {% url 'hydraviewer:usecases' as use_url %}
-  <a class="nav_item" href="{{ home_url }}">Home</a>
-  <a class="nav_item" href="{{ map_url }}">Map Viewer</a>
-  <a class="nav_item" href="{{ use_url }}">Use Cases</a>
+  <a class="nav_item grow" href="{{ home_url }}">Home&emsp;</a>
+  <a class="nav_item grow" href="{{ map_url }}">Map Viewer&emsp;</a>
+  <a class="nav_item grow" href="{{ use_url }}">Use Cases&emsp;</a>
   <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
     <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
   </div>
@@ -36,7 +40,7 @@ s
     <div class="container-fluid">
 
       <div class="row" style="margin-bottom: 15px;">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="flip-card">
                 <div class="flip-card-inner">
                   <div class="flip-card-front" id="card_front_1">
@@ -64,7 +68,7 @@ s
         </div>
 
           <!-- <div class="row" style="margin-bottom: 15px;"> -->
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="flip-card">
                 <div class="flip-card-inner">
                   <div class="flip-card-front" id="card_front_2">
@@ -93,6 +97,7 @@ s
           </div>
         </div>
 
+<!--<<<<<<< HEAD -->
         <div class="col-md-4">
           <div class="flip-card">
                 <div class="flip-card-inner">
@@ -122,6 +127,8 @@ s
           </div>
         </div>
         
+<!--======= 
+>>>>>>> 109dcd28c366e77e029f45ac14bf7cf5c372891c -->
       </div>  <!-- close row -->
     </div>  <!-- close fluid-container -->
 

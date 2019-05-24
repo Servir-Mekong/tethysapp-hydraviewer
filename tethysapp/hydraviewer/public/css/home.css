@@ -1,9 +1,10 @@
-.nav_item {
-    padding:10px;
-    color: white;
-    font-weight:700;
-    border-right: 1px solid gray;
-    margin-right:10px;
+#app-navigation{
+  display: none;
+}
+
+.toggle-nav{
+    opacity:0.0;
+    pointer-events: none;
 }
 
 .card {
@@ -99,10 +100,23 @@
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
 
-.rss-feed {
-    overflow-y: scroll;
-    height: 400px;
-    width: 46%;
-    margin-left: 20px;
-    margin-top: 10px;
+@media (min-width:992px){
+  .rss-feed {
+      overflow-y: scroll;
+      height: 380px;
+      width: 46%;
+      margin-left: 20px;
+      margin-right: 20px;
+      margin-top: 10px;
+  }
 }
+
+@media (max-width:991px){
+      .rss-feed {
+        overflow-y: scroll;
+        width:95%;
+        height: 380px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+    }

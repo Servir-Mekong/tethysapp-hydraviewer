@@ -21,6 +21,8 @@ except EEException as e:
     credentials = ServiceAccountCredentials.from_p12_keyfile(
     service_account_email=config.SERVICEACCOUNT,
     filename=config.KEYFILE,
+    private_key_password='notasecret',
+    scopes=ee.oauth.SCOPE + ' https://www.googleapis.com/auth/drive '
     )
     ee.Initialize(credentials)
 
@@ -79,9 +81,11 @@ def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
                                     orientation='vertical',
                                     extend='max')
 
-    cb.set_label('Precipitation [mm/day]')
+    cb.set_label('Precipitation [mm]')
     fig.savefig(os.path.join(CURRENT_DIR,'public/images/precip_colorbar.png'),
         dpi=150,bbox_inches='tight')
+
+    plt.close()
     return precipMap
 
 
@@ -279,7 +283,7 @@ def JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method):
                     filter(ee.Filter.calendarRange(int(startMonth), int(endMonth), 'month'))
     else:
         myjrc = IMAGE_COLLECTION.filterBounds(geom).filterDate(startYear + '-' + startMonth, endYear + '-' + endMonth)
-    
+
     #myjrc = IMAGE_COLLECTION.filterBounds(geom).filterDate(startDate, endDate)
 
     #if month != None:

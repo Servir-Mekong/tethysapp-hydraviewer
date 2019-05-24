@@ -88,3 +88,15 @@
   margin-left:25px;
   margin-right:25px;
 }
+
+.toggle-nav{
+    opacity:1.0;
+}
+
+.toggle-nav:hover {
+    background: #78e08f;
+}
+
+#app-header .tethys-app-header #nav-title-wrapper .toggle-nav:hover div {
+    background: #34495e;
+}
