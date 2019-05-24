@@ -29,6 +29,7 @@ p {
    padding-top: 7px;
    padding-right: 10px;
    border-radius: 8px;
+   border-color: #34495e;
 }
 .btn_custom:hover {
   background:#78e08f;
