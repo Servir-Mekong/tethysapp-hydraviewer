@@ -89,8 +89,8 @@ def getfloodMap(snsr,sdate):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first())
-    image = image.mask(image)
+    image = ee.Image(fc.first()).select(0)
+    image = image.updateMask(image)
 
     #if snsr == 'atms':
         #image = image.select('water')
@@ -103,7 +103,7 @@ def GetDownloadURL(snsr,sdate,poly):
     t1 = ee.Date(sdate)
     t2 = t1.advance(1,'day')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(t1,t2).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first())
+    image = ee.Image(fc.first()).select(0)
 
     dnldURL = image.getDownloadURL({
 		'scale': 90,

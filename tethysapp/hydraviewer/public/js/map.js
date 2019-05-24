@@ -204,7 +204,7 @@ $('#start_year_selection_historical,#end_year_selection_historical,#start_month_
     });
   });
 
-$("#sensor_selection option[value='atms']").attr('disabled','disabled');
+//$("#sensor_selection option[value='atms']").attr('disabled','disabled');
 
   $("#btn_download").on("click",function(){
  if(drawing_polygon === undefined){

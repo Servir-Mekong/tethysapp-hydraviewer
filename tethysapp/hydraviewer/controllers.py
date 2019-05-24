@@ -57,7 +57,7 @@ def mapviewer(request):
     isodate = thisdate.strftime('%Y-%m-%d')
 
     precip_layer1 = geeutils.getPrecipMap(isodate,accumulation=1)
-    flood_layer = geeutils.getfloodMap("viirs",'2019-03-03')
+    flood_layer = geeutils.getfloodMap("viirs",'2019-04-17')
 
     date_selection = DatePicker(
         name='date_selection',
@@ -181,7 +181,7 @@ def mapviewer(request):
         options=[ 
                  ('Sentinel 1', 'sentinel1'),
                  ('VIIRS Downscaled','viirs'),
-		         ('ATMS (Comming soon)', 'atms')],
+                 ('ATMS (Comming soon)', 'atms')],
         initial=['VIIRS Downscaled'],
         select2_options={'placeholder': 'Select sensor:',
                          'allowClear': False}
@@ -197,7 +197,7 @@ def mapviewer(request):
         'cmap_selection': cmap_selection,
         'browse_selection': browse_selection,
         'sensor_selection':sensor_selection,
-	    'start_month_selection_historical' : start_month_selection_historical,
+        'start_month_selection_historical' : start_month_selection_historical,
 	    'start_year_selection_historical' : start_year_selection_historical,
         'end_month_selection_historical' : end_month_selection_historical,
 	    'end_year_selection_historical' : end_year_selection_historical,
