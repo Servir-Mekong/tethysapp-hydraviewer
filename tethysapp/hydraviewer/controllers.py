@@ -58,12 +58,13 @@ def mapviewer(request):
     today = datetime.datetime.now()
     thisdate = today-datetime.timedelta(2)
     isodate = thisdate.strftime('%Y-%m-%d')
+    initial_date = '2015-08-03'
 
     if request.method == 'GET':
         info = request.GET
         start_date = info.get('sDate')
         if not start_date:
-            start_date = '2019-04-17'
+            start_date = initial_date
 
         sensor = info.get('sensor_txt')
         if not sensor:
@@ -81,7 +82,8 @@ def mapviewer(request):
         format='yyyy-mm-dd',
         start_view='decade',
         today_button=True,
-        initial=isodate
+        initial=initial_date
+        #initial=isodate
     )
     update_button = Button(
         display_text='Update Historic Layer',

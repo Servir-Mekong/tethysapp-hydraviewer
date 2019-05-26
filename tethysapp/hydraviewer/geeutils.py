@@ -93,15 +93,20 @@ def getfloodMap(snsr,sdate):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first()).select(0)
-    image = image.updateMask(image)
+    if fc.size().getInfo() > 0:
+        image = ee.Image(fc.first()).select(0)
+        image = image.updateMask(image)
 
-    #if snsr == 'atms':
-        #image = image.select('water')
-        #image = image.updateMask(image)
+        #if snsr == 'atms':
+            #image = image.select('water')
+            #image = image.updateMask(image)
 
-    floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
-    return floodMap
+        floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
+        return floodMap
+    else:
+        return {
+            'error': 'no data is available for this date!'
+        }
 
 def GetDownloadURL(snsr,sdate,poly):
     t1 = ee.Date(sdate)

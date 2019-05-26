@@ -107,7 +107,8 @@ map.on('draw:created', function(e) {
   var $update_element = $('#update_button');
   var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"
 
-  browse_layer = addGibsLayer(browse_layer,viirs_product,selected_date)
+  //browse_layer = addGibsLayer(browse_layer,viirs_product,selected_date)
+  browse_layer = addGibsLayer(browse_layer,viirs_product,'2019-05-24')
 
 
   //sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
@@ -200,7 +201,7 @@ map.on('draw:created', function(e) {
 
   });
 
-//$("#sensor_selection option[value='atms']").attr('disabled','disabled');
+  $("#sensor_selection option[value='atms']").attr('disabled','disabled');
 
   $("#update-button").on("click",function(){
     var startYear = $('#start_year_selection_historical').val();
