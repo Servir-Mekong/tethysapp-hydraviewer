@@ -227,6 +227,13 @@
               </div>
             {% endblock %}
 
+	{# App actions are fixed to the bottom #}
+              {% block app_actions_override %}
+                <div id="app-actions">
+                  {% block app_actions %}{% endblock %}
+                  <div id="app-actions-spacer"></div>
+                </div>
+              {% endblock %}
 
             </div>
           </div>
@@ -234,5 +241,3 @@
     {% endblock %}
 
 
-{% block app_actions %}
-{% endblock %}
