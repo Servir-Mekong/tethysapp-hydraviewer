@@ -1,3 +1,4 @@
+
 {% extends "hydraviewer/base.html" %}
 {% load tethys_gizmos %}
 
@@ -19,162 +20,146 @@
   </script>
 {% endblock %}
 
-{% block header_buttons %}
-  {% url 'hydraviewer:home' as home_url %}
-  {% url 'hydraviewer:mapviewer' as map_url %}
-  {% url 'hydraviewer:usecases' as use_url %}
-  <a class="nav_item grow" href="{{ home_url }}">Home&emsp;</a>
-  <a class="nav_item grow" href="{{ map_url }}">Map Viewer&emsp;</a>
-  <a class="nav_item grow" href="{{ use_url }}">Use Cases&emsp;</a>
-  <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
-    <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
-  </div>
-{% endblock %}
+{% block app_content_override %}
+          <div id="app-content">
 
-{% block app_content %}
-  {% url 'hydraviewer:mapviewer' as map_url %}
-  {% url 'https://hydra-floods.readthedocs.io' as docs_url %}
-  {% url 'hydraviewer:historical' as historical_url %}
-  <h1 style="text-align: center;">Welcome to the <b>HYDRAFloods Viewer</h1>
-  <h3 style="text-align: center;"><b>HYD</b>rologic <b>R</b>emote Sensing <b>A</b>nalysis</h3>
-  <br>
+            {# Off canvas navigation menu #}
+            {% block app_navigation_override %}
+              <div id="app-navigation">
+                {% block app_navigation %}
+                  <ul class="nav nav-pills nav-stacked">
+                    {% block app_navigation_items %}{% endblock %}
+                  </ul>
+                {% endblock %}
+              </div>
+            {% endblock %}
 
-    <div class="container-fluid">
+            {# App content starts here #}
+            <div id="inner-app-content">
+              {% block app_content %}
 
-      <div class="row" style="margin-bottom: 15px;">
-          <div class="col-md-6">
-                <div class="card" id="precip">
-                    <div class="card-image">
+		  {% url 'hydraviewer:mapviewer' as map_url %}
+		  {% url 'https://hydra-floods.readthedocs.io' as docs_url %}
+		  {% url 'hydraviewer:historical' as historical_url %}
+		  <h1 style="text-align: center;">Welcome to the <b>HYDRAFloods Viewer</h1>
+		  <h3 style="text-align: center;"><b>HYD</b>rologic <b>R</b>emote Sensing <b>A</b>nalysis</h3>
+		  <br>
 
-                        <a href="{{ map_url }}">
-                            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/HYDRAFloodsViewer.png">
-                            <h4><span class="card-title">Explore the HYDRAFloods Viewer</span></h4>
-                        </a>
-                    </div>
+		    <div class="container-fluid">
 
-                    <!--<div class="card-content">
-                               <p class="collapse-text-toggle">
-                                  Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.
-                              </p>
-                    </div>-->
+		      <div class="row" style="margin-bottom: 15px;">
+			  <div class="col-md-6">
+				<div class="card" id="precip">
+				    <div class="card-image">
+
+				        <a href="{{ map_url }}">
+				            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/HYDRAFloodsViewer.png">
+				            <h4><span class="card-title">Explore the HYDRAFloods Viewer</span></h4>
+				        </a>
+				    </div>
+
+				    <!--<div class="card-content">
+				               <p class="collapse-text-toggle">
+				                  Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.
+				              </p>
+				    </div>-->
+				</div>
+			  </div>
+			  <div class="col-md-6 well rss-feed">
+
+				<h3><b><i class="fa fa-rss fa-3x"></i> RSS Feeds</b></h3>
+				<li style="list-style: none;">
+				    <a href="#" target="_blank">
+				        <strong class="media-heading"><h3>Recent Flood Events in Myanmar</h3></strong>
+				    </a>
+				    <span><b>Time: 2018-01-01</b></span>
+				    <h5>Description</h5>
+				    <span>Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.</span>
+				    <hr>
+				</li>
+
+				<li style="list-style: none;">
+				    <a href="#" target="_blank">
+				        <strong class="media-heading"><h3>Food Security</h3></strong>
+				    </a>
+				    <span><b>Time: 2018-02-01</b></span>
+				    <h5>Description</h5>
+				    <span>Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.</span>
+				    <hr>
+				</li>
+
+			  </div>
+		      </div>
+		      <div class="row" style="margin-bottom: 15px;">
+
+			  <div class="col-md-6">
+				<div class="card" id="scienceDoc">
+				    <div class="card-image">
+				        <a href="https://docs.google.com/document/d/e/2PACX-1vSqgJ4ZtD9NgD3DONduglm6YWVRh2RHcydyD-hzCH6pCZy5Awr9m0WomODZ6CRIQqMKyBsOWKIsFiWK/pub" target="_">
+
+				            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/earthscience.png">
+				            <h4><span class="card-title">Science Documentation</span></h4>
+				        </a>
+				    </div>
+				</div>
+			  </div>
+
+			  <div class="col-md-6">
+				<div class="card" id="precip">
+				    <div class="card-image">
+
+				        <a href="https://hydra-floods.readthedocs.io" target="_">
+				            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/technicalDoc.png">
+				            <h4><span class="card-title">Technical Documentation</span></h4>
+				        </a>
+				    </div>
+
+				    <!--<div class="card-content">
+				               <p class="collapse-text-toggle">
+				                  Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.
+				              </p>
+				    </div>-->
+				</div>
+			  </div>
+
+		      </div>
+
+		      <div class="row" style="margin-bottom: 15px;">
+
+			  <div class="col-md-6">
+				<div class="card" id="historic">
+				    <div class="card-image">
+
+				        <a href="https://github.com/servir-mekong/hydra-floods" target="_">
+				            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/github.png">
+				            <h4><span class="card-title">Code</span></h4>
+				        </a>
+				    </div>
+
+				    <!--<div class="card-content">
+				               <p class="collapse-text-toggle">
+				                  Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.
+				              </p>
+				    </div>-->
+				</div>
+			  </div>
+		      </div>
+
+		    </div>
+
+	{% endblock %}
+
+
+              {# App actions are fixed to the bottom #}
+              {% block app_actions_override %}
+                <div id="app-actions">
+                  {% block app_actions %}{% endblock %}
+                  <div id="app-actions-spacer"></div>
                 </div>
-          </div>
-          <div class="col-md-6 well rss-feed">
-
-                <h3><b><i class="fa fa-rss fa-3x"></i> RSS Feeds</b></h3>
-                <li style="list-style: none;">
-                    <a href="#" target="_blank">
-                        <strong class="media-heading"><h3>Recent Flood Events in Myanmar</h3></strong>
-                    </a>
-                    <span><b>Time: 2018-01-01</b></span>
-                    <h5>Description</h5>
-                    <span>Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.</span>
-                    <hr>
-                </li>
-
-                <li style="list-style: none;">
-                    <a href="#" target="_blank">
-                        <strong class="media-heading"><h3>Food Security</h3></strong>
-                    </a>
-                    <span><b>Time: 2018-02-01</b></span>
-                    <h5>Description</h5>
-                    <span>Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.</span>
-                    <hr>
-                </li>
-
-          </div>
-      </div>
-      <div class="row" style="margin-bottom: 15px;">
-
-          <div class="col-md-6">
-                <div class="card" id="scienceDoc">
-                    <div class="card-image">
-                        <a href="https://docs.google.com/document/d/e/2PACX-1vSqgJ4ZtD9NgD3DONduglm6YWVRh2RHcydyD-hzCH6pCZy5Awr9m0WomODZ6CRIQqMKyBsOWKIsFiWK/pub" target="_">
-
-                            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/earthscience.png">
-                            <h4><span class="card-title">Science Documentation</span></h4>
-                        </a>
-                    </div>
-                </div>
-          </div>
-
-          <div class="col-md-6">
-                <div class="card" id="precip">
-                    <div class="card-image">
-
-                        <a href="https://hydra-floods.readthedocs.io" target="_">
-                            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/technicalDoc.png">
-                            <h4><span class="card-title">Technical Documentation</span></h4>
-                        </a>
-                    </div>
-
-                    <!--<div class="card-content">
-                               <p class="collapse-text-toggle">
-                                  Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.
-                              </p>
-                    </div>-->
-                </div>
-          </div>
-
-      </div>
-
-      <div class="row" style="margin-bottom: 15px;">
-
-          <div class="col-md-6">
-                <div class="card" id="historic">
-                    <div class="card-image">
-
-                        <a href="https://github.com/servir-mekong/hydra-floods" target="_">
-                            <img class="zoom img-responsive grow"  src="/static/hydraviewer/images/github.png">
-                            <h4><span class="card-title">Code</span></h4>
-                        </a>
-                    </div>
-
-                    <!--<div class="card-content">
-                               <p class="collapse-text-toggle">
-                                  Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasise design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for mock-ups. It helps to outline the visual elements of a document or presentation, eg typography, font, or layout. Lorem ipsum is mostly a part of a Latin text by the classical author and philosopher Cicero. Its words and letters have been changed by addition or removal, so to deliberately render its content nonsensical; it's not genuine, correct, or comprehensible Latin anymore. While lorem ipsum's still resembles classical Latin, it actually has no meaning whatsoever. As Cicero's text doesn't contain the letters K, W, or Z, alien to latin, these, and others are often inserted randomly to mimic the typographic appearence of European languages, as are digraphs not to be found in the original.
-                              </p>
-                    </div>-->
-                </div>
-          </div>
-      </div>
-
-    </div>
-
-
-{% endblock %}
-
-<!-- {# Use the after_app_content block for modals #} -->
-{% block after_app_content %}
-<!-- Help Modal -->
-    <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h5 class="modal-title" id="help-modal-label">Help Modal</h5>
-                </div>
-                <div class="modal-body">
-                    <h1>Disclaimer:</h1>
-                    <p>This application is currently in Beta. It is not to be used for any operational purpose.The SERVIR Project, NASA, and USAID, make no express or implied warranty of this application and associated data as to the merchantability or fitness for a particular purpose. Neither the US Government nor its contractors shall be liable for special, consequential or incidental damages attributed to this application and associated data.</p>
-                    <p><a href="https://servirglobal.net/Privacy-Terms-of-Use" target="_blank">Privacy and Terms of Use</a></p>
-                </div>
-                <div class="modal-footer">
-                    <div align="center" id="logos">
-                        <div class="logo-image"><a href="http://www.usaid.gov/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/usaid.png"></a></div>
-                        <div class="logo-image"><a href="http://appliedsciences.nasa.gov/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/nasa.png"></a></div>
-                        <div class="logo-image"><a href="http://www.cilss.bf/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/cilss.png"></a></div>
-                        <div class="logo-image"><a href="http://www.rcmrd.org/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/rcmrd.png"></a></div>
-                        <div class="logo-image"><a href="http://www.icimod.org/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/icimod.png"></a></div>
-                        <div class="logo-image"><a href="http://www.adpc.net/" target="_blank"><img src="https://servirglobal.net/Portals/_default/Skins/Servir2015/img/adpc.png"></a></div>
-                    </div>
-
-                </div>
+              {% endblock %}
             </div>
-        </div>
-    </div>
-{% endblock %}
+          </div>
+        {% endblock %}
 
-{% block app_actions %}
-  <!-- insert app actions here -->
-{% endblock %}
+
+

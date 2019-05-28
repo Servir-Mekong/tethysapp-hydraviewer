@@ -338,3 +338,110 @@ p {
   color: #78e08f;
   text-decoration: none
 }
+
+
+.banner-container {
+    background: url("https://servir.adpc.net/themes/svmk/images/optimized/satellite-inside.png");
+    background-position: 110% 70%;
+    background-repeat: no-repeat;
+    background-size: 800px auto;
+	background-color: white;
+    position: fixed;
+    width:100%;
+    z-index:100;
+}
+
+.menu-container {
+	/*background-color: black !important;*/
+	background-color: #333333 !important;
+}
+
+.banner {
+    /*height: 50px;*/
+    margin: 10px;
+    /*float: left;*/
+    background: no-repeat fixed center;
+}
+
+.usaid {
+    background-size: auto 50px;
+    width: 170px !important;
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+@media (max-width: 1024px) {
+	.usaid {
+    	margin: auto;
+	}
+}
+
+.nasa {
+    background-size: auto 50px;
+    width: 60px !important;
+    float: left;
+    margin-right: 5px;
+}
+
+@media (max-width: 1024px) {
+	.nasa {
+    	margin: auto;
+	}
+}
+
+.adpc {
+    background-size: auto 50px;
+    width: 110px !important;
+    float: left;
+}
+
+@media (max-width: 1024px) {
+	.adpc {
+    	margin: auto;
+	}
+}
+
+.servir {
+    float: right;
+    background-size: auto 35px;
+    width: 250px !important;
+    padding-top: 10px;
+}
+
+@media (max-width: 1024px) {
+	.servir {
+    	margin: auto;
+    	/*float: none;*/
+	}
+}
+#app-content-wrapper #app-content #app-navigation {
+    position: absolute;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100%;
+    background: #efefef;
+    padding: 0 15px;
+    padding-top: 115px;
+}
+
+#app-content-wrapper #app-content {
+    position: relative;
+    width: 100%;
+    padding-top: 115px;
+    padding-bottom: 50px;
+    min-height: 100%;
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+    -webkit-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    visibility: hidden;
+    opacity: 0;
+}

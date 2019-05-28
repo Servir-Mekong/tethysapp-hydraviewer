@@ -4,26 +4,79 @@
 
 {% block title %}{{ tethys_app.name }}{% endblock %}
 
-{% block app_icon %}
-  {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
-  <img src="{% static tethys_app.icon %}">
-{% endblock %}
 
-{# The name you provided in your app.py is accessible through the tethys_app.name context variable #}
-{% block app_title %}{{ tethys_app.name }} <p style="color:white; font-size: 16px;"><i>(Beta version)</i></p>{% endblock %}
+{% block app_header_override %}
+          <div id="app-header" class="clearfix">
+		<div class="container-fluid banner-container main-padding">             
+		     <div class="banner">
+			 <a href="https://www.usaid.gov/" target="_blank">
+			     <img class="grow img-responsive usaid" src="/static/hydraviewer/images/usaid.png" alt="USAID">
+			 </a>
+			<a href="https://www.nasa.gov/" target="_blank">
+			     <img class="grow img-responsive nasa" src="/static/hydraviewer/images/nasa.png" alt="NASA">
+			 </a> 
+			<a href="http://www.adpc.net/igo/?" target="_blank">
+			     <img class="grow img-responsive adpc" src="/static/hydraviewer/images/adpc.png" alt="ADPC">
+			 </a> 
+			<a href="https://servir.adpc.net/" target="_blank">
+			     <img class="grow img-responsive servir" src="/static/hydraviewer/images/servir-mekong.png" alt="Servir Mekong">
+			 </a>              
+		     </div>
+		</div>
+            <div class="tethys-app-header" style="margin-top:65px;background: {{ tethys_app.color|default:'#fff' }};">
+              <div id="nav-title-wrapper">
+                  {% block app-navigation-toggle-override %}
+                    <a href="javascript:void(0);" class="toggle-nav">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </a>
+                  {% endblock %}
+                  {% block app_icon_override %}
+                    <div class="icon-wrapper">
+                      {% block app_icon %}
+			          {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
+			          <img src="{% static tethys_app.icon %}">
+			        {% endblock %}
+                    </div>
+                  {% endblock %}
+                  {% block app_title_override %}
+                    <div class="app-title-wrapper">
+                      <span class="app-title">{% block app_title %}{{ tethys_app.name }} <p style="color:white; font-size: 16px;"><i>(Beta version)</i></p>{% endblock %}</span>
+                    </div>
+                  {% endblock %}
+              </div>
 
-
-{% block header_buttons %}
-  {% url 'hydraviewer:home' as home_url %}
-  {% url 'hydraviewer:mapviewer' as map_url %}
-  {% url 'hydraviewer:usecases' as use_url %}
-  <a class="nav_item grow" href="{{ home_url }}">Home&emsp;</a>
-  <a class="nav_item grow" href="{{ map_url }}">Map Viewer&emsp;</a>
-  <a class="nav_item grow" href="{{ use_url }}">Use Cases&emsp;</a>
-  <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
-    <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
-  </div>
-{% endblock %}
+              {% block header_buttons_override %}
+              <div id="header-buttons-wrapper">
+                  {% block header_buttons %}
+		              {% url 'hydraviewer:home' as home_url %}
+		              {% url 'hydraviewer:mapviewer' as map_url %}
+		              {% url 'hydraviewer:usecases' as use_url %}
+		              <a class="nav_item grow" href="{{ home_url }}">Home&emsp;</a>
+		              <a class="nav_item grow" href="{{ map_url }}">Map Viewer&emsp;</a>
+		              <a class="nav_item grow" href="{{ use_url }}">Use Cases&emsp;</a>
+		              <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
+		                <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
+		              </div>
+		          {% endblock %}
+                  {% block settings_button_override %}
+                      {% if request.user.is_staff %}
+                      <div class="header-button settings-button">
+                        <a href="javascript:void(0);" onclick="TETHYS_APP_BASE.exit_app('/admin/tethys_apps/tethysapp/{{ tethys_app.id }}/change/');" data-toggle="tooltip" data-placement="bottom" title="Settings"><span class="glyphicon glyphicon-cog"></span></a>
+                      </div>
+                      {%  endif %}
+                  {% endblock %}
+                  {% block exit_button_override %}
+                    <div class="header-button exit-button">
+                      <a href="javascript:void(0);" onclick="TETHYS_APP_BASE.exit_app('{% url 'app_library' %}');"data-toggle="tooltip" data-placement="bottom" title="Exit">&times;</a>
+                    </div>
+                  {% endblock %}
+              </div>
+              {% endblock %}
+            </div>
+          </div>
+        {% endblock %}
 
 
 {% block after_app_content %}
