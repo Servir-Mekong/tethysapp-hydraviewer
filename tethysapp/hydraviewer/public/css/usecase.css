@@ -74,6 +74,10 @@
   transform: rotateY(180deg);
 }
 
+.flip-card-back ul {
+  padding-inline-start:0px;
+}
+
 .centered {
   position: absolute;
   bottom:0;
