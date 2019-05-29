@@ -349,6 +349,7 @@ p {
     position: fixed;
     width:100%;
     z-index:100;
+    height: 65px;
 }
 
 .menu-container {
@@ -368,7 +369,8 @@ p {
     width: 160px !important;
     float: left;
     margin-right: 5px;
-    margin-bottom: 3px;
+    margin-bottom: 15px;
+
 }
 
 @media (max-width: 1024px) {
@@ -382,6 +384,7 @@ p {
     width: 60px !important;
     float: left;
     margin-right: 5px;
+    margin-bottom: 15px;
 }
 
 @media (max-width: 1024px) {
