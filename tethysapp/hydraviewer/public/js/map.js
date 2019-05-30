@@ -36,9 +36,20 @@ $(function() {
   var floodSlider = $('#flood-opacity').slider();
   var floodSlider1 = $('#flood1-opacity').slider();
 
+
+  // check if this init is a load from the use case redirects
+  // only need to change map center for one use case (only works on production server)
+  if (window.location.href == 'http://tethys-servir.adpc.net/apps/hydraviewer/mapviewer/?sDate=2016-07-14&sensor_txt=sentinel1')  {
+    var centerPt = [21,94]
+  }
+  else{
+    centerPt = [16.8,95.7]
+  }
+  console.log(centerPt)
+
   // init map
   map = L.map('map',{
-    center: [16.8,95.7],
+    center: centerPt,
     zoom: 8,
     minZoom:2,
     maxZoom: 16,
