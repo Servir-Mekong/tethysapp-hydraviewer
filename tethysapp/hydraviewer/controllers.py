@@ -55,10 +55,10 @@ def mapviewer(request):
     Controller for the app home page.
     """
 
-    today = datetime.datetime.now()
-    thisdate = today-datetime.timedelta(2)
-    isodate = thisdate.strftime('%Y-%m-%d')
-    initial_date = '2015-08-03'
+    # today = datetime.datetime.now()
+    # thisdate = today-datetime.timedelta(2)
+    # isodate = thisdate.strftime('%Y-%m-%d')
+    initial_date = '2015-08-11'
 
     if request.method == 'GET':
         info = request.GET
@@ -72,8 +72,10 @@ def mapviewer(request):
     else:
         print('no request')
 
-    precip_layer1 = geeutils.getPrecipMap(isodate,accumulation=1)
-    flood_layer = geeutils.getfloodMap(sensor, start_date)
+
+    precip_layer1 = geeutils.getPrecipMap(initial_date,accumulation=1)
+    historical_layer = geeutils.getHistoricalMap(REGION, '2010','2015', '01', '01', climatology=False, algorithm='JRC')
+    flood_layer = geeutils.getfloodMap('sentinel1', start_date)
 
     date_selection = DatePicker(
         name='date_selection',
@@ -83,7 +85,6 @@ def mapviewer(request):
         start_view='decade',
         today_button=True,
         initial=initial_date
-        #initial=isodate
     )
     update_button = Button(
         display_text='Update Historic Layer',
@@ -155,10 +156,6 @@ def mapviewer(request):
         initial='2015'
     )
 
-    historical_layer = geeutils.getHistoricalMap(REGION, '2010','2015', '01', '01', climatology=False, algorithm='JRC')
-
-    image = ee.Image(WC.filter(ee.Filter.eq('sensor','sentinel1')).first())
-
     product_selection = SelectInput(
         # display_text='Select precipitation product:',
         name='product_selection',
@@ -207,7 +204,7 @@ def mapviewer(request):
                  ('Sentinel 1', 'sentinel1'),
                  ('VIIRS Downscaled','viirs'),
                  ('ATMS (Comming soon)', 'atms')],
-        initial=['VIIRS Downscaled'],
+        initial=['Sentinel 1'],
         select2_options={'placeholder': 'Select sensor:',
                          'allowClear': False}
     )
