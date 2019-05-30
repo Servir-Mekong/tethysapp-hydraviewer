@@ -56,6 +56,9 @@ p {
 .irs--round .irs-from:before, .irs--round .irs-to:before, .irs--round .irs-single:before {
   border-top-color: #34495e;
 }
+.irs--round .irs-single {
+  background-color: #34495e;
+}
 
 .zoom {
     /* background-color: green; */
