@@ -54,6 +54,8 @@ def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
     crange = ranges[accumulation]
 
     accum = _accumulate(ic,date,accumulation)
+    nBands = len(accum.bandNames().getInfo())
+    test = nBands > 0
 
     cmap = mpl.cm.get_cmap(cmap_name, 100)
 
@@ -64,10 +66,13 @@ def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
 
     colormap = ','.join(hexcodes)
 
-    precipMap = getTileLayerUrl(accum.visualize(min=crange[0],max=crange[1],
-                                                palette=hexcodes
-                                               )
-                               )
+    if test:
+        precipMap = getTileLayerUrl(accum.visualize(min=crange[0],max=crange[1],
+                                                    palette=hexcodes
+                                                   )
+                                   )
+    else:
+        precipMap = ''
 
     # cb_ticks = np.linspace(0,crange[1],4)
 
@@ -93,20 +98,15 @@ def getfloodMap(snsr,sdate):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
-    if fc.size().getInfo() > 0:
-        image = ee.Image(fc.first()).select(0)
-        image = image.updateMask(image)
+    image = ee.Image(fc.first()).select(0)
+    image = image.updateMask(image)
 
-        #if snsr == 'atms':
-            #image = image.select('water')
-            #image = image.updateMask(image)
+    #if snsr == 'atms':
+        #image = image.select('water')
+        #image = image.updateMask(image)
 
-        floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
-        return floodMap
-    else:
-        return {
-            'error': 'no data is available for this date!'
-        }
+    floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
+    return floodMap
 
 def GetDownloadURL(snsr,sdate,poly):
     t1 = ee.Date(sdate)
