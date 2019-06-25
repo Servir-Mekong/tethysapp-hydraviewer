@@ -87,7 +87,7 @@ def mapviewer(request):
         initial=initial_date
     )
     update_button = Button(
-        display_text='Update Historic Layer',
+        display_text='Update Water Layer',
         name='update-button',
         icon='glyphicon glyphicon-refresh',
         style='primary',
