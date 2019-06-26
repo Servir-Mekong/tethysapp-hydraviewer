@@ -313,22 +313,51 @@ map.on('draw:created', function(e) {
       historicalSlider.slider('enable')
       var opac = parseFloat($('input[id="historical-opacity"]').slider('getValue'))
       historical_layer.setOpacity(opac)
+      $("#toggle_switch_historic").prop('checked',true).change();
     }
     else{
       historicalSlider.slider('disable')
       historical_layer.setOpacity(0)
+      $("#toggle_switch_historic").prop('checked',false).change();
     }
   });
-
-$("#flood-check").on("click",function(){
+  $("#toggle_switch_historic").on("switchChange.bootstrapSwitch",function(){
+    if(this.checked){
+      historicalSlider.slider('enable')
+      var opac = parseFloat($('input[id="historical-opacity"]').slider('getValue'))
+      historical_layer.setOpacity(opac)
+      $("#historical-check").prop('checked',true);
+    }
+    else{
+      historicalSlider.slider('disable')
+      historical_layer.setOpacity(0)
+      $("#historical-check").prop('checked',false);
+    }
+  });
+  $("#flood-check").on("click",function(){
     if(this.checked){
       floodSlider1.slider('enable')
       var opac = parseFloat($('input[id="flood1-opacity"]').slider('getValue'))
       flood_layer.setOpacity(opac)
+      $("#toggle_switch_daily").prop('checked',true).change();
     }
     else{
       floodSlider1.slider('disable')
       flood_layer.setOpacity(0)
+      $("#toggle_switch_daily").prop('checked',false).change();
+    }
+  });
+  $("#toggle_switch_daily").on("switchChange.bootstrapSwitch",function(){
+    if(this.checked){
+      floodSlider1.slider('enable')
+      var opac = parseFloat($('input[id="flood1-opacity"]').slider('getValue'))
+      flood_layer.setOpacity(opac)
+      $("#flood-check").prop('checked',true);
+    }
+    else{
+      floodSlider1.slider('disable')
+      flood_layer.setOpacity(0)
+      $("#flood-check").prop('checked',false);
     }
   });
 

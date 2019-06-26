@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse
 from django.contrib.auth.decorators import login_required
-from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, RangeSlider
+from tethys_sdk.gizmos import MapView, Button, SelectInput, MVView, DatePicker, RangeSlider, ToggleSwitch
 
 import ee
 from ee.ee_exception import EEException
@@ -209,6 +209,24 @@ def mapviewer(request):
                          'allowClear': False}
     )
 
+
+    toggle_switch_historic = ToggleSwitch(
+        name='toggle_switch_historic',
+        on_style='success',
+        off_style='default',
+        initial=True,
+        size='small'
+    )
+
+    toggle_switch_daily = ToggleSwitch(
+        name='toggle_switch_daily',
+        on_style='success',
+        off_style='default',
+        initial=True,
+        size='small'
+    )
+
+
     context = {
         'date_selection': date_selection,
         'precip_layer': precip_layer1,
@@ -224,7 +242,9 @@ def mapviewer(request):
         'end_month_selection_historical' : end_month_selection_historical,
 	    'end_year_selection_historical' : end_year_selection_historical,
         'method_historical_selection' : method_historical_selection,
-        'update_button' : update_button
+        'update_button' : update_button,
+        'toggle_switch_historic': toggle_switch_historic,
+        'toggle_switch_daily': toggle_switch_daily
 
     }
 

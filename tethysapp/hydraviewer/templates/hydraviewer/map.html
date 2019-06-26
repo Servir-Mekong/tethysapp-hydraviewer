@@ -50,10 +50,10 @@
 		  	<div class="legend-text">
 		  		<span>Legend</span>
 		  		<button class="legend-info-button btn btn-danger btn-xs" id="legend-collapse">
-			<i class="glyphicon glyphicon-remove"></i>
+			         <i class="glyphicon glyphicon-remove"></i>
 		      </button>
 		      <button class="legend-info-button btn btn-success btn-xs" id="legend-expand" style="display:none;">
-			<i class="glyphicon glyphicon-plus"></i>
+			         <i class="glyphicon glyphicon-plus"></i>
 		      </button>
 		  	</div>
 		  	<div class="legend-tabs">
@@ -65,11 +65,13 @@
 		  		<div id="legend-tab-water" class="legend-tab-content">
 		  			<div class="legend-value" id="legend-water-perm">
 		  				<div class="legend-block" style="background-color: #00008b;"></div>
-		  				<span>Historic</span>
+              <div class="legend-textlist">Permanent</div>
+              <div class="toggle-legend">{% gizmo toggle_switch_historic %}</div>
 		  			</div>
 		  			<div class="legend-value" id="legend-water-temp">
 		  				<div class="legend-block" style="background-color: #9999ff;"></div>
-		  				<span>Daily</span>
+              <div class="legend-textlist">Daily</div>
+              <div class="toggle-legend">{% gizmo toggle_switch_daily %}</div>
 		  			</div>
 		  		</div>
 		  		<div id="legend-tab-precip" class="legend-tab-content">

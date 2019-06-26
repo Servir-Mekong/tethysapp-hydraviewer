@@ -75,11 +75,16 @@
 }
 
 #app-content #inner-app-content .legend-block {
-  min-width: 40px;
+  min-width: 25px;
   height: 20px;
-  margin-right: 10px;
+  margin-right: 5px;
   border: #bbb solid 1px;
   background-color: #D3D3D3;
+}
+
+#app-content #inner-app-content .legend-textlist {
+  min-width: 60px;
+  margin-right: 5px;
 }
 
 #app-content #inner-app-content .legend .legend-cb {
@@ -99,4 +104,23 @@
 
 #app-header .tethys-app-header #nav-title-wrapper .toggle-nav:hover div {
     background: #34495e;
+}
+
+.bootstrap-switch.bootstrap-switch-small {
+    min-width: 40px;
+}
+
+.bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off, .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label {
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-size: 9px;
+    line-height: 13px;
+}
+
+.bootstrap-switch {
+    background-color: #ccc;
+}
+
+.toggle-legend .form-group {
+    margin-bottom: 0px;
 }
