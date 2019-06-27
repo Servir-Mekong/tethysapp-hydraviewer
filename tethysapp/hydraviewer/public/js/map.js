@@ -2,6 +2,7 @@
 var map,
     selected_date,
     browse_layer,
+    basemap_layer,
     precip_layer,
     historical_layer,
     sentinel1_layer,
@@ -59,6 +60,32 @@ $(function() {
    ],
  });
 
+ L.Control.Custom = L.Control.Layers.extend({
+   onAdd: function () {
+ 		this._initLayout();
+ 		this._addElement();
+ 		this._update();
+ 		return this._container;
+ 	},
+ 	_addElement: function () {
+ 	  var elements = this._container.getElementsByClassName('leaflet-control-layers-list');
+ 	  var div = L.DomUtil.create('div', '', elements[0]);
+ 	  div.innerHTML = `
+   <div class="leaflet-control-layers leaflet-control-layers-expanded">
+       <input class="leaflet-control-layers-overlays" name="basemap_selection" id="street" checked="checked" value="street" type="radio">
+         Streets
+       </input>
+       <input class="leaflet-control-layers-overlays" name="basemap_selection" id="satellite" value="satellite" type="radio">
+         Satellite
+       </input>
+       <input class="leaflet-control-layers-overlays" name="basemap_selection" id="terrain" value="terrain" type="radio">
+         Terrain
+       </input>
+   </div>`;
+ 	}
+ });
+
+ var control = new L.Control.Custom().addTo(map);
 // Initialise the FeatureGroup to store editable layers
 var editableLayers = new L.FeatureGroup();
 map.addLayer(editableLayers);
@@ -110,8 +137,9 @@ map.on('draw:created', function(e) {
   editableLayers.addLayer(layer);
 });
 
-  var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-        attribution: '©OpenStreetMap, ©CartoDB'
+  var basemap_layer = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        attribution: '<a href="https://google.com/maps" target="_">Google Maps</a>;',
+        subdomains:['mt0','mt1','mt2','mt3']
       }).addTo(map);
 
   $layers_element = $('#layers');
@@ -168,6 +196,17 @@ map.on('draw:created', function(e) {
       });
     }
   });
+
+  $('input[type=radio][name=basemap_selection]').change(function(){
+    var selected_basemap = $(this).val()
+    if(selected_basemap === "street"){
+      basemap_layer.setUrl('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}')
+    }else if(selected_basemap === "satellite"){
+      basemap_layer.setUrl('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}')
+    }else if(selected_basemap === "terrain"){
+      basemap_layer.setUrl('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}')
+    }
+  })
 
   $('#cmap_selection').change(function(){
     var prod = $('#product_selection').val();
