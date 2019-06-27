@@ -197,6 +197,21 @@ map.on('draw:created', function(e) {
     }
   });
 
+  $('input[type=color]').on('change', function() {
+    $("#color-picker-wrapper").css("background-color", $(this).val());
+    var sensor_val = $('#sensor_selection').val();
+    var flood_color = $(this).val();
+    var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val, 'flood_color': flood_color},"layers");
+    xhr.done(function(data) {
+        if("success" in data) {
+          flood_layer.setUrl(data.url)
+        }else{
+          alert(data.error);
+        }
+    });
+  });
+  $("#color-picker-wrapper").css("background-color", $("#color-picker").val());
+
   $('input[type=radio][name=basemap_selection]').change(function(){
     var selected_basemap = $(this).val()
     if(selected_basemap === "street"){

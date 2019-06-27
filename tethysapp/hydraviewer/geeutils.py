@@ -94,7 +94,7 @@ def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
     return precipMap
 
 
-def getfloodMap(snsr,sdate):
+def getfloodMap(snsr,sdate,fcolor):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
@@ -105,7 +105,7 @@ def getfloodMap(snsr,sdate):
         #image = image.select('water')
         #image = image.updateMask(image)
 
-    floodMap = getTileLayerUrl(image.visualize(palette='#9999ff',min=0,max=1))
+    floodMap = getTileLayerUrl(image.visualize(palette=fcolor,min=0,max=1))
     return floodMap
 
 def GetDownloadURL(snsr,sdate,poly):

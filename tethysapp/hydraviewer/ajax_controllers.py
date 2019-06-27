@@ -74,7 +74,8 @@ def get_surfacewatermap(request):
             info = request.POST
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
-            water_layer = geeutils.getfloodMap(sensor,start_date)
+            flood_color = info.get('flood_color')
+            water_layer = geeutils.getfloodMap(sensor,start_date,flood_color)
 
             return_obj["url"] = water_layer
             return_obj["success"] = "success"
@@ -88,7 +89,8 @@ def get_surfacewatermap(request):
             info = request.GET
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
-            water_layer = geeutils.getfloodMap(sensor,start_date)
+            flood_color = "#9999ff"
+            water_layer = geeutils.getfloodMap(sensor,start_date,flood_color)
 
             return_obj["url"] = water_layer
             return_obj["success"] = "success"

@@ -75,7 +75,7 @@ def mapviewer(request):
 
     precip_layer1 = geeutils.getPrecipMap(initial_date,accumulation=1)
     historical_layer = geeutils.getHistoricalMap(REGION, '2010','2015', '01', '01', climatology=False, algorithm='JRC')
-    flood_layer = geeutils.getfloodMap('sentinel1', start_date)
+    flood_layer = geeutils.getfloodMap('sentinel1', start_date, fcolor='#9999ff')
 
     date_selection = DatePicker(
         name='date_selection',
