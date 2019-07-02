@@ -125,15 +125,15 @@
     margin-bottom: 0px;
 }
 
-#color-picker-wrapper {
+.color-picker-wrapper {
   min-width: 25px;
 	height: 20px;
   margin-right: 5px;
 }
 
 input[type=color]{
-	width: 25px;
-	height: 20px;
+	width: 26px;
+	height: 21px;
 	border: none;
 	background: none;
 }

@@ -332,7 +332,8 @@ def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='dis
                   ndvi_thresh=0.5,
                   hand_thresh=30,
                   cloud_thresh=10,
-                  algorithm='SWT'):
+                  algorithm='SWT',
+                  wcolor='#00008b'):
 
     def spatialSelect(feature):
         test = ee.Algorithms.If(geom.contains(feature.geometry()),feature,None)
@@ -358,12 +359,12 @@ def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='dis
 
 
         water = SurfaceWaterAlgorithm(geom,images, pcnt_perm, pcnt_temp, water_thresh, ndvi_thresh, HAND_mask).clip(countries)
-        waterMap = getTileLayerUrl(water.updateMask(water.eq(2)).visualize(min=0,max=2,palette='#ffffff,#9999ff,#00008b'))
+        waterMap = getTileLayerUrl(water.updateMask(water.eq(2)).visualize(min=0,max=2,palette='#ffffff,#9999ff,'+ wcolor))
 
     elif algorithm == 'JRC':
         water = JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method).clip(countries)
         #water = JRCAlgorithm(geom,iniTime,endTime).clip(countries)
-        waterMap = getTileLayerUrl(water.visualize(min=0,max=1,bands='water',palette='#ffffff,#00008b'))
+        waterMap = getTileLayerUrl(water.visualize(min=0,max=1,bands='water',palette='#ffffff,'+ wcolor))
 
     else:
         raise NotImplementedError('Selected algorithm string not available. Options are: "SWT" or "JRC"')

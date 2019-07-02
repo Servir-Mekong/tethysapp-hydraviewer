@@ -63,7 +63,16 @@
 				          <p class="collapse-text-toggle">
 				              <ul>
 				                 <li>
-				                    <p><a href="/apps/hydraviewer/mapviewer/?sDate=2015-08-11&sensor_txt=sentinel1" target="_blank">Example event 2015-08-11</a></p>
+                           <form action="/apps/hydraviewer/mapviewer/" method="post">
+                            {% csrf_token %}
+                            <input id="viewer" name="viewer" type="hidden" value="usecase">
+                            <input id="sDate" name="sDate" type="hidden" value="2015-08-11">
+                            <input id="sensor_txt" name="sensor_txt" type="hidden" value="sentinel1">
+                            <input id="text" name="text" type="hidden" value="During the 2015 monsoon season Cyclone Komen made
+                            landfall in Bangladesh in July, bringing additional heavy rains into Myanmar. These rains lead to a significant
+                            increase in monsoonal flood water, leading to severe flooding and landslides.">
+                            <p><a href="#" onclick="$(this).closest('form').submit(); return false;" >Example event 2015-08-11</a></p>
+                          </form>
 				                  </li>
 				                </ul>
 				          </p>
@@ -93,7 +102,15 @@
 				          <p class="collapse-text-toggle">
 				              <ul>
 				                 <li>
-				                    <p><a href="/apps/hydraviewer/mapviewer/?sDate=2016-07-14&sensor_txt=sentinel1" target="_blank">Example event 2016-07-14</a></p>
+                           <form action="/apps/hydraviewer/mapviewer/" method="post">
+                            {% csrf_token %}
+                            <input id="viewer" name="viewer" type="hidden" value="usecase">
+                            <input id="sDate" name="sDate" type="hidden" value="2016-07-14">
+                            <input id="sensor_txt" name="sensor_txt" type="hidden" value="sentinel1">
+                            <input id="text" name="text" type="hidden" value="Heavy monsoonal rains and resultant flooding started in June of
+                            2016. Continued heavy rainfall lead to exacerbated flooding and landslides across the region.">
+                            <p><a href="" onclick="$(this).closest('form').submit(); return false;">Example event 2016-07-14</a></p>
+                          </form>
 				                  </li>
 				                </ul>
 				          </p>
@@ -122,7 +139,15 @@
 				          <p class="collapse-text-toggle">
 				              <ul>
 				                 <li>
-				                    <p><a href="/apps/hydraviewer/mapviewer/?sDate=2018-08-31&sensor_txt=sentinel1" target="_blank">Example event 2018-08-30</a></p>
+                           <form action="/apps/hydraviewer/mapviewer/" method="post">
+                            {% csrf_token %}
+                            <input id="viewer" name="viewer" type="hidden" value="usecase">
+                            <input id="sDate" name="sDate" type="hidden" value="2018-08-30">
+                            <input id="sensor_txt" name="sensor_txt" type="hidden" value="sentinel1">
+                            <input id="text" name="text" type="hidden" value="Localized heavy monsoonal rains and thunderstorms lead to the
+                              overflow of rives and eventually a the failure of the Yedashe Township dam in the Bago region." >
+                            <p><a href="" onclick="$(this).closest('form').submit(); return false;">Example event 2018-08-30</a></p>
+                          </form>
 				                  </li>
 				                </ul>
 				          </p>

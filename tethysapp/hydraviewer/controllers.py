@@ -55,26 +55,31 @@ def mapviewer(request):
     Controller for the app home page.
     """
 
-    # today = datetime.datetime.now()
-    # thisdate = today-datetime.timedelta(2)
-    # isodate = thisdate.strftime('%Y-%m-%d')
-    initial_date = '2015-08-11'
+    today = datetime.datetime.now()
+    isodate = today.strftime('%Y-%m-%d')
+    initial_date = '2016-07-14'
+    precip_date = isodate
 
     if request.method == 'GET':
         info = request.GET
-        start_date = info.get('sDate')
-        if not start_date:
-            start_date = initial_date
-
-        sensor = info.get('sensor_txt')
-        if not sensor:
-            sensor = 'viirs'
     else:
-        print('no request')
+        info = request.POST
 
+    event_content = info.get('text')
+    start_date = info.get('sDate')
+    sensor = info.get('sensor_txt')
+    viewer = info.get('viewer')
+    if not start_date:
+        start_date = initial_date
 
-    precip_layer1 = geeutils.getPrecipMap(initial_date,accumulation=1)
-    historical_layer = geeutils.getHistoricalMap(REGION, '2010','2015', '01', '01', climatology=False, algorithm='JRC')
+    if not sensor:
+        sensor = 'viirs'
+
+    if not event_content:
+        event_content = ''
+
+    precip_layer1 = geeutils.getPrecipMap(start_date,accumulation=1)
+    historical_layer = geeutils.getHistoricalMap(REGION, '2010','2015', '01', '01', climatology=False, algorithm='JRC', wcolor='#00008b')
     flood_layer = geeutils.getfloodMap('sentinel1', start_date, fcolor='#9999ff')
 
     date_selection = DatePicker(
@@ -84,7 +89,7 @@ def mapviewer(request):
         format='yyyy-mm-dd',
         start_view='decade',
         today_button=True,
-        initial=initial_date
+        initial=start_date
     )
     update_button = Button(
         display_text='Update Water Layer',
@@ -93,7 +98,6 @@ def mapviewer(request):
         style='primary',
         classes="btn_custom"
     )
-
 
     method_historical_selection = SelectInput(
         name='method_historical_selection',
@@ -209,7 +213,6 @@ def mapviewer(request):
                          'allowClear': False}
     )
 
-
     toggle_switch_historic = ToggleSwitch(
         name='toggle_switch_historic',
         on_style='success',
@@ -225,7 +228,6 @@ def mapviewer(request):
         initial=True,
         size='small'
     )
-
 
     context = {
         'date_selection': date_selection,
@@ -244,8 +246,14 @@ def mapviewer(request):
         'method_historical_selection' : method_historical_selection,
         'update_button' : update_button,
         'toggle_switch_historic': toggle_switch_historic,
-        'toggle_switch_daily': toggle_switch_daily
+        'toggle_switch_daily': toggle_switch_daily,
+        'event_content': event_content,
+        'sensor': sensor,
+        'event_date': start_date,
+        'message_box': message_box
 
     }
-
-    return render(request, 'hydraviewer/map.html', context)
+    if not viewer:
+        return render(request, 'hydraviewer/map.html', context)
+    else:
+        return render(request, 'hydraviewer/usecase-viewer.html', context)

@@ -61,15 +61,16 @@
 		  		<button class="legend-tab" onClick="openLegendTab(event, 'precip')">Precip</button>
 		  	</div>
 		  	<div class="legend-line"></div>
-		    <div id='legend-content'>
+        <div id='legend-content'>
 		  		<div id="legend-tab-water" class="legend-tab-content">
 		  			<div class="legend-value" id="legend-water-perm">
-		  				<div class="legend-block" style="background-color: #00008b;"></div>
+              <div id="color-picker-wrapper-water" class="color-picker-wrapper"><input type="color" value="#00008b" id="color-picker-water"></div>
+		  				<!-- <div class="legend-block" style="background-color: #00008b;"></div> -->
               <div class="legend-textlist">Permanent</div>
               <div class="toggle-legend">{% gizmo toggle_switch_historic %}</div>
 		  			</div>
             <div class="legend-value" id="legend-water-temp">
-              <div id="color-picker-wrapper"><input type="color" value="#9999ff" id="color-picker"></div>
+              <div id="color-picker-wrapper-flood" class="color-picker-wrapper"><input type="color" value="#9999ff" id="color-picker-flood"></div>
               <div class="legend-textlist">Daily</div>
               <div class="toggle-legend">{% gizmo toggle_switch_daily %}</div>
 		  			</div>
@@ -209,7 +210,7 @@
 		    </a>
 		    <div id="browse-collapse" class="panel-collapse collapse">
 		      <label class="container">
-			<input id="browse-check" type="checkbox" checked="checked">
+			<input id="browse-check" type="checkbox">
 			<span class="checkmark"></span>
 		      </label>
 		      <p><b>&emsp;&emsp;&emsp;NRT BROWSE IMAGERY&emsp;&emsp;&emsp;</b></p>

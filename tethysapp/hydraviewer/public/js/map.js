@@ -146,8 +146,7 @@ map.on('draw:created', function(e) {
   var $update_element = $('#update_button');
   var viirs_product = "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1"
 
-  //browse_layer = addGibsLayer(browse_layer,viirs_product,selected_date)
-  browse_layer = addGibsLayer(browse_layer,viirs_product,'2019-05-24')
+  browse_layer = addGibsLayer(browse_layer,viirs_product,selected_date)
 
 
   //sentinel1_layer = addMapLayer(sentinel1_layer,$layers_element.attr('data-sentinel1-url'))
@@ -158,6 +157,9 @@ map.on('draw:created', function(e) {
 
   precip_layer.setOpacity(0)
   precipSlider.slider('disable')
+
+  browse_layer.setOpacity(0)
+  browseSlider.slider('disable')
 
   $('#date_selection').change(function(){
     selected_date = $('#date_selection').val();
@@ -182,10 +184,10 @@ map.on('draw:created', function(e) {
     browse_layer.setUrl(template)
 
     var sensor_val = $('#sensor_selection').val();
-    console.log(sensor_val)
+    var flood_color = $('input[type=color]').val();
 
     if (sensor_val != 'none'){
-      var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
+      var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val, 'flood_color': flood_color},"layers");
       xhr.done(function(data) {
           if("success" in data) {
             flood_layer.setUrl(data.url)
@@ -197,11 +199,38 @@ map.on('draw:created', function(e) {
     }
   });
 
-  $('input[type=color]').on('change', function() {
-    $("#color-picker-wrapper").css("background-color", $(this).val());
+  $('#color-picker-water').on('change', function() {
+    $("#color-picker-wrapper-water").css("background-color", $(this).val());
+    var startYear = $('#start_year_selection_historical').val();
+    var endYear = $('#end_year_selection_historical').val();
+    var slider = $("#month_range").data("ionRangeSlider");
+
+   // Get values
+    var startMonth = slider.result.from + 1;
+    var endMonth= slider.result.to + 1;
+    var method = 'discrete';
+    var wcolor = $(this).val();
+
+    if (startMonth == endMonth) { endMonth += 1 }
+
+    var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method, 'wcolor': wcolor},"layers");
+        xhr.done(function(data) {
+        if("success" in data) {
+          historical_layer.setUrl(data.url)
+        }else{
+          alert(data.error);
+        }
+    });
+  });
+  $("#color-picker-wrapper-water").css("background-color", $("#color-picker-water").val());
+
+
+  $('#color-picker-flood').on('change', function() {
+    $("#color-picker-wrapper-flood").css("background-color", $(this).val());
     var sensor_val = $('#sensor_selection').val();
+    var selected_date = $('#date_selection').val();
     var flood_color = $(this).val();
-    var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val, 'flood_color': flood_color},"layers");
+    var xhr = ajax_update_database('/apps/hydraviewer/mapviewer/get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val, 'flood_color': flood_color},"layers");
     xhr.done(function(data) {
         if("success" in data) {
           flood_layer.setUrl(data.url)
@@ -210,7 +239,7 @@ map.on('draw:created', function(e) {
         }
     });
   });
-  $("#color-picker-wrapper").css("background-color", $("#color-picker").val());
+  $("#color-picker-wrapper-flood").css("background-color", $("#color-picker-flood").val());
 
   $('input[type=radio][name=basemap_selection]').change(function(){
     var selected_basemap = $(this).val()
@@ -255,7 +284,8 @@ map.on('draw:created', function(e) {
 
   $('#sensor_selection').change(function(){
     var sensor_val = $('#sensor_selection').val();
-    var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val},"layers");
+    var flood_color = $('input[type=color]').val();
+    var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val, 'flood_color': flood_color},"layers");
     xhr.done(function(data) {
         if("success" in data) {
           flood_layer.setUrl(data.url)
@@ -277,10 +307,11 @@ map.on('draw:created', function(e) {
     var startMonth = slider.result.from + 1;
     var endMonth= slider.result.to + 1;
     var method = 'discrete';
+    var wcolor = $('#color-picker-water').val();
 
     if (startMonth == endMonth) { endMonth += 1 }
 
-    var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method},"layers");
+    var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method, 'wcolor': wcolor},"layers");
         xhr.done(function(data) {
         if("success" in data) {
           historical_layer.setUrl(data.url)
@@ -435,6 +466,18 @@ $("#download_flood-check").on("click",function(){
     else {
       $("#legend-collapse").css("display","none");
       $("#legend-expand").css("display","inline-block");
+    }
+  });
+
+  $(".event-info-button").click(function () {
+    $("#event-content").toggle();
+    if ($("#event-content").is(":visible") == true) {
+      $("#event-collapse").css("display","inline-block");
+      $("#event-expand").css("display","none");
+    }
+    else {
+      $("#event-collapse").css("display","none");
+      $("#event-expand").css("display","inline-block");
     }
   });
 
