@@ -249,8 +249,7 @@ def mapviewer(request):
         'toggle_switch_daily': toggle_switch_daily,
         'event_content': event_content,
         'sensor': sensor,
-        'event_date': start_date,
-        'message_box': message_box
+        'event_date': start_date
 
     }
     if not viewer:
