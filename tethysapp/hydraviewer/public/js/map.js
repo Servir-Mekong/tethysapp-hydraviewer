@@ -111,31 +111,34 @@ var drawPluginOptions = {
     },
   edit: {
     featureGroup: editableLayers, //REQUIRED!!
-    remove: false
+    edit: true
   }
 };
 
-// Initialise the draw control and pass it the FeatureGroup of editable layers
-var drawControl = new L.Control.Draw(drawPluginOptions);
-map.addControl(drawControl);
+  // Initialise the draw control and pass it the FeatureGroup of editable layers
+  var drawControl = new L.Control.Draw(drawPluginOptions);
+  map.addControl(drawControl);
 
-var editableLayers = new L.FeatureGroup();
-map.addLayer(editableLayers);
+  map.on(L.Draw.Event.CREATED, function(e) {
+    editableLayers.clearLayers();
+    var type = e.layerType,
+        layer = e.layer;
 
-map.on('draw:created', function(e) {
-  editableLayers.clearLayers();
-  var type = e.layerType,
-    layer = e.layer;
-
-  if (type === 'marker') {
-    layer.bindPopup('A popup!');
-  }
-  userPolygon = layer.toGeoJSON();
-  drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
-
-
-  editableLayers.addLayer(layer);
-});
+    userPolygon = layer.toGeoJSON();
+    drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
+    editableLayers.addLayer(layer);
+  });
+  map.on('draw:edited', (e) => {
+    var editedlayers = e.layers;
+    editedlayers.eachLayer(function(layer) {
+      userPolygon = layer.toGeoJSON();
+      drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
+    });
+  });
+  map.on('draw:deleted', (e) => {
+    userPolygon = '';
+    drawing_polygon = '';
+  });
 
   var basemap_layer = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         attribution: '<a href="https://google.com/maps" target="_">Google Maps</a>;',
