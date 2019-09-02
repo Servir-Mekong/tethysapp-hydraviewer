@@ -46,7 +46,6 @@ $(function() {
   else{
     centerPt = [16.8,95.7]
   }
-  console.log(centerPt)
 
   // init map
   map = L.map('map',{
@@ -85,7 +84,7 @@ $(function() {
  	}
  });
 
- var control = new L.Control.Custom().addTo(map);
+var control = new L.Control.Custom().addTo(map);
 // Initialise the FeatureGroup to store editable layers
 var editableLayers = new L.FeatureGroup();
 map.addLayer(editableLayers);
@@ -115,30 +114,38 @@ var drawPluginOptions = {
   }
 };
 
+
   // Initialise the draw control and pass it the FeatureGroup of editable layers
   var drawControl = new L.Control.Draw(drawPluginOptions);
   map.addControl(drawControl);
 
-  map.on(L.Draw.Event.CREATED, function(e) {
+  map.on('draw:created', function(e) {
     editableLayers.clearLayers();
     var type = e.layerType,
         layer = e.layer;
-
+        drawing_polygon = [];
     userPolygon = layer.toGeoJSON();
-    drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
+    drawing_polygon.push('ee.Geometry.Polygon(['+ JSON.stringify(userPolygon.geometry.coordinates[0])+'])');
+    updateFloodMapLayer();
+    updatePermanentWater();
     editableLayers.addLayer(layer);
   });
   map.on('draw:edited', (e) => {
     var editedlayers = e.layers;
     editedlayers.eachLayer(function(layer) {
       userPolygon = layer.toGeoJSON();
-      drawing_polygon = JSON.stringify(userPolygon.geometry.coordinates[0]);
+      drawing_polygon = [];
+      drawing_polygon.push('ee.Geometry.Polygon(['+ JSON.stringify(userPolygon.geometry.coordinates[0])+'])');
+      updateFloodMapLayer();
+      updatePermanentWater();
+
     });
   });
   map.on('draw:deleted', (e) => {
     userPolygon = '';
     drawing_polygon = '';
   });
+
 
   var basemap_layer = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         attribution: '<a href="https://google.com/maps" target="_">Google Maps</a>;',
@@ -204,26 +211,7 @@ var drawPluginOptions = {
 
   $('#color-picker-water').on('change', function() {
     $("#color-picker-wrapper-water").css("background-color", $(this).val());
-    var startYear = $('#start_year_selection_historical').val();
-    var endYear = $('#end_year_selection_historical').val();
-    var slider = $("#month_range").data("ionRangeSlider");
-
-   // Get values
-    var startMonth = slider.result.from + 1;
-    var endMonth= slider.result.to + 1;
-    var method = 'discrete';
-    var wcolor = $(this).val();
-
-    if (startMonth == endMonth) { endMonth += 1 }
-
-    var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method, 'wcolor': wcolor},"layers");
-        xhr.done(function(data) {
-        if("success" in data) {
-          historical_layer.setUrl(data.url)
-        }else{
-          alert(data.error);
-        }
-    });
+    updatePermanentWater();
   });
   $("#color-picker-wrapper-water").css("background-color", $("#color-picker-water").val());
 
@@ -285,6 +273,8 @@ var drawPluginOptions = {
     });
   });
 
+
+
   $('#sensor_selection').change(function(){
     var sensor_val = $('#sensor_selection').val();
     var flood_color = $('input[type=color]').val();
@@ -302,36 +292,17 @@ var drawPluginOptions = {
   $("#sensor_selection option[value='atms']").attr('disabled','disabled');
 
   $("#update-button").on("click",function(){
-    var startYear = $('#start_year_selection_historical').val();
-    var endYear = $('#end_year_selection_historical').val();
-    var slider = $("#month_range").data("ionRangeSlider");
-
-   // Get values
-    var startMonth = slider.result.from + 1;
-    var endMonth= slider.result.to + 1;
-    var method = 'discrete';
-    var wcolor = $('#color-picker-water').val();
-
-    if (startMonth == endMonth) { endMonth += 1 }
-
-    var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method, 'wcolor': wcolor},"layers");
-        xhr.done(function(data) {
-        if("success" in data) {
-          historical_layer.setUrl(data.url)
-        }else{
-          alert(data.error);
-        }
-    });
+    updatePermanentWater();
   });
-
 
   $("#btn_download").on("click",function(){
  if(drawing_polygon === undefined){
   alert("Please draw a polygon");
   }else{
-     // var selected_date = $('#selected_date').val();
+     //var selected_date = $('#selected_date').val();
      var sensor_val = $('#sensor_selection').val();
-     var xhr = ajax_update_database('download_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val,'poly_coordinates': drawing_polygon},"json");
+     var geom = JSON.stringify(drawing_polygon);
+     var xhr = ajax_update_database('download_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val,'geom': geom},"json");
     xhr.done(function(data) {
         if("success" in data) {
           //alert('Download URL: \n'+ data.url)
@@ -484,7 +455,116 @@ $("#download_flood-check").on("click",function(){
     }
   });
 
-// end of init function
+  /**
+   * Upload Area Button
+   **/
+  var readFile = function (e) {
+
+      var files = e.target.files;
+      if (files.length > 1) {
+          console.log('upload one file at a time');
+      } else {
+          //MapService.removeGeoJson(map);
+
+          var file = files[0];
+          var reader = new FileReader();
+          reader.readAsText(file);
+
+          reader.onload = function (event) {
+
+              var textResult = event.target.result;
+              var addedGeoJson;
+
+              if ((['application/vnd.google-earth.kml+xml', 'application/vnd.google-earth.kmz'].indexOf(file.type) > -1)) {
+
+                  var kmlDoc;
+
+                  if (window.DOMParser) {
+                      var parser = new DOMParser();
+                      kmlDoc = parser.parseFromString(textResult, 'text/xml');
+                  } else { // Internet Explorer
+                      kmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+                      kmlDoc.async = false;
+                      kmlDoc.loadXML(textResult);
+                  }
+                  addedGeoJson = toGeoJSON.kml(kmlDoc);
+              } else {
+                  try {
+                      addedGeoJson = JSON.parse(textResult);
+                  } catch (e) {
+                      alert('we only accept kml, kmz and geojson');
+                  }
+              }
+
+              if (((addedGeoJson.features) && (addedGeoJson.features.length === 1)) || (addedGeoJson.type === 'Feature')) {
+
+                  var geometry = addedGeoJson.features ? addedGeoJson.features[0].geometry : addedGeoJson.geometry;
+
+                  if (geometry.type === 'Polygon') {
+                      //MapService.addGeoJson(map, addedGeoJson);
+                      // Convert to Polygon
+                      var polygonArray = [];
+                      var shape = {}
+                      var _coord = geometry.coordinates[0];
+
+                      for (var i = 0; i < _coord.length; i++) {
+                          var coordinatePair = [(_coord[i][1]).toFixed(2), (_coord[i][0]).toFixed(2)];
+                          polygonArray.push(coordinatePair);
+                      }
+
+                      if (polygonArray.length > 500) {
+                          alert('Complex geometry will be simplified using the convex hull algorithm!');
+                      }
+
+                      polygonArray = polygonArray.map(function(elem) {
+                        return elem.map(function(elem2) {
+                            return parseFloat(elem2);
+                        });
+                        });
+                      editableLayers.clearLayers();
+                      var layer = L.polygon(polygonArray , {color: 'red'});
+                      drawing_polygon = [];
+                      userPolygon = layer.toGeoJSON();
+                      drawing_polygon.push('ee.Geometry.Polygon(['+ JSON.stringify(userPolygon.geometry.coordinates[0])+'])');
+                      updateFloodMapLayer();
+                      updatePermanentWater();
+                      layer.addTo(map);
+                      map.fitBounds(layer.getBounds());
+                      editableLayers.addLayer(layer);
+
+
+                  } else {
+                      alert('multigeometry and multipolygon not supported yet!');
+                  }
+              } else {
+                  alert('multigeometry and multipolygon not supported yet!');
+              }
+          };
+      }
+  };
+
+  var customControl = L.Control.extend({
+
+    options: {
+      position: 'topleft'
+    },
+    onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = "<label for='input-file2' style='margin-left:7px;margin-top:5px;font-size:15px;cursor: pointer;' title='Load local file (Geojson, KML)'><span class='glyphicon glyphicon-folder-open' aria-hidden='true'></span><input type='file' class='hide' id='input-file2' accept='.kml,.kmz,.json,.geojson,application/json,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz'></label>";
+        container.style.backgroundColor = '#f4f4f4';
+        container.style.width = '35px';
+        container.style.height = '35px';
+        container.style.backgroundSize = "30px 30px";
+        return container;
+      }
+
+  });
+  map.addControl(new customControl());
+
+  $('#input-file2').change(function (event) {
+    readFile(event);
+  });
+
 });
 
 function openLegendTab(event, name) {
@@ -509,6 +589,47 @@ function addMapLayer(layer,url){
     '<a href="https://earthengine.google.com" target="_">' +
     'Google Earth Engine</a>;'}).addTo(map);
   return layer
+}
+
+// function to add and update tile layer to map
+function updateFloodMapLayer(){
+  var sensor_val = $('#sensor_selection').val();
+  var flood_color = $('#color-picker-flood').val();
+  var selected_date = $('#date_selection').val();
+  var geom = JSON.stringify(drawing_polygon);
+  var xhr = ajax_update_database('get_surfacewatermap',{'sDate':selected_date,'sensor_txt':sensor_val, 'flood_color': flood_color, 'geom': geom},"layers");
+  xhr.done(function(data) {
+      if("success" in data) {
+        flood_layer.setUrl(data.url)
+      }else{
+        flood_layer.setUrl('')
+        alert(data.error);
+      }
+  });
+}
+
+function updatePermanentWater(){
+  var startYear = $('#start_year_selection_historical').val();
+  var endYear = $('#end_year_selection_historical').val();
+  var slider = $("#month_range").data("ionRangeSlider");
+
+ // Get values
+  var startMonth = slider.result.from + 1;
+  var endMonth= slider.result.to + 1;
+  var method = 'discrete';
+  var wcolor = $('#color-picker-water').val();
+  var geom = JSON.stringify(drawing_polygon);
+
+  if (startMonth == endMonth) { endMonth += 1 }
+
+  var xhr = ajax_update_database('update_historical',{'startYear':startMonth,'endYear':endYear,'startMonth': startMonth,'endMonth': endMonth, 'method': method, 'wcolor': wcolor,'geom': geom},"layers");
+      xhr.done(function(data) {
+      if("success" in data) {
+        historical_layer.setUrl(data.url)
+      }else{
+        alert(data.error);
+      }
+  });
 }
 
 function addGibsLayer(layer,product,date){

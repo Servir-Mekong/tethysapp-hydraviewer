@@ -94,11 +94,11 @@ def getPrecipMap(date,accumulation=1,cmap_name='nipy_spectral'):
     return precipMap
 
 
-def getfloodMap(snsr,sdate,fcolor):
+def getfloodMap(snsr,sdate,fcolor,shape):
     dt = datetime.datetime.utcnow() - datetime.timedelta(1)
     today = dt.strftime('%Y-%m-%d')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(sdate).filter(ee.Filter.eq('sensor',snsr))
-    image = ee.Image(fc.first()).select(0)
+    image = ee.Image(fc.first()).select(0).clip(shape)
     image = image.updateMask(image)
 
     #if snsr == 'atms':
@@ -113,11 +113,12 @@ def GetDownloadURL(snsr,sdate,poly):
     t2 = t1.advance(1,'day')
     fc = ee.ImageCollection(config.WATERCOLLECTION).filterDate(t1,t2).filter(ee.Filter.eq('sensor',snsr))
     image = ee.Image(fc.first()).select(0)
+    clip_image = image.clip(poly.geometry().dissolve())
 
-    dnldURL = image.getDownloadURL({
+    dnldURL = clip_image.getDownloadURL({
+        'name': 'floodmap-'+snsr+'-'+sdate,
 		'scale': 90,
-		'crs': 'EPSG:4326',
-        'region' : poly
+		'crs': 'EPSG:4326'
     })
 
     return dnldURL
@@ -318,7 +319,7 @@ def JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method):
 
     # make a mask
     water = returnTime.gt(75).rename(['water'])
-    water = water.updateMask(water)
+    water = water.updateMask(water).clip(landShp)
 
     return water
 
@@ -339,7 +340,7 @@ def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='dis
         test = ee.Algorithms.If(geom.contains(feature.geometry()),feature,None)
         return ee.Feature(test)
 
-    countries = landShp.filterBounds(geom).map(spatialSelect,True)
+    #countries = landShp.filterBounds(geom).map(spatialSelect,True)
 
     if climatology:
         if month == None:
@@ -362,7 +363,7 @@ def getHistoricalMap(geom, startYear, endYear, startMonth, endMonth, method='dis
         waterMap = getTileLayerUrl(water.updateMask(water.eq(2)).visualize(min=0,max=2,palette='#ffffff,#9999ff,'+ wcolor))
 
     elif algorithm == 'JRC':
-        water = JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method).clip(countries)
+        water = JRCAlgorithm(geom,startYear, endYear, startMonth, endMonth, method).clip(geom)
         #water = JRCAlgorithm(geom,iniTime,endTime).clip(countries)
         waterMap = getTileLayerUrl(water.visualize(min=0,max=1,bands='water',palette='#ffffff,'+ wcolor))
 

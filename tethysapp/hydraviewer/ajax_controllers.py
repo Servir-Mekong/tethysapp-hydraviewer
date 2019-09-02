@@ -32,6 +32,11 @@ def update_historical(request):
             endMonth = info.get('endMonth')
             method_historical = info.get('method')
             wcolor = info.get('wcolor')
+            geom = info.get('geom')
+            geom = geom.replace('["', '[');
+            geom = geom.replace('"]', ']');
+            geom = geom.replace('","', ',');
+            region = ee.FeatureCollection(eval(geom));
             #month = info.get('month')
             #algo = info.get('algo')
             #climo = bool(int(info.get('climo')))
@@ -76,7 +81,12 @@ def get_surfacewatermap(request):
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
             flood_color = info.get('flood_color')
-            water_layer = geeutils.getfloodMap(sensor,start_date,flood_color)
+            geom = info.get('geom')
+            geom = geom.replace('["', '[');
+            geom = geom.replace('"]', ']');
+            geom = geom.replace('","', ',');
+            region = ee.FeatureCollection(eval(geom));
+            water_layer = geeutils.getfloodMap(sensor,start_date,flood_color,region)
 
             return_obj["url"] = water_layer
             return_obj["success"] = "success"
@@ -111,8 +121,12 @@ def download_surfacewatermap(request):
             info = request.POST;
             start_date = info.get('sDate')
             sensor = info.get('sensor_txt')
-            poly = info.get('poly_coordinates')
-            download_url  = geeutils.GetDownloadURL(sensor,start_date,poly)
+            geom = info.get('geom')
+            geom = geom.replace('["', '[');
+            geom = geom.replace('"]', ']');
+            geom = geom.replace('","', ',');
+            region = ee.FeatureCollection(eval(geom));
+            download_url  = geeutils.GetDownloadURL(sensor,start_date,region)
 
             return_obj["url"] = download_url
             return_obj["success"] = "success"

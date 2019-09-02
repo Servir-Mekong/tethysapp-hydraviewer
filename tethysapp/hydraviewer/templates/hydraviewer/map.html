@@ -18,8 +18,8 @@
 {% block scripts %}
   {{ block.super }}
 
-<!--Plugin JavaScript file ion-rangeslider-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
+  <!--Plugin JavaScript file ion-rangeslider-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSlider.min.js"></script>
   <script> var cb_url = "{% static 'hydraviewer/images/precip_colorbar.png' %}" </script>
   <script src="{% static 'hydraviewer/js/map.js' %}" type="text/javascript"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.2/bootstrap-slider.min.js" type="text/javascript"></script>
@@ -28,9 +28,12 @@
     crossorigin=""></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.css" />
   <script src="https://cdn.rawgit.com/mejackreed/Leaflet-IIIF/v2.0.1/leaflet-iiif.js"></script>
-  <script src="https://unpkg.com/leaflet-draw@1.0.2/dist/leaflet.draw.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script src="https://unpkg.com/togeojson@0.16.0"></script>
+  <script src="https://unpkg.com/leaflet-filelayer@1.2.0"></script>
   <script type="text/javascript" src="https://cdn.rawgit.com/nezasa/iso8601-js-period/master/iso8601.min.js"></script>
   <script type="text/javascript" src="https://cdn.rawgit.com/socib/Leaflet.TimeDimension/master/dist/leaflet.timedimension.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.js"></script>
 {% endblock %}
 
 {% block app_content_override %}
@@ -152,8 +155,6 @@
 
 		      <p> Select Sensor: </p>
 		      {% gizmo sensor_selection %}
-
-
 
 		      <div class="center_obj" >
 		      	<button type="submit" id="btn_download" name="btn_download" class="btn_custom"><i class="glyphicon glyphicon-cloud-download"></i> Download Data</button>
