@@ -1,5 +1,8 @@
 # HYDRAFloods Viewer
 
+| ❗WARNING: This repository has been deprecated! Please use the following repo for the HYDRAFloods viewer webapp: https://github.com/Servir-Mekong/hydrafloodviewer ❗ |
+| --- |
+
 The HYDRAFloods Viewer is a web application used to view flood map results from the [HYDRAFloods](https://github.com/servir-mekong/hydra-floods) processing package along with additional hydrologic variables.
 
 ![alt text](tethysapp/hydraviewer/public/images/viewer_screenshot.png)
